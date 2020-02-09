@@ -12,6 +12,8 @@ import {
 import './App.css';
 import Sidebar from "../Sidebar";
 import Home from "../Home";
+import Header from "../Header";
+import ContactForm from "../ContactForm";
 
 function App() {
   return (
@@ -20,10 +22,14 @@ function App() {
             {/* Main sidebar of application */}
             <Sidebar />
             
-            <Col>
+            <Col md="10" className="px-0">
+                {/* Main header of main content */}
+                <Header />
+
                 <Switch>
                     {/* Home must be last in switch order to display correctly */}
-                    <Route path="/" component={Home} />
+                    <Route path="/contact" component={ContactForm} />
+                    <Route path="/" component={Home} /> 
                 </Switch>
             </Col>
         </Row>
