@@ -14,6 +14,7 @@ import Sidebar from "../Sidebar";
 import Home from "../Home";
 import Header from "../Header";
 import ContactForm from "../ContactForm";
+import Register from "../Register";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
 
                 <Switch>
                     {/* Home must be last in switch order to display correctly */}
+                    <Route path="/register" component={Register} />
                     <Route path="/contact" component={ContactForm} />
                     <Route path="/" component={Home} /> 
                 </Switch>

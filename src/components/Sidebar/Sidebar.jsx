@@ -7,19 +7,17 @@ import {
     NavbarBrand,
     ButtonGroup,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
     render() {
         return (
             <Col md="2" style={{ background: "red" }}>
-                <NavbarBrand>
+                <NavbarBrand tag={Link} to="/" style={{color: "inherit"}}>
                     Asset Tracker
                 </NavbarBrand>
                 <Button color="primary">
                     Dashboard
-                </Button>
-                <Button color="primary">
-                    All Assets
                 </Button>
             </Col>
         );
