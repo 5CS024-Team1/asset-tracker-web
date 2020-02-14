@@ -10,11 +10,18 @@ import {
 } from 'reactstrap';
 
 import './App.css';
+
 import Sidebar from "../Sidebar";
 import Home from "../Home";
 import Header from "../Header";
 import ContactForm from "../ContactForm";
 import Register from "../Register";
+import Dashboard from "../Dashboard";
+import NotFound from "../NotFound";
+
+import SingleAsset from "../Assets/SingleAsset";
+import AllAssets from "../Assets/AllAssets";
+import RegisterAsset from "../Assets/RegisterAsset";
 
 function App() {
   return (
@@ -28,10 +35,17 @@ function App() {
                 <Header />
 
                 <Switch>
-                    {/* Home must be last in switch order to display correctly */}
-                    <Route path="/register" component={Register} />
-                    <Route path="/contact" component={ContactForm} />
-                    <Route path="/" component={Home} /> 
+                    <Route exact path="/" component={Home} />
+                    
+                    <Route exact path="/assets" component={AllAssets} />
+                    <Route path="/assets/register" component={RegisterAsset} />
+                    <Route exact path="/asset/:assetId?" component={SingleAsset} />
+
+                    <Route exact path="/dashboard" component={Dashboard} />
+                    <Route exact path="/register" component={Register} />
+                    <Route exact path="/contact" component={ContactForm} />
+
+                    <Route component={NotFound} />
                 </Switch>
             </Col>
         </Row>

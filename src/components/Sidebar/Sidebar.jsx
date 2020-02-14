@@ -5,7 +5,8 @@ import {
     Row,
     Col,
     NavbarBrand,
-    ButtonGroup,
+    ListGroup,
+    ListGroupItem,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -16,9 +17,14 @@ class Sidebar extends Component {
                 <NavbarBrand tag={Link} to="/" style={{color: "inherit"}}>
                     Asset Tracker
                 </NavbarBrand>
-                <Button color="primary">
-                    Dashboard
-                </Button>
+                <ListGroup>
+                    <ListGroupItem tag="a" href="/dashboard">
+                        Dashboard
+                    </ListGroupItem>
+                    <ListGroupItem tag="a" href="/assets">
+                        Assets
+                    </ListGroupItem>
+                </ListGroup>
             </Col>
         );
     }
