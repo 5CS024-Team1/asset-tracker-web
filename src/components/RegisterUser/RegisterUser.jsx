@@ -15,7 +15,7 @@ import {
     BASE_API_PATH
 } from "../../consts";
 
-class Register extends Component
+class RegisterUser extends Component
 {
     constructor(props) {
         super(props);
@@ -70,4 +70,4 @@ class Register extends Component
     }
 }
 
-export default Register;
+export default RegisterUser;

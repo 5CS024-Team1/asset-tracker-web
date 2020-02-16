@@ -1,4 +1,5 @@
 <?php
+/// Entrypoint for getting all assets available in the database
 include_once("../../api_config.php");
 
 // Include cross origin headers
@@ -42,7 +43,7 @@ else
 {
     // Unable to get any data from table, return null array
     $arr = array(
-        "assets" => array(null)
+        "assets" => array()
     );
     echo json_encode($arr);
 }

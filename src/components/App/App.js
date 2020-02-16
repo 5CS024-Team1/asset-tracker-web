@@ -15,7 +15,7 @@ import Sidebar from "../Sidebar";
 import Home from "../Home";
 import Header from "../Header";
 import ContactForm from "../ContactForm";
-import Register from "../Register";
+import RegisterUser from "../RegisterUser";
 import Dashboard from "../Dashboard";
 import NotFound from "../NotFound";
 
@@ -42,7 +42,7 @@ function App() {
                     <Route exact path="/asset/:assetId?" component={SingleAsset} />
 
                     <Route exact path="/dashboard" component={Dashboard} />
-                    <Route exact path="/register" component={Register} />
+                    <Route exact path="/register-user" component={RegisterUser} />
                     <Route exact path="/contact" component={ContactForm} />
 
                     <Route component={NotFound} />
