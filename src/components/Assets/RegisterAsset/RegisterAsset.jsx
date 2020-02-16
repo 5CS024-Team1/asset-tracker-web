@@ -45,6 +45,13 @@ class RegisterAsset extends Component {
                 assetId: result.data.assetId,
                 assetIdLoaded: true,
             });
+        }).catch(error => {
+            console.log(error);
+            this.setState({
+                assetIdLoaded: true,
+                assetId: "?",
+                error: error.message,
+            })
         })
     }
 

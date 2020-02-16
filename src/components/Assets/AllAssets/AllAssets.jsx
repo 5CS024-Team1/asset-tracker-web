@@ -35,13 +35,20 @@ class AllAssets extends Component {
         axios({
             method: 'get',
             url: `${BASE_API_PATH}/assets/all/`,
-            headers: { 'content-type': 'application/json' }
+            headers: { 'content-type': 'application/json' },
+            timeout: 5000
         }).then(result => {
             this.setState({
                 assets: result.data.assets,
                 loaded: true,
             });
-        }).catch(error => this.setState({ error: error.message }));
+        }).catch(error => {
+            console.log(error);
+            this.setState({ 
+                error: error.message,
+                loaded: true, 
+            });
+        });
 
         /// Example Data
         // this.setState({
@@ -117,7 +124,7 @@ class AllAssets extends Component {
                     {/* While loading data, display the loading spinner */}
                     { !this.state.loaded && loadingSpinner }
                     {/* if no data loaded from backend, display message */}
-                    { this.state.loaded && this.state.assets.length == 0 ? noLoaded : null }
+                    { this.state.loaded && (this.state.assets == null || this.state.assets != null && this.state.assets.length == 0) ? noLoaded : null }
                 </div>
             </Container>
         );
