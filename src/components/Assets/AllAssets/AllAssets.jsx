@@ -12,13 +12,22 @@ import {
 } from "../../../consts";
 
 function isAssetOnline(timeMs) {
+    if (timeMs == null)
+        return <div>-</div>
     return timeMs < 60000 ? "Online" : "Offline"
 }
 
 function timeToDisplay(timeMs) {
-    var parsed = parseFloat(timeMs);
-    var date = new Date(parsed);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    if (timeMs == null) 
+    {
+        return <div>-</div>
+    }
+    else
+    {
+        var parsed = parseFloat(timeMs);
+        var date = new Date(parsed);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    }
 }
 
 class AllAssets extends Component {
@@ -42,6 +51,7 @@ class AllAssets extends Component {
                 assets: result.data.assets,
                 loaded: true,
             });
+            console.log(this.state.assets);
         }).catch(error => {
             console.log(error);
             this.setState({ 
@@ -74,7 +84,7 @@ class AllAssets extends Component {
     render() {
         let loadingSpinner = <Spinner className="mx-auto" style={{ width: '5rem', height: '5rem' }} />;
         let noLoaded = <h5 className="mx-auto">No data loaded</h5>;
-
+        let unknownEntry = <div>-</div>;
         return (
             <Container>
                 <h1 className="mt-3">Assets List</h1>
@@ -92,8 +102,9 @@ class AllAssets extends Component {
                             <th>Name</th>
                             <th>Status</th>
                             <th>Last pinged time</th>
-                            <th>Owner</th>
                             <th>Location</th>
+                            <th>Owner</th>
+                            <th>Due Back</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,8 +123,9 @@ class AllAssets extends Component {
                                             {isAssetOnline(asset.last_ping)}
                                         </td>
                                         <td>{timeToDisplay(asset.last_ping_time)}</td>
-                                        <td>{asset.owner}</td>
-                                        <td>{asset.location}</td>
+                                        <td>{asset.location ? asset.location : unknownEntry}</td>
+                                        <td>{asset.owner_name != null ? asset.owner_name : unknownEntry}</td>
+                                        <td>{timeToDisplay(asset.owner_date_return)}</td>
                                     </tr>
                                 )
                             })

@@ -41,9 +41,9 @@ if ($result->num_rows > 0)
 } 
 else 
 {
-    // Unable to get any data from table, return null array
+    // Unable to get any data from table or table is empty, return null array
     $arr = array(
-        "assets" => array()
+        "assets" => null
     );
     echo json_encode($arr);
 }
