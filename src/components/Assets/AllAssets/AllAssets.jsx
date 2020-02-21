@@ -7,9 +7,12 @@ import {
     Spinner
 } from 'reactstrap';
 import axios from 'axios';
+
 import {
-    BASE_API_PATH
+    BASE_API_PATH,
+    API_TIMEOUT
 } from "../../../consts";
+import LoadingSpinner from "../../LoadingSpinner";
 
 function isAssetOnline(timeMs) {
     if (timeMs == null)
@@ -17,15 +20,13 @@ function isAssetOnline(timeMs) {
     return timeMs < 60000 ? "Online" : "Offline"
 }
 
-function timeToDisplay(timeMs) {
-    if (timeMs == null) 
-    {
+function timeToDisplay(time) {
+    if (time == null) {
         return <div>-</div>
-    }
-    else
-    {
-        var parsed = parseFloat(timeMs);
-        var date = new Date(parsed);
+    } else {
+        // Date stored as "YYYY-MM-DD HH:MM"
+        var split = time.split(' ');
+        var date = new Date(split[0]);
         return date.toLocaleDateString() + " " + date.toLocaleTimeString();
     }
 }
@@ -45,7 +46,7 @@ class AllAssets extends Component {
             method: 'get',
             url: `${BASE_API_PATH}/assets/all/`,
             headers: { 'content-type': 'application/json' },
-            timeout: 5000
+            timeout: API_TIMEOUT
         }).then(result => {
             this.setState({
                 assets: result.data.assets,
@@ -82,7 +83,6 @@ class AllAssets extends Component {
     }
 
     render() {
-        let loadingSpinner = <Spinner className="mx-auto" style={{ width: '5rem', height: '5rem' }} />;
         let noLoaded = <h5 className="mx-auto">No data loaded</h5>;
         let unknownEntry = <div>-</div>;
         return (
@@ -134,7 +134,7 @@ class AllAssets extends Component {
                 </Table>
                 <div className="d-flex">
                     {/* While loading data, display the loading spinner */}
-                    { !this.state.loaded && loadingSpinner }
+                    { !this.state.loaded && <LoadingSpinner /> }
                     {/* if no data loaded from backend, display message */}
                     { this.state.loaded && (this.state.assets == null || this.state.assets != null && this.state.assets.length == 0) ? noLoaded : null }
                 </div>

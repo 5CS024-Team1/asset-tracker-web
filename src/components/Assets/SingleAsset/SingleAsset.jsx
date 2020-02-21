@@ -8,9 +8,14 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import {
+    Link
+} from 'react-router-dom';
+
+import {
     BASE_API_PATH
 } from "../../../consts";
 import IndiAssetMap from '../AllAssets/IndiAssetMap';
+import LoadingSpinner from "../../LoadingSpinner";
 
 // Element for "/asset/:assetId?"
 // Displays full information about a specific asset
@@ -54,7 +59,7 @@ function AssetProperties(props) {
                     <h6>Current Location:</h6>
                 </Col>
                 <Col md={8}>
-                    <div>{props.deviceLocation}</div>
+                    <div>{props.deviceLocation != null ? props.deviceLocation : "Unknown"}</div>
                 </Col>
             </Row>
             <Row >
@@ -62,7 +67,7 @@ function AssetProperties(props) {
                     <h6>Owner Name:</h6>
                 </Col>
                 <Col md={8}>
-                    <div>{props.deviceOwner}</div>
+                    <div>{props.deviceOwner != null ? props.deviceOwner : "Unknown"}</div>
                 </Col>
             </Row>
             <Row >
@@ -102,16 +107,16 @@ class SingleAsset extends Component
         axios({
             method: 'get',
             // No api set up currently, being left for now
-            url: `${BASE_API_PATH}/singleasset`,
+            url: `${BASE_API_PATH}/assets/get?id=${this.state.id}`,
             headers: { 'content-type': 'application/json' },
         }).then(result => {
-            console.log(result);
+            //console.log(result);
             this.setState({
-                assetId: result.data.assetId,
+                asset: result.data.asset,
                 assetIdLoaded: true,
             });
         }).catch(error => {
-            console.log(error);
+            //console.log(error);
             this.setState({
                 assetIdLoaded: true,
                 assetId: "?",
@@ -124,13 +129,32 @@ class SingleAsset extends Component
         return (
             <Container className="my-3">
                 <h1>Device</h1>
-                <AssetIndiControl deviceName="Walking Stick" deviceID="#001" />
+                <AssetIndiControl deviceName={this.state.asset != null ? this.state.asset.display_name : "Unknown"} deviceID={this.state.id} />
                 <Row>
                     <Col md={6} className="h-100">
                         <Row>
                             <Jumbotron className="w-100">
-                                <AssetProperties deviceName="Walking Stick" deviceID="1" deviceLocation="Wolverhampton, UK" deviceOwner="John Doe" deviceOrigin="Russels Hall Hospital" deviceCounty="West Midlands"/>
+                                {
+                                    this.state.asset != null ?
+                                    <AssetProperties 
+                                        deviceName={this.state.asset.display_name} 
+                                        deviceID={this.state.asset.id}
+                                        deviceLocation={this.state.asset.location}
+                                        deviceOwner={this.state.asset.owner_name}
+                                        deviceOrigin={this.state.asset.origin}
+                                        deviceCounty="West Midlands" />
+                                    : <LoadingSpinner className="mx-auto" />
+                                }
                             </Jumbotron>
+                            {
+                                this.state.asset != null && this.state.asset.owner_name == null ? (
+                                    <Link to={this.state.id+'/allocate'}>
+                                        <Button color="primary">
+                                            Allocate Asset
+                                        </Button>
+                                    </Link>
+                                ) : <div></div>
+                            }
                         </Row>
                     </Col>
                     <Col md={6}>

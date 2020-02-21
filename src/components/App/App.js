@@ -22,6 +22,7 @@ import NotFound from "../NotFound";
 import SingleAsset from "../Assets/SingleAsset";
 import AllAssets from "../Assets/AllAssets";
 import RegisterAsset from "../Assets/RegisterAsset";
+import AllocateAsset from "../Assets/AllocateAsset";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                     <Route exact path="/assets" component={AllAssets} />
                     <Route path="/assets/register" component={RegisterAsset} />
                     <Route exact path="/asset/:assetId?" component={SingleAsset} />
+                    <Route exact path="/asset/:assetId?/allocate" component={AllocateAsset} />
 
                     <Route exact path="/dashboard" component={Dashboard} />
                     <Route exact path="/register-user" component={RegisterUser} />
