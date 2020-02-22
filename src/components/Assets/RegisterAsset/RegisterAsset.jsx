@@ -5,12 +5,14 @@ import {
     Col,
     Form,
     FormGroup,
+    FormText,
     Input,
     Label,
     Button,
     Spinner
 } from 'reactstrap';
 import axios from 'axios';
+import Barcode from 'react-barcode';
 
 import {
     BASE_API_PATH
@@ -23,14 +25,18 @@ class RegisterAsset extends Component {
         super(props);
 
         this.state = {
-            email: "",
-            password: "",
-            hasOwner: false,
+            assetId: -1,
             assetIdLoaded: false,
             assetSet: false,
+
+            name: "",
+            origin: "",
+            purchase_cost: 0.0,
+            category: "Unknown",
         };
 
         this.handleOnRegisterAsset = this.handleOnRegisterAsset.bind(this);
+        this.handlePrintAssetBarcode = this.handlePrintAssetBarcode.bind(this);
     }
 
     componentDidMount() {
@@ -68,36 +74,35 @@ class RegisterAsset extends Component {
             console.log(result);
             this.setState({
                 assetSet: result.data.assetSet
-            })
+            });
+            /// Redirect user once complete
+            // setTimeout(() => {
+            //     window.location.replace(`/assets`);
+            // }, 1000);
         }).catch(error => this.setState({ error: error.message }));
     }
 
+    handlePrintAssetBarcode(e) {
+        console.log("Printing barcode");
+        
+        let popupWinindow;
+        let barcodeContainer = document.getElementById("barcodeParent");
+        let svg = barcodeContainer.firstChild;
+        /// Code to change height/width of svg barcode
+        // svg.setAttribute("height", "500px");
+        // svg.setAttribute("width", "500px");
+
+        popupWinindow = window.open('', '_blank', 'width=1000,height=1000,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+        popupWinindow.document.open();
+        popupWinindow.document.write('<html><head><style></style></head><body onload="window.print()">' + svg.outerHTML + '</html>');
+        popupWinindow.document.close();
+    }
+
     render() {
-        let ownerFormInfo = <div>
-                                <FormGroup>
-                                    <Label for="ownerNameInput">Name:</Label>
-                                    <Input type="text" name="" id="ownerNameInput" placeholder="Name of Owner" 
-                                        onChange={ e => this.setState({ password: e.target.value }) } />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="ownerAddressInput">Address:</Label>
-                                    <Input type="text" name="ownerAddress" id="ownerAddressInput" placeholder="1234 Example Street" />
-                                </FormGroup>
-                                <Row>
-                                    <Col md={6}>
-                                        <Label for="ownerCityInput">City:</Label>
-                                        <Input type="text" name="ownerCity" id="ownerCityInput" placeholder="London" />
-                                    </Col>
-                                    <Col md={3} className="px-0">
-                                        <Label for="ownerRegionInput">Region:</Label>
-                                        <Input type="text" name="ownerRegion" id="ownerRegionInput" placeholder="Greater London" />
-                                    </Col>
-                                    <Col md={3}>
-                                        <Label for="ownerPostcodeInput">Postcode:</Label>
-                                        <Input type="text" name="ownerPostcode" id="ownerPostcodeInput" placeholder="SE1 9SG"/>
-                                    </Col>
-                                </Row>
-                            </div>
+        let idNumHtml = <div>
+                            <Label>Id Number:</Label>
+                            <Input type="number" name="idNumber" placeholder="Asset Id number" disabled value={this.state.assetId} />
+                        </div>
         let sentHtml =  <div>
                             Asset has been set!
                         </div>
@@ -106,43 +111,64 @@ class RegisterAsset extends Component {
             <Container className="mt-3">
                 <h1>Register Asset</h1>
                 <p>Register a new asset into the system database.</p>
-                <div className="d-flex">
-                    <Button color="primary" className="ml-auto" onClick={this.handleOnRegisterAsset}>Register Asset</Button>
-                </div>
                 <Form className="mt-5">
                     <Row form>
                         <Col md={6} className="pr-3">
                             <h5>Asset Information</h5>
                             <FormGroup>
-                                <Label for="idLabel" className="mr-3 mt-2">ID Number:</Label>
-                                <Label id="idLabel">
-                                    { this.state.assetIdLoaded ? 
-                                        <div># {this.state.assetId}</div> 
-                                        : 
-                                        <Spinner size="sm" color="primary" />
-                                    }
-                                </Label>
+                                { this.state.assetIdLoaded ? 
+                                    idNumHtml 
+                                    : 
+                                    <Spinner size="sm" color="primary" />
+                                }
                             </FormGroup>
                             <FormGroup>
                                 <Label for="nameInput">Name:</Label>
-                                <Input type="text" name="name" id="nameInput" placeholder="Name of Asset" />
-                                    {/* onChange={ e => this.setState({ name: e.target.value }) }  */}
+                                <Input type="text" name="name" id="nameInput" placeholder="Name of Asset" 
+                                    onChange={ e => this.setState({ name: e.target.value }) } />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Origin:</Label>
-                                <Input type="text" name="origin" id="originInput" placeholder="Location origin of asset" />
+                                <Input type="text" name="origin" id="originInput" placeholder="Location origin of asset" 
+                                    onChange={ e => this.setState({ origin: e.target.value })} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Purchase Cost:</Label>
+                                <div className="d-flex">
+                                    <div className="my-auto mr-2">£</div>
+                                    <Input type="number" step=".01" name="purchase" id="purchaseCost" placeholder="9.99" 
+                                        onChange={ e => this.setState({ purchase_cost: e.target.value })}/>
+                                </div>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Category:</Label>
+                                <Input type="select" name="select" id="categorySelect">
+                                    <option>Unknown</option>
+                                    <option>Category 1</option>
+                                    <option>Category 2</option>
+                                    <option>Category 3</option>
+                                </Input>
                             </FormGroup>
                         </Col>
                         <Col md={6} className="pl-3">
-                            <h5>Owner Information</h5>
-                            <FormGroup>
-                                <Input className="ml-0" type="checkbox" name="check" id="assetHasOwner" 
-                                    onChange={ e => this.setState({ hasOwner: !this.state.hasOwner })}/>
-                                <Label for="" className="ml-3">Does the asset have an owner?</Label>
-                            </FormGroup>
-                            { this.state.hasOwner && ownerFormInfo }
+                            <h5>Barcode:</h5>
+                            <FormText color="muted">
+                                Use this barcode to determine which asset is which by attaching it to the asset
+                            </FormText>
+                            <div className="d-flex justify-content-center" id="barcodeParent">
+                                {/* Value required to be a string so convert it */}
+                                <Barcode value={`${this.state.assetId}`}  />
+                            </div>
+                            <Button color="secondary" className="mt-2" onClick={this.handlePrintAssetBarcode}>
+                                Print Barcode
+                            </Button>
                         </Col>
                     </Row>
+                    <div className="d-flex">
+                        <Button color="primary" className="ml-auto" onClick={this.handleOnRegisterAsset}>
+                            Submit
+                        </Button>
+                    </div>
                 </Form>
                 { this.state.assetSet && sentHtml }
             </Container>

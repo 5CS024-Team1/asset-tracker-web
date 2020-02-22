@@ -6,6 +6,14 @@ include_once("../../api_config.php");
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Headers: Content-Type');
 
+/// Creates an INSERT INTO query using the given data
+function BuildQuery($idNum, $name, $origin, $cost, $category)
+{
+    $query = "INSERT INTO assets (id, display_name, purchase_cost, origin, category) ";
+    $query = $query . "VALUES ('" . $idNum . "', '" . $name . "', '" . $cost . "', '" . $origin . "', '" . $category . "')";
+    return $query;
+}
+
 $rest_json = file_get_contents("php://input");
 $post_data = json_decode($rest_json, true);
 
@@ -19,11 +27,25 @@ if (!$conn) {
 }
 
 /// Query for registering asset into database
-// $sql = "sql query";
-// $result = $conn->query($sql);
+$sql = BuildQuery($post_data['assetId'], $post_data['name'], $post_data['origin'], $post_data['purchase_cost'], $post_data['category']);
+$result = $conn->query($sql);
 
-// Return determined free index
-$array = array("assetSet" => true);
-echo json_encode($array);
+if($result)
+{
+    echo json_encode(
+        [
+            "asset_set" => true,
+        ]
+    );
+}
+else
+{
+    echo json_encode(
+        [
+            "asset_set" => false,
+            "error" => "Unable to successfully execute query '" . $sql . "'",
+        ]
+    );
+}
 
 ?>

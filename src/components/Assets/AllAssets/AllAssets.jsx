@@ -60,26 +60,6 @@ class AllAssets extends Component {
                 loaded: true, 
             });
         });
-
-        /// Example Data
-        // this.setState({
-        //     assets: [
-        //         {
-        //             name: "Wheelchair",
-        //             id: 0,
-        //             last_ping: 1581693898056,
-        //             owner: "Jeff Jones",
-        //             location: "Wolverhampton, UK"
-        //         },
-        //         {
-        //             name: "Walking Stick",
-        //             id: 3,
-        //             last_ping: 1581693898056,
-        //             owner: "Jeff Jones",
-        //             location: "London, UK"
-        //         }
-        //     ]
-        // });
     }
 
     render() {
