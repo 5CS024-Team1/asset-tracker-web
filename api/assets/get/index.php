@@ -34,14 +34,15 @@ class Asset { }
 
 if ($result->num_rows > 0) 
 {
-    // Map individual asset onto single object
+    // Map individual asset onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = $row["id"];
+        $asset->id = intval($row["id"]);
         $asset->display_name = $row["display_name"];
+        $asset->category = $row["category"];
         $asset->location = $row["location"];
         $asset->last_ping_time = $row["last_ping_time"];
-        $asset->purchase_cost = $row["origin"];
+        $asset->purchase_cost = doubleval($row["purchase_cost"]);
         $asset->origin = $row["origin"];
         $asset->owner_name = $row["owner_name"];
         $asset->owner_address = $row["owner_address"];
@@ -49,11 +50,10 @@ if ($result->num_rows > 0)
         $asset->owner_date_return = $row["owner_date_return"];
     }
 
-    $master = new Asset();
-    $master->asset = $asset;
-
     // Return the array of assets
-    echo json_encode($master, JSON_PRETTY_PRINT);
+    echo json_encode([
+        "asset" => $asset
+    ], JSON_PRETTY_PRINT);
 } 
 else 
 {

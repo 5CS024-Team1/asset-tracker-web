@@ -5,16 +5,8 @@ include_once("../../api_config.php");
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Headers: Content-Type');
-
-/* 
-echo "Logging In<br />";
-echo "Server Name: " . $SERVER_LOCATION . "<br />";
-echo "Username: " . $SERVER_USERNAME . "<br />";
-echo "Pass: " . $SERVER_PASSWORD . "<br />";
-echo "DB Name: " . $DB_NAME . "<br/>";
-echo "Table Name: " . $ASSETS_TABLE;
-echo "<br /><br />";
-*/
+// Make page display JSON_PRETTY_PRINT
+header('Content-Type: application/json');
 
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
@@ -26,18 +18,34 @@ if (!$conn) {
 $sql = "SELECT * FROM " . $ASSETS_TABLE;
 $result = $conn->query($sql);
 
+class Asset { }
+
 if ($result->num_rows > 0) 
 {
     // Create a new array and store all data from table into it
     $db_array = array();
     while($row = $result->fetch_assoc()) {
-        $db_array[] = $row;
+        $asset = new Asset();
+        $asset->id = intval($row["id"]);
+        $asset->display_name = $row["display_name"];
+        $asset->category = $row["category"];
+        $asset->location = $row["location"];
+        $asset->last_ping_time = $row["last_ping_time"];
+        $asset->purchase_cost = doubleval($row["purchase_cost"]);
+        $asset->origin = $row["origin"];
+        $asset->owner_name = $row["owner_name"];
+        $asset->owner_address = $row["owner_address"];
+        $asset->owner_date_recieved = $row["owner_date_recieved"];
+        $asset->owner_date_return = $row["owner_date_return"];
+
+        // Add asset to array
+        $db_array[] = $asset;
     }
 
     // Return the array of assets
     echo json_encode(array(
         "assets" => $db_array
-    ));
+    ), JSON_PRETTY_PRINT);
 } 
 else 
 {

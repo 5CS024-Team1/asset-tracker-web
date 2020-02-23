@@ -4,7 +4,8 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 const app = (
     <App />
