@@ -9,7 +9,8 @@ import {
     Input,
     Label,
     Button,
-    Spinner
+    Spinner,
+    UncontrolledAlert,
 } from 'reactstrap';
 import axios from 'axios';
 import Barcode from 'react-barcode';
@@ -33,6 +34,8 @@ class RegisterAsset extends Component {
             origin: "",
             purchase_cost: 0.0,
             category: "Unknown",
+
+            error: "",
         };
 
         this.handleOnRegisterAsset = this.handleOnRegisterAsset.bind(this);
@@ -109,6 +112,12 @@ class RegisterAsset extends Component {
 
         return (
             <Container className="mt-3">
+                {
+                    this.state.assetIdLoaded && this.state.error &&
+                        <UncontrolledAlert color="danger">
+                            Error Occured: {this.state.error}
+                        </UncontrolledAlert>
+                }
                 <h1>Register Asset</h1>
                 <p>Register a new asset into the system database.</p>
                 <Form className="mt-5">

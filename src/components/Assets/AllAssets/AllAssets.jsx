@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
     Container,
     Button,
+    UncontrolledAlert,
 } from 'reactstrap';
 import axios from 'axios';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -37,6 +38,7 @@ class AllAssets extends Component {
         this.state = {
             assets: null,
             loaded: false,
+            error: "",
         }
     }
 
@@ -66,6 +68,12 @@ class AllAssets extends Component {
         let noLoaded = <h5 className="mx-auto">No data loaded</h5>;
         return (
             <div className="mx-5">
+                {
+                    this.state.loaded && this.state.assets == null && this.state.error &&
+                            <UncontrolledAlert color="danger" className="my-3">
+                                Error Occured!: {this.state.error}
+                            </UncontrolledAlert>
+                }
                 <h1 className="mt-3">Assets List</h1>
                 <div className="d-flex float-right my-3">
                     <Link to="/assets/register" >

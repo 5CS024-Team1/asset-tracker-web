@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
     Container,
-    Table,
     Button,
     Col, Row,
     Jumbotron,
+    UncontrolledAlert
 } from 'reactstrap';
 import axios from 'axios';
 import {
@@ -38,7 +38,7 @@ function AssetIndiControl(props) {
 function AssetProperties(props) {
     return (
         <div>
-            <Row >
+            <Row>
                 <Col md={4}>
                     <h6>Device Name:</h6>
                 </Col>
@@ -97,7 +97,9 @@ class SingleAsset extends Component
         
         const { params } = this.props.match;
         this.state = {
-            id: params.assetId
+            id: params.assetId,
+            error: "",
+            errorVisible: false,
         };
         console.log("Asset ID: " + this.state.id);
     }
@@ -128,6 +130,11 @@ class SingleAsset extends Component
     render() {
         return (
             <Container className="my-3">
+                {
+                    this.state.error && <UncontrolledAlert color="danger">
+                                            Error Occured!: {this.state.error}
+                                        </UncontrolledAlert>
+                }
                 <h1>Device</h1>
                 <AssetIndiControl deviceName={this.state.asset != null ? this.state.asset.display_name : "Unknown"} deviceID={this.state.id} />
                 <Row>
@@ -135,7 +142,7 @@ class SingleAsset extends Component
                         <Row>
                             <Jumbotron className="w-100">
                                 {
-                                    this.state.asset != null ?
+                                    this.state.asset != null && this.state.assetIdLoaded &&
                                     <AssetProperties 
                                         deviceName={this.state.asset.display_name} 
                                         deviceID={this.state.asset.id}
@@ -143,8 +150,11 @@ class SingleAsset extends Component
                                         deviceOwner={this.state.asset.owner_name}
                                         deviceOrigin={this.state.asset.origin}
                                         deviceCounty="West Midlands" />
-                                    : <LoadingSpinner className="mx-auto" />
                                 }
+                                {/* Display loading when asset isn't set and hasn't been loaded */}
+                                { this.state.asset == null && !this.state.assetIdLoaded && <LoadingSpinner className="mx-auto" /> }
+                                {/* If no asset is set and the load is complete, error occured when loading data */}
+                                { this.state.asset == null && this.state.assetIdLoaded && <div>Unable to load any data</div> }
                             </Jumbotron>
                             {
                                 this.state.asset != null && this.state.asset.owner_name == null ? (

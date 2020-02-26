@@ -8,6 +8,7 @@ import {
     Input,
     Button,
     FormText,
+    UncontrolledAlert,
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -52,7 +53,9 @@ class AllocateAsset extends Component {
         const { params } = this.props.match;
         this.state = {
             id: params.assetId,
-            
+            error: "",
+            submitted: false,
+
             owner_name: "",
             address_line_1: "",
             address_city: "",
@@ -80,6 +83,7 @@ class AllocateAsset extends Component {
             console.log(result);
             this.setState({
                 changes_set: result.data.changes_set,
+                submitted: true,
             });
             /// Redirect user once complete
             // setTimeout(() => {
@@ -87,13 +91,22 @@ class AllocateAsset extends Component {
             // }, 1000);
         }).catch(error => {
             console.log(error);
-            
+            this.setState({
+                submitted: true,
+                error: error.message,
+            })
         });
     }
 
     render() {
         return (
             <Container>
+                {
+                    this.state.submitted && this.state.error &&
+                        <UncontrolledAlert color="danger" className="my-3">
+                            Error Occured: {this.state.error}
+                        </UncontrolledAlert>
+                }
                 <h1 className="mt-3">Allocate Asset (#{this.state.id})</h1>
                 <p>Allocate this asset to be given out</p>
                 <div>
