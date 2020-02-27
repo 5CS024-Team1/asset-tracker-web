@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2020 at 01:12 PM
+-- Generation Time: Feb 27, 2020 at 04:24 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.10
 
@@ -47,9 +47,10 @@ CREATE TABLE `assets` (
 --
 
 INSERT INTO `assets` (`id`, `display_name`, `location`, `last_ping_time`, `purchase_cost`, `origin`, `category`, `owner_name`, `owner_address`, `owner_date_recieved`, `owner_date_return`) VALUES
-(1, 'Walking Stick', NULL, NULL, '8', 'New Cross Hospital', 'Unknown', 'David Schwimmer', 'Great Russell St, Bloomsbury, London WC1B 3DG', '2020-02-20 12:00', '2020-06-20 14:00'),
+(1, 'Item Has Return', NULL, NULL, '8', 'New Cross Hospital', 'Unknown', 'David Schwimmer', 'Great Russell St, Bloomsbury, London WC1B 3DG', '2020-02-20 12:00', '2020-06-20 14:00'),
 (3, 'Walking Stick', NULL, NULL, '6', 'New Cross Hospital', 'Unknown', NULL, NULL, NULL, NULL),
-(10, 'Catheter', NULL, NULL, '10', 'Russells Hall Hospital', 'Unknown', NULL, NULL, NULL, NULL);
+(5, 'Item No Return', NULL, NULL, '10', 'New Cross Hospital', 'Unknown', 'John Smith', 'Studio Tour Dr, Leavesden, Watford , Greater London, WD25 7LR', '2020-02-11', NULL),
+(10, 'Catheter', NULL, NULL, '11', 'Russells Hall Hospital', 'Unknown', NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables

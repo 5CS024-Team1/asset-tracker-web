@@ -4,7 +4,11 @@ import {
     Button,
     Col, Row,
     Jumbotron,
-    UncontrolledAlert
+    UncontrolledAlert,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
 } from 'reactstrap';
 import axios from 'axios';
 import {
@@ -90,18 +94,49 @@ function AssetProperties(props) {
     );
 }
 
+function DeallocateConfirm(props) {
+    return (
+        <Modal isOpen={props.isOpen} toggle={props.onToggleModal}>
+            <ModalHeader toggle={props.onToggleModal}>Deallocate Asset {props.asset && props.asset.id}</ModalHeader>
+            <ModalBody>
+                Are you sure you want to deallocate{' '}
+                "{props.asset != null && props.asset.display_name}"{' '}
+                from{' '}
+                "{props.asset != null && props.asset.owner_name}"?
+
+                {
+                    props.asset != null && props.asset.owner_date_return &&
+                        <div>
+                            There is still time left to return this item. Asset is due to be given back on{' '}
+                            {props.asset.owner_date_return}
+                        </div>
+                }
+            </ModalBody>
+            <ModalFooter>
+                <Button color="primary" onClick={props.onConfirm}>Confirm</Button>{' '}
+                <Button color="secondary" onClick={props.onToggleModal}>Cancel</Button>
+            </ModalFooter>
+      </Modal>
+    );
+}
+
 class SingleAsset extends Component 
 {
     constructor(props) {
         super(props);
         
+        // Get asset id from Path parameters
         const { params } = this.props.match;
         this.state = {
             id: params.assetId,
             error: "",
             errorVisible: false,
+            deallocateModalOpen: false,
+            error: "",
         };
-        console.log("Asset ID: " + this.state.id);
+
+        this.toggleDeallocateModal = this.toggleDeallocateModal.bind(this);
+        this.confirmDeallocate = this.confirmDeallocate.bind(this);
     }
 
     componentDidMount() {
@@ -124,7 +159,34 @@ class SingleAsset extends Component
                 assetId: "?",
                 error: error.message,
             })
-        })
+        });
+    }
+
+    toggleDeallocateModal() {
+        this.setState({
+            deallocateModalOpen: !this.state.deallocateModalOpen,
+        });
+    }
+
+    confirmDeallocate() {
+        axios({
+            method: 'GET',
+            // No api set up currently, being left for now
+            url: `${BASE_API_PATH}/assets/deallocate?id=${this.state.id}`,
+            headers: { 'content-type': 'application/json' },
+        }).then(result => {
+            //console.log(result);
+            this.setState({
+                deallocateConfirm: result.changes_set,
+            });
+        }).catch(error => {
+            //console.log(error);
+            this.setState({
+                deallocateConfirm: true,
+                error: error.message,
+                deallocateModalOpen: true,
+            })
+        });
     }
 
     render() {
@@ -157,14 +219,27 @@ class SingleAsset extends Component
                                 { this.state.asset == null && this.state.assetIdLoaded && <div>Unable to load any data</div> }
                             </Jumbotron>
                             {
-                                this.state.asset != null && this.state.asset.owner_name == null ? (
+                                this.state.asset != null && this.state.asset.owner_name == null && (
                                     <Link to={this.state.id+'/allocate'}>
                                         <Button color="primary">
                                             Allocate Asset
                                         </Button>
                                     </Link>
-                                ) : <div></div>
+                                )
                             }
+                            {
+                                this.state.asset && this.state.asset.owner_name && (
+                                    <Button color="primary" onClick={this.toggleDeallocateModal}>
+                                        Deallocate Asset
+                                    </Button>
+                                )
+                            }
+                            
+                            {/* Deallocate confirm modal */}
+                            <DeallocateConfirm isOpen={this.state.deallocateModalOpen} 
+                                onConfirm={this.confirmDeallocate} 
+                                onToggleModal={this.toggleDeallocateModal} 
+                                asset={this.state.asset} />
                         </Row>
                     </Col>
                     <Col md={6}>
