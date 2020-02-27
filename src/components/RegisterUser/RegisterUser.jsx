@@ -5,9 +5,12 @@ import {
     Col,
     Form,
     FormGroup,
+    FormText,
     Input,
     Label,
-    Button
+    Button,
+    Spinner,
+    UncontrolledAlert,
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -21,19 +24,45 @@ class RegisterUser extends Component
         super(props);
 
         this.state = {
-            email: "",
-            password: "",
-        };
+            userId: -1,
+            userIdLoaded: false,
+            userSet: false,
 
-        this.handleOnRegister = this.handleOnRegister.bind(this);
+            email: "",
+            name: "",
+            password: "",
+
+            error: "",
+        };
+        this.handleOnAdd = this.handleOnAdd.bind(this);
     }
 
-    handleOnRegister(e) {
+    componentDidMount() {
+        /// Get new user id from db
+        axios({
+            method: 'GET',
+            url: `${BASE_API_PATH}/user/get/new-id`,
+            headers: { 'content-type': 'application/json' },
+        }).then(result => {
+            this.setState({
+                userId: result.data.userId,
+                userIdLoaded: true,
+            });
+        }).catch(error => {
+            this.setState({
+                userIdLoaded: true,
+                userId: "?",
+                error: error.message,
+            })
+        })
+    }
+
+    handleOnAdd(e) {
         console.log(`Register User - Email:'${this.state.email}' Pass:'${this.state.password}'`);
 
         axios({
             method: 'post',
-            url: `${BASE_API_PATH}/register/index.php`,
+            url: `${BASE_API_PATH}/user/add/`,
             headers: { 'content-type': 'application/json' },
             data: this.state
           }).then(result => {
@@ -44,26 +73,52 @@ class RegisterUser extends Component
     }
 
     render() {
+        let idNumHtml = <div>
+                            <Label>Id Number:</Label>
+                            <Input type="number" name="usid" placeholder="User Id number" disabled value={this.state.userId} />
+                        </div>
+        let sentHtml =  <div className="d-flex">
+                            <div className="ml-auto">
+                                User has been set!
+                            </div>
+                        </div>
         return (
             <Container className="mt-3">
                 <Form>
                     <Row form>
-                        <Col md={6}>
+                        <Col md={1}>
+                            <FormGroup>
+                                { this.state.userIdLoaded ? 
+                                    idNumHtml 
+                                    : 
+                                    <Spinner size="sm" color="primary" />
+                                }
+                            </FormGroup>
+                        </Col>
+                        <Col md={4}>
                             <FormGroup>
                                 <Label for="exampleEmail">Email</Label>
-                                <Input type="email" name="email" id="exampleEmail" placeholder="email@example.com" 
+                                <Input type="text" name="email" id="exampleEmail" placeholder="email@example.com" 
                                     onChange={ e => this.setState({ email: e.target.value }) } />
                             </FormGroup>
                         </Col>
-                        <Col md={6}>
+                        <Col md={4}>
                             <FormGroup>
                                 <Label for="examplePassword">Password</Label>
-                                <Input type="password" name="password" id="examplePassword" placeholder="" 
+                                <Input type="text" name="password" id="examplePassword" placeholder="" 
                                     onChange={ e => this.setState({ password: e.target.value }) } />
                             </FormGroup>
                         </Col>
+                        <Col md={3}>
+                            <FormGroup>
+                                <Label for="exampleName">Name</Label>
+                                <Input type="text" name="name" id="exampleName" placeholder="" 
+                                    onChange={ e => this.setState({ name: e.target.value }) } />
+                            </FormGroup>
+                        </Col>
                     </Row>
-                    <Button onClick={this.handleOnRegister}>Register</Button>
+                    <Button onClick={this.handleOnAdd}>Register</Button>
+                    { this.state.userSet && sentHtml }
                 </Form>
             </Container>
         );

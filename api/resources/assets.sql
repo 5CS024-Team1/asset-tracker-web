@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2020 at 04:24 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.10
+-- Generation Time: Feb 27, 2020 at 09:58 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -52,6 +52,27 @@ INSERT INTO `assets` (`id`, `display_name`, `location`, `last_ping_time`, `purch
 (5, 'Item No Return', NULL, NULL, '10', 'New Cross Hospital', 'Unknown', 'John Smith', 'Studio Tour Dr, Leavesden, Watford , Greater London, WD25 7LR', '2020-02-11', NULL),
 (10, 'Catheter', NULL, NULL, '11', 'Russells Hall Hospital', 'Unknown', NULL, NULL, NULL, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `admin_id` int(4) NOT NULL,
+  `admin_name` varchar(24) NOT NULL,
+  `admin_email` varchar(64) NOT NULL,
+  `admin_password` varchar(24) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`admin_id`, `admin_name`, `admin_email`, `admin_password`) VALUES
+(1, 'John Connor', 'jc@gmail.com', 'password'),
+(2, 'Jack Torrance', 'jackyt@outlook.com', 'password');
+
 --
 -- Indexes for dumped tables
 --
@@ -63,6 +84,12 @@ ALTER TABLE `assets`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`admin_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -71,6 +98,12 @@ ALTER TABLE `assets`
 --
 ALTER TABLE `assets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=494;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `admin_id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
