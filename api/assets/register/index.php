@@ -5,12 +5,14 @@ include_once("../../api_config.php");
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Headers: Content-Type');
+// Make page display JSON_PRETTY_PRINT
+header('Content-Type: application/json');
 
 /// Creates an INSERT INTO query using the given data
 function BuildQuery($idNum, $name, $origin, $cost, $category)
 {
-    $query = "INSERT INTO assets (id, display_name, purchase_cost, origin, category) ";
-    $query = $query . "VALUES ('" . $idNum . "', '" . $name . "', '" . $cost . "', '" . $origin . "', '" . $category . "')";
+    $query = "INSERT INTO assets (id, display_name, purchase_cost, origin, category)";
+    $query = "$query VALUES ('$idNum', '$name', '$cost', '$origin', '$category')";
     return $query;
 }
 
@@ -32,20 +34,16 @@ $result = $conn->query($sql);
 
 if($result)
 {
-    echo json_encode(
-        [
-            "asset_set" => true,
-        ]
-    );
+    echo json_encode([
+        "asset_set" => true,
+    ], JSON_PRETTY_PRINT);
 }
 else
 {
-    echo json_encode(
-        [
-            "asset_set" => false,
-            "error" => "Unable to successfully execute query '" . $sql . "'",
-        ]
-    );
+    echo json_encode([
+        "asset_set" => false,
+        "error" => "Unable to successfully execute query '" . $sql . "'",
+    ]);
 }
 
 ?>

@@ -45,17 +45,15 @@ class RegisterAsset extends Component {
     componentDidMount() {
         /// Retrieve a new asset id from database
         axios({
-            method: 'get',
+            method: 'GET',
             url: `${BASE_API_PATH}/assets/get/new-id`,
             headers: { 'content-type': 'application/json' },
         }).then(result => {
-            console.log(result);
             this.setState({
                 assetId: result.data.assetId,
                 assetIdLoaded: true,
             });
         }).catch(error => {
-            console.log(error);
             this.setState({
                 assetIdLoaded: true,
                 assetId: "?",
@@ -65,8 +63,6 @@ class RegisterAsset extends Component {
     }
 
     handleOnRegisterAsset(e) {
-        console.log(`Register asset btn clicked`);
-
         /// Register the asset using the inputted information
         axios({
             method: 'post',
@@ -76,7 +72,7 @@ class RegisterAsset extends Component {
         }).then(result => {
             console.log(result);
             this.setState({
-                assetSet: result.data.assetSet
+                assetSet: result.data.asset_set
             });
             /// Redirect user once complete
             // setTimeout(() => {
@@ -106,8 +102,10 @@ class RegisterAsset extends Component {
                             <Label>Id Number:</Label>
                             <Input type="number" name="idNumber" placeholder="Asset Id number" disabled value={this.state.assetId} />
                         </div>
-        let sentHtml =  <div>
-                            Asset has been set!
+        let sentHtml =  <div className="d-flex">
+                            <div className="ml-auto">
+                                Asset has been set!
+                            </div>
                         </div>
 
         return (
@@ -178,8 +176,8 @@ class RegisterAsset extends Component {
                             Submit
                         </Button>
                     </div>
+                    { this.state.assetSet && sentHtml }
                 </Form>
-                { this.state.assetSet && sentHtml }
             </Container>
         );
     }
