@@ -30,13 +30,11 @@ function BuildQuery($id)
     return $query;
 }
 
-
 // Perform SQL command to deallocate asset from person
 $sql = BuildQuery($asset_id);
 $result = $conn->query($sql);
 
-
- if ($result)  //&& $conn->affected_rows > 0 
+if ($result)  //&& $conn->affected_rows > 0 
 {
     echo json_encode([
         "changes_set" => true,

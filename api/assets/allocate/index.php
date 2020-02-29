@@ -31,13 +31,25 @@ function BuildQuery($post, $address) {
         "\", owner_address=\"" . $address . "\"";
     
     // Format and append recieved date/time
-    $recieve_datetime = $post['recieved_date'] . " " . $post['recieved_time'];
-    $query = $query . ", owner_date_recieved=\"" . $recieve_datetime ."\"" ;
+    // Use default time or get recieve time if it's set
+    $recieved_time = "12:00";
+    if ( !empty($post['recieved_time']) ) {
+        $recieved_time = $post['recieved_time'];
+    }
+
+    $recieve_datetime = $post['recieved_date'] . " " . $recieved_time;
+    $query = $query . ", owner_date_recieved=\"$recieve_datetime\"";
 
     // Append retrieval date if exists
-    if ( !empty($post['retrieval_date']) && !empty($post['retrieval_time']) )
+    if ( !empty($post['retrieval_date']) )
     {
-        $retrieval_datetime = $post['retrieval_date'] . " " . $post['retrieval_time'];
+        // If time has been set, get it else use the default
+        $retrieval_time = "12:00";
+        if (!empty($post['retrieval_time'])) {
+            $retrieval_time = $post['retrieval_time'];
+        }
+
+        $retrieval_datetime = $post['retrieval_date'] . " $retrieval_time";
         $query = $query . ", owner_date_return=\"" . $retrieval_datetime . "\"";
     }
     
@@ -61,14 +73,13 @@ if ( empty($_POST['id'])
     || empty($_POST['address_city'])
     || empty($_POST['address_region'])
     || empty($_POST['address_postcode'])
-    || empty($_POST['recieved_date'])
-    || empty($_POST['recieved_time']) ) 
+    || empty($_POST['recieved_date'])) 
 {
     echo json_encode([
         "changes_set" => false,
         "error" => "Missing required data to update database",
     ]);
-    exit();
+    die();
 }
 
 // Do any checks to make sure no malicious or unwanted data

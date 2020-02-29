@@ -34,8 +34,8 @@ class Sidebar extends Component {
                     <ListGroupItem tag="a" action href="/assets/register">
                         Register
                     </ListGroupItem>
-                    <ListGroupItem tag="a" action href="/reports">
-                        Reports
+                    <ListGroupItem tag="a" action href="/collections">
+                        Collections
                     </ListGroupItem>
                 </ListGroup>
             </Col>

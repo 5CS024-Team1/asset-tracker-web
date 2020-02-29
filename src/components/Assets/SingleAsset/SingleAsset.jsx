@@ -147,13 +147,13 @@ class SingleAsset extends Component
             url: `${BASE_API_PATH}/assets/get?id=${this.state.id}`,
             headers: { 'content-type': 'application/json' },
         }).then(result => {
-            //console.log(result);
+            console.log(result);
             this.setState({
                 asset: result.data.asset,
                 assetIdLoaded: true,
             });
         }).catch(error => {
-            //console.log(error);
+            console.log(error);
             this.setState({
                 assetIdLoaded: true,
                 assetId: "?",
@@ -171,16 +171,17 @@ class SingleAsset extends Component
     confirmDeallocate() {
         axios({
             method: 'GET',
-            // No api set up currently, being left for now
             url: `${BASE_API_PATH}/assets/deallocate?id=${this.state.id}`,
             headers: { 'content-type': 'application/json' },
         }).then(result => {
-            //console.log(result);
             this.setState({
-                deallocateConfirm: result.changes_set,
+                deallocateConfirm: result.data.changes_set,
             });
+            // Reload page once deallocate has succeeded
+            if (this.state.deallocateConfirm) {
+                window.location.reload();
+            }
         }).catch(error => {
-            //console.log(error);
             this.setState({
                 deallocateConfirm: true,
                 error: error.message,

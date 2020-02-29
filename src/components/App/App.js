@@ -19,6 +19,7 @@ import RegisterUser from "../RegisterUser";
 import Dashboard from "../Dashboard";
 import NotFound from "../NotFound";
 import Search from "../Search";
+import Collections from "../Collections";
 
 import SingleAsset from "../Assets/SingleAsset";
 import AllAssets from "../Assets/AllAssets";
@@ -48,6 +49,7 @@ function App() {
                     <Route exact path="/register-user" component={RegisterUser} />
                     <Route exact path="/contact" component={ContactForm} />
                     <Route path="/search" component={Search} />
+                    <Route path="/collections" component={Collections} />
 
                     <Route component={NotFound} />
                 </Switch>

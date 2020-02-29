@@ -75,9 +75,9 @@ class RegisterAsset extends Component {
                 assetSet: result.data.asset_set
             });
             /// Redirect user once complete
-            // setTimeout(() => {
-            //     window.location.replace(`/assets`);
-            // }, 1000);
+            setTimeout(() => {
+                window.location.replace(`/assets`);
+            }, 1000);
         }).catch(error => this.setState({ error: error.message }));
     }
 

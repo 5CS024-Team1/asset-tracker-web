@@ -8,7 +8,7 @@ import {
     Input,
     Button,
     FormText,
-    UncontrolledAlert,
+    Alert,
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -68,10 +68,15 @@ class AllocateAsset extends Component {
         };
 
         this.handleSubmitAllocate = this.handleSubmitAllocate.bind(this);
+        this.onDismissError = this.onDismissError.bind(this);
     }
 
     handleSubmitAllocate(e) {
-        console.log("Submit Clicked!");
+        if (this.state.error) {
+            // Reset error if data is there
+            this.onDismissError();
+        }
+
         var url = `${BASE_API_PATH}/assets/allocate`
         axios({
             method: 'POST',
@@ -83,12 +88,15 @@ class AllocateAsset extends Component {
             console.log(result);
             this.setState({
                 changes_set: result.data.changes_set,
-                submitted: true,
+                submitted: result.data.changes_set,
+                error: !result.data.changes_set ? result.data.error : null,
             });
-            /// Redirect user once complete
-            // setTimeout(() => {
-            //     window.location.replace(`/asset/${this.state.id}`);
-            // }, 1000);
+            if (this.state.changes_set) {
+                /// Redirect user once complete
+                setTimeout(() => {
+                    window.location.replace(`/asset/${this.state.id}`);
+                }, 1000);
+            }
         }).catch(error => {
             console.log(error);
             this.setState({
@@ -98,15 +106,18 @@ class AllocateAsset extends Component {
         });
     }
 
+    onDismissError() {
+        this.setState({
+            error: "",
+        });
+    }
+
     render() {
         return (
             <Container>
-                {
-                    this.state.submitted && this.state.error &&
-                        <UncontrolledAlert color="danger" className="my-3">
-                            Error Occured: {this.state.error}
-                        </UncontrolledAlert>
-                }
+                <Alert color="danger" className="my-3" isOpen={this.state.error} toggle={this.onDismissError}>
+                    Error Occured: {this.state.error}
+                </Alert>
                 <h1 className="mt-3">Allocate Asset (#{this.state.id})</h1>
                 <p>Allocate this asset to be given out</p>
                 <div>
