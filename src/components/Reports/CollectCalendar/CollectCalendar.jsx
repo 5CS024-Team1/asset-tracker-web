@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
 import {
     Container,
+    Breadcrumb,
 } from 'reactstrap';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment';
 import axios from 'axios';
 
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../../LoadingSpinner';
+import "./Collect.css";
 
 import {
     BASE_API_PATH,
     API_TIMEOUT
-} from "../../consts";
+} from "../../../consts";
 import {
     convertDateFromDb
-} from "../../utils";
+} from "../../../utils";
 
 const localizer = momentLocalizer(moment);
 
-class Collections extends Component {
+class CollectCalendar extends Component {
     constructor(props){
         super(props);
         
@@ -45,7 +47,6 @@ class Collections extends Component {
                     {
                         id: index,
                         title: element.display_name,
-                        allDay: true,
                         start: convertDateFromDb(element.owner_date_return),
                         end: convertDateFromDb(element.owner_date_return),
                     }
@@ -67,7 +68,8 @@ class Collections extends Component {
     render() {
         return (
             <Container className="my-3 h-75">
-                <h1>Collections</h1>
+                <h1>Collection Calendar</h1>
+                <p>A useful calendar view for viewing the date and time to collect assets</p>
                 {/* Spinner for when data hasn't finished loading */}
                 { !this.state.loaded && <LoadingSpinner /> }
                 {/* If no results are found after load, display message */}
@@ -80,8 +82,7 @@ class Collections extends Component {
                                     localizer={localizer}
                                     events={this.state.returnEvents}
                                     startAccessor="start"
-                                    endAccessor="end"
-                                    />
+                                    endAccessor="end" />
                             </div>
                 }
             </Container>
@@ -89,4 +90,4 @@ class Collections extends Component {
     }
 }
 
-export default Collections;
+export default CollectCalendar;

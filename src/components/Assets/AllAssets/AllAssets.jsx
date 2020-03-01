@@ -15,23 +15,6 @@ import {
 import LoadingSpinner from "../../LoadingSpinner";
 import AssetsTable from "./AssetsTable";
 
-function isAssetOnline(timeMs) {
-    if (timeMs == null)
-        return <div>-</div>
-    return timeMs < 60000 ? "Online" : "Offline"
-}
-
-function timeToDisplay(time) {
-    if (time == null) {
-        return <div>-</div>
-    } else {
-        // Date stored as "YYYY-MM-DD HH:MM"
-        var split = time.split(' ');
-        var date = new Date(split[0]);
-        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-    }
-}
-
 class AllAssets extends Component {
     constructor(props) {
         super(props);
