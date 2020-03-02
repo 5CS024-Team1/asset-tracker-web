@@ -18,10 +18,60 @@ class Reports extends Component {
             returnAssets: null,
             loaded: false,
         }
+        this.handleOnAll = this.handleOnAll.bind(this);
+        this.handleOnAssigned = this.handleOnAssigned.bind(this);
+        this.resetLoad = this.resetLoad.bind(this);
     }
 
+    
     componentDidMount() {
         // Using all endpoint for now
+        axios({
+            method: 'get',
+            url: `${BASE_API_PATH}/assets/all/`,
+            headers: { 'content-type': 'application/json' },
+            timeout: API_TIMEOUT
+        }).then(result => {
+            this.setState({
+                returnAssets: result.data.assets,
+                loaded: true,
+            });
+        }).catch(error => {
+            this.setState({ 
+                error: error.message,
+                loaded: true, 
+            });
+        });
+    }
+    
+    resetLoad() {
+        this.setState({
+            loaded: false,
+        });
+    }
+
+    handleOnAssigned() {
+        this.resetLoad()
+        axios({
+            method: 'get',
+            url: `${BASE_API_PATH}/assets/assigned-assets/`,
+            headers: { 'content-type': 'application/json' },
+            timeout: API_TIMEOUT
+        }).then(result => {
+            this.setState({
+                returnAssets: result.data.assets,
+                loaded: true,
+            });
+        }).catch(error => {
+            this.setState({ 
+                error: error.message,
+                loaded: true, 
+            });
+        });
+    }
+
+    handleOnAll() {
+        this.resetLoad()
         axios({
             method: 'get',
             url: `${BASE_API_PATH}/assets/all/`,
@@ -52,8 +102,17 @@ class Reports extends Component {
                         </Button>
                     </Link>
                 </div>
-                
-                { this.state.returnAssets && <ReturnTable data={this.state.returnAssets} /> }
+                <div className="my-3">
+                    <Button color="primary" onClick={this.handleOnAll}>
+                        All
+                    </Button>
+                </div>
+                <div className="my-3">
+                    <Button color="primary" onClick={this.handleOnAssigned}>
+                        Assigned Assets
+                    </Button>
+                </div>
+                { this.state.loaded && <ReturnTable data={this.state.returnAssets} /> }
 
                 <div className="d-flex">
                     { !this.state.loaded && <LoadingSpinner /> }
