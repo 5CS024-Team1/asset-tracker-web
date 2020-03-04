@@ -14,7 +14,6 @@ import './App.css';
 import Sidebar from "../Sidebar";
 import Home from "../Home";
 import Header from "../Header";
-import ContactForm from "../ContactForm";
 import RegisterUser from "../RegisterUser";
 import Dashboard from "../Dashboard";
 import NotFound from "../NotFound";
@@ -48,7 +47,6 @@ function App() {
 
                     <Route exact path="/dashboard" component={Dashboard} />
                     <Route exact path="/register-user" component={RegisterUser} />
-                    <Route exact path="/contact" component={ContactForm} />
                     <Route path="/search" component={Search} />
 
                     <Route exact path="/reports/calendar" component={CollectCalendar} />
