@@ -29,7 +29,7 @@ class Header extends Component {
 
     render() {
         return (
-            <div className="d-flex" style={{ background: "yellow", height: "50px" }}>
+            <div className="header d-flex">
                 {/* Search bar*/}
                 <div className="mr-auto my-auto w-75 d-flex">
                     <Input className="ml-5" 

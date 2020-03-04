@@ -30,7 +30,7 @@ import AllocateAsset from "../Assets/AllocateAsset";
 function App() {
   return (
     <Router>
-        <Row className="m-0">
+        <Row className="m-0 main-background">
             {/* Main sidebar of application */}
             <Sidebar />
             

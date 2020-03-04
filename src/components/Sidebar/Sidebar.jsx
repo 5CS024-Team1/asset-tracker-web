@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 class Sidebar extends Component {
     render() {
         return (
-            <Col md="2" style={{ background: "red" }}>
+            <Col md="2" className="sidebar">
                 <div className="d-flex flex-column">
                     <NavbarBrand tag={Link} 
                         to="/" 

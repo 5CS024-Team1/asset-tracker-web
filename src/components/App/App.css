@@ -1,3 +1,25 @@
+/* NHS Color Scheme
+* https://www.england.nhs.uk/nhsidentity/identity-guidelines/colours/
+*/
+:root {
+  /* Primary/Secondary colors of NHS, blue & white */
+  --nhs-primary-color: rgba(0, 94, 184, 255);
+  --nhs-secondary-color: rgba(255, 255, 255, 255);
+
+  /* Alternate shades of blue */
+  --nhs-blue-dark: rgba(0, 48, 135, 255);
+  --nhs-blue-bright: rgba(0, 114, 206, 255);
+  --nhs-blue-light: rgba(0, 114, 206, 255);
+  --nhs-aqua-blue: rgba(0, 169, 206, 255);
+
+  /* Neutral colors */
+  --nhs-neutral-black: rgba(35, 31, 32, 0);
+  --nhs-dark-grey: rgba(66, 85, 99, 255);
+  --nhs-mid-grey: rgba(118, 134, 146, 255);
+  --nhs-light-grey: rgba(232, 237, 238, 255);
+  --nhs-neutral-white: rgba(255, 255, 255, 255);
+}
+
 .App {
   text-align: center;
 }
@@ -35,4 +57,17 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.sidebar {
+  background-color: var(--nhs-blue-light);
+}
+
+.header {
+  background-color: var(--nhs-blue-light);
+  height: 50px;
+}
+
+.main-background {
+  background-color: var(--nhs-light-grey);
 }

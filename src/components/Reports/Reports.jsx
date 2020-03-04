@@ -51,7 +51,7 @@ class Reports extends Component {
     }
 
     handleOnAssigned() {
-        this.resetLoad()
+        this.resetLoad();
         axios({
             method: 'get',
             url: `${BASE_API_PATH}/assets/assigned-assets/`,
@@ -96,23 +96,23 @@ class Reports extends Component {
             <Container className="my-3">
                 <h1>Reports</h1>
                 <div className="my-3">
-                    <Link to="/reports/calendar">
+                    
+                </div>
+                <div className="d-flex my-3">
+                    <Button className="mr-2" color="primary" onClick={this.handleOnAll}>
+                        All
+                    </Button>
+                    <Button className="mx-2" color="primary" onClick={this.handleOnAssigned}>
+                        Assigned Assets
+                    </Button>
+                    <Link to="/reports/calendar" className="ml-auto">
                         <Button color="primary">
                             Collection Calendar
                         </Button>
                     </Link>
                 </div>
-                <div className="my-3">
-                    <Button color="primary" onClick={this.handleOnAll}>
-                        All
-                    </Button>
-                </div>
-                <div className="my-3">
-                    <Button color="primary" onClick={this.handleOnAssigned}>
-                        Assigned Assets
-                    </Button>
-                </div>
-                { this.state.loaded && <ReturnTable data={this.state.returnAssets} /> }
+                
+                { this.state.loaded && this.state.returnAssets && <ReturnTable data={this.state.returnAssets} /> }
 
                 <div className="d-flex">
                     { !this.state.loaded && <LoadingSpinner /> }
