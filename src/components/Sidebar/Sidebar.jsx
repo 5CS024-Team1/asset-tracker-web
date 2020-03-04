@@ -7,6 +7,8 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
+let pkg = require('../../../package.json');
+
 class Sidebar extends Component {
     render() {
         return (
@@ -18,6 +20,7 @@ class Sidebar extends Component {
                         className="mx-auto">
                         Asset Angels
                     </NavbarBrand>
+                    <div className="version-number muted mx-auto">{pkg ? pkg.version : "Unknown"}</div>
                     <Link to="/" className="mx-auto mt-2 mb-4">
                         <img src={process.env.PUBLIC_URL + '/aa_logo.png'} 
                             alt="Asset Angels logo" 
@@ -25,16 +28,16 @@ class Sidebar extends Component {
                     </Link>
                 </div>
                 <ListGroup>
-                    <ListGroupItem tag="a" action href="/dashboard">
+                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/dashboard'}>
                         Dashboard
                     </ListGroupItem>
-                    <ListGroupItem tag="a" action href="/assets">
+                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/assets'}>
                         Assets
                     </ListGroupItem>
-                    <ListGroupItem tag="a" action href="/assets/register">
+                    <ListGroupItem tag="a" action  href={process.env.PUBLIC_URL + '/assets/register'}>
                         Register
                     </ListGroupItem>
-                    <ListGroupItem tag="a" action href="/reports">
+                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/reports'}>
                         Reports
                     </ListGroupItem>
                 </ListGroup>

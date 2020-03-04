@@ -32,3 +32,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `start_php.bat`
 
 Starts the PHP development server to enable the `/api` section of the project
+
+## Creating a Build
+
+Read the [Deploy_ReadMe](deploy_readme.md) file for more help

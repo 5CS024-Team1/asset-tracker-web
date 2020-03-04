@@ -71,3 +71,7 @@
 .main-background {
   background-color: var(--nhs-light-grey);
 }
+
+.version-number {
+    font-size: 0.75rem;
+}

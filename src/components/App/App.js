@@ -28,7 +28,7 @@ import AllocateAsset from "../Assets/AllocateAsset";
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
         <Row className="m-0 main-background">
             {/* Main sidebar of application */}
             <Sidebar />
