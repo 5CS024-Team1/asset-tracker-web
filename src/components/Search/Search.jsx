@@ -7,8 +7,6 @@ import {
     CardText,
     CardBody,
     CardTitle,
-    CardSubtitle,
-    Button
 } from 'reactstrap';
 import axios from 'axios';
 import { Link } from 'react-router-dom';

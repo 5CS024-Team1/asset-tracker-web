@@ -5,12 +5,10 @@ import {
     Col,
     Form,
     FormGroup,
-    FormText,
     Input,
     Label,
     Button,
     Spinner,
-    UncontrolledAlert,
 } from 'reactstrap';
 import axios from 'axios';
 

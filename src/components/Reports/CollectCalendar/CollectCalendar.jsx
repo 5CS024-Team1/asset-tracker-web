@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     Container,
-    Breadcrumb,
 } from 'reactstrap';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment';

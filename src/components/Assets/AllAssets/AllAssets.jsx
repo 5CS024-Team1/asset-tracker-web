@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Container,
     Button,
     UncontrolledAlert,
 } from 'reactstrap';
 import axios from 'axios';
-import BootstrapTable from 'react-bootstrap-table-next';
 
 import {
     BASE_API_PATH,
@@ -52,7 +50,7 @@ class AllAssets extends Component {
         return (
             <div className="mx-5">
                 {
-                    this.state.loaded && this.state.assets == null && this.state.error &&
+                    this.state.loaded && !this.state.assets && this.state.error &&
                             <UncontrolledAlert color="danger" className="my-3">
                                 Error Occured!: {this.state.error}
                             </UncontrolledAlert>
@@ -72,7 +70,7 @@ class AllAssets extends Component {
                     {/* While loading data, display the loading spinner */}
                     { !this.state.loaded && <LoadingSpinner /> }
                     {/* if no data loaded from backend, display message */}
-                    { this.state.loaded && (this.state.assets == null || this.state.assets != null && this.state.assets.length == 0) ? noLoaded : null }
+                    { this.state.loaded && (!this.state.assets || (this.state.assets && this.state.assets.length <= 0)) ? noLoaded : null }
                 </div>
             </div>
         );

@@ -4,10 +4,6 @@ import {
 } from 'reactstrap';
 
 class RecentDevices extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div>

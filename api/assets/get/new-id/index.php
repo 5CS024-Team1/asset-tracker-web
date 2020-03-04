@@ -5,6 +5,7 @@ include_once("../../../api_config.php");
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json');
 
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
@@ -16,7 +17,12 @@ if (!$conn) {
 // $result = $conn->query($sql);
 
 // Return determined free index
-$array = array("assetId" => rand(0, 999));
-echo json_encode($array);
+
+echo json_encode([
+    "assetId" => rand(0, 999),
+    "name" => "testing",
+], JSON_PRETTY_PRINT);
+
+$conn->close();
 
 ?>

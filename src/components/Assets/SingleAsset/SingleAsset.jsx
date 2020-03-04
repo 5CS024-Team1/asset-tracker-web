@@ -132,7 +132,6 @@ class SingleAsset extends Component
             error: "",
             errorVisible: false,
             deallocateModalOpen: false,
-            error: "",
         };
 
         this.toggleDeallocateModal = this.toggleDeallocateModal.bind(this);
@@ -217,7 +216,7 @@ class SingleAsset extends Component
                                 {/* Display loading when asset isn't set and hasn't been loaded */}
                                 { this.state.asset == null && !this.state.assetIdLoaded && <LoadingSpinner className="mx-auto" /> }
                                 {/* If no asset is set and the load is complete, error occured when loading data */}
-                                { this.state.asset == null && this.state.assetIdLoaded && <div>Unable to load any data</div> }
+                                { !this.state.asset && this.state.assetIdLoaded && <div>Unable to load any data</div> }
                             </Jumbotron>
                             {
                                 this.state.asset != null && this.state.asset.owner_name == null && (
