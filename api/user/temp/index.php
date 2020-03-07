@@ -22,13 +22,13 @@ function BuildQuery($post) {
 
     // Adds email address if it is formatted correctly (may need changing within front end instead too)
     if ($admin_email != NULL) 
-    {
-        //checks that the email contains a character/text if not it returns a false
-        $has_at = stripos($admin_email, '@') !== false;
-        $has_com = stripos($admin_email, '.com') !== false;
-        $has_co = stripos($admin_email, '.co.uk') !== false;
-        if ($has_at != false && ($has_com != false || $has_co != false))
-        {
+    {   
+        //  First Sanitize admin_email 
+        $admin_email = filter_var($admin_email, FILTER_SANITIZE_EMAIL);
+
+        // Second Validate admin_email - if valid run query
+        if (filter_var($admin_email, FILTER_VALIDATE_EMAIL))
+        {    
             $query = $query .  ", admin_email=\"" . $post['admin_email'] . "\"";
         }
     }
