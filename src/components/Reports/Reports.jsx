@@ -44,12 +44,14 @@ class Reports extends Component {
         });
     }
     
+    //Rests the load state, needed to refresh the report page
     resetLoad() {
         this.setState({
             loaded: false,
         });
     }
 
+    //Changes path to assigned assets
     handleOnAssigned() {
         this.resetLoad();
         axios({
@@ -70,6 +72,7 @@ class Reports extends Component {
         });
     }
 
+    //Changes path to assets all
     handleOnAll() {
         this.resetLoad()
         axios({
@@ -90,6 +93,7 @@ class Reports extends Component {
         });
     }
 
+    //Displays information on screen when render is done
     render() {
         let noLoaded = <div>No info loaded</div>;
         return (

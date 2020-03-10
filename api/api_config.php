@@ -13,5 +13,6 @@ $SERVER_PASSWORD = "";
 $DB_NAME = "assets_db";
 // Name of the table that holds all assets
 $ASSETS_TABLE = "assets";
+$USER_TABLE = "user";
 
 ?>
