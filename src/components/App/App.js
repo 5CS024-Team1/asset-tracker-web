@@ -21,6 +21,8 @@ import Search from "../Search";
 import CollectCalendar from "../Reports/CollectCalendar";
 import Reports from "../Reports";
 
+import User from "../User";
+
 import SingleAsset from "../Assets/SingleAsset";
 import AllAssets from "../Assets/AllAssets";
 import RegisterAsset from "../Assets/RegisterAsset";
@@ -51,6 +53,8 @@ function App() {
 
                     <Route exact path="/reports/calendar" component={CollectCalendar} />
                     <Route path="/reports" component={Reports} />
+
+                    <Route path="/User" component={User} />
 
                     <Route component={NotFound} />
                 </Switch>

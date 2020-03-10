@@ -1,54 +1,44 @@
 <?php
-/* Get user based on admin_id
-* "api/assets/get?id={admin_id}"
-* Requires paramater id specifying which asset id to retrieve
-*/
+/// Entrypoint for getting all assets available in the database
 include_once("../../api_config.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Headers: Content-Type');
+// Make page display JSON_PRETTY_PRINT
 header('Content-Type: application/json');
 
-/// Check we have required data to do the request
-if (!isset($_GET["admin_id"])) {
-    die("Unable to get asset id - Id parameter is missing");
-}
-
-$usid = htmlspecialchars($_GET["admin_id"]);
-if (!$usid) {
-    die("Unable to parse user id - No id specified");
-}
-
-/// Open a connection to the database
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
+// echo "Successfully connected <br/>";
 
-/// Query to determine the next available user id in table
-$sql = "SELECT * FROM user WHERE admin_id=" . $usid;
+/// SQL Query command to select all from the 'assets' table
+$sql = "SELECT * FROM " . $USER_TABLE;
 $result = $conn->query($sql);
 
 class User { }
 
 if ($result->num_rows > 0) 
 {
-    // Map individual user onto single object and cast to correct data types
+    // Create a new array and store all data from table into it
+    $db_array = array();
     while($row = $result->fetch_assoc()) {
         $user = new User();
         $user->admin_id = intval($row["admin_id"]);
         $user->admin_name = $row["admin_name"];
         $user->admin_email = $row["admin_email"];
-        //Might need to get rid of (security)
-        $user->admin_password = $row["admin_password"];
         $user->admin_type = $row["admin_type"];
+
+        // Add user to array
+        $db_array[] = $user;
     }
 
     // Return the array of assets
-    echo json_encode([
-        "user" => $user
-    ], JSON_PRETTY_PRINT);
+    echo json_encode(array(
+        "user" => $db_array
+    ), JSON_PRETTY_PRINT);
 } 
 else 
 {
@@ -56,7 +46,10 @@ else
     $arr = array(
         "user" => null
     );
-    echo json_encode($arr, JSON_PRETTY_PRINT);
+    echo json_encode($arr);
 }
+
+// Close connection on finish
+$conn->close();
 
 ?>

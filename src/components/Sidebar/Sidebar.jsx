@@ -40,6 +40,9 @@ class Sidebar extends Component {
                     <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/reports'}>
                         Reports
                     </ListGroupItem>
+                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/user'}>
+                        Users
+                    </ListGroupItem>
                 </ListGroup>
             </Col>
         );

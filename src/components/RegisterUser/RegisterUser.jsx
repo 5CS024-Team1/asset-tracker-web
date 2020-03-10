@@ -29,6 +29,7 @@ class RegisterUser extends Component
             email: "",
             name: "",
             password: "",
+            account: "",
 
             error: "",
         };
@@ -93,14 +94,14 @@ class RegisterUser extends Component
                                 }
                             </FormGroup>
                         </Col>
-                        <Col md={4}>
+                        <Col md={3}>
                             <FormGroup>
                                 <Label for="exampleEmail">Email</Label>
                                 <Input type="text" name="email" id="exampleEmail" placeholder="email@example.com" 
                                     onChange={ e => this.setState({ email: e.target.value }) } />
                             </FormGroup>
                         </Col>
-                        <Col md={4}>
+                        <Col md={3}>
                             <FormGroup>
                                 <Label for="examplePassword">Password</Label>
                                 <Input type="text" name="password" id="examplePassword" placeholder="" 
@@ -112,6 +113,16 @@ class RegisterUser extends Component
                                 <Label for="exampleName">Name</Label>
                                 <Input type="text" name="name" id="exampleName" placeholder="" 
                                     onChange={ e => this.setState({ name: e.target.value }) } />
+                            </FormGroup>
+                        </Col>
+                        <Col md={2}>
+                            <FormGroup>
+                                <Label>Account Type:</Label>
+                                <Input type="select" name="account" id="exampleAccount">
+                                    <option value="normal">Normal</option>
+                                    <option value="admin">Admin</option>
+                                    onChange={ e => this.setState({ account: e.target.value }) } />
+                                </Input>
                             </FormGroup>
                         </Col>
                     </Row>
