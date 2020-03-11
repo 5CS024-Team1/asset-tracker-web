@@ -75,3 +75,7 @@
 .version-number {
     font-size: 0.75rem;
 }
+
+.container-full-width {
+  height: calc(100% - 50px);
+}
