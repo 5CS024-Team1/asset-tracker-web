@@ -8,16 +8,19 @@ import {
     Form,
     FormGroup,
     Input,
-    Label
+    Label,
+    UncontrolledAlert
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import * as jwt_decode from 'jwt-decode';
+
 import {
     BASE_API_PATH,
     API_TIMEOUT
 } from '../../consts';
+import Session from "../Session/Session.js";
+import LoadingSpinner from "../LoadingSpinner";
 
 class LoginBtn extends Component
 {
@@ -31,6 +34,7 @@ class LoginBtn extends Component
             password: "",
             api_token: "",
             login_user: null,
+            loaded: true,
         };
 
         // Bind click events to their relevant functions
@@ -40,13 +44,14 @@ class LoginBtn extends Component
     }
 
     componentDidMount() {
-        var item = JSON.parse(localStorage.getItem('user'));
-        if (item && item.api_token) {
-            var decoded = jwt_decode(item.api_token);
+        var user = Session.loadUser();
+        console.log(user);
+        if (user && user.api_token) {
             this.setState({
-                api_token: item.api_token,
+                api_token: user.api_token,
                 login_user: {
-                    name: decoded.user_id,
+                    name: user.user_id,
+                    type: user.user_type,
                 },
             });
         }
@@ -61,9 +66,7 @@ class LoginBtn extends Component
     }
 
     onSuccessfulLogin() {
-        localStorage.setItem('user', JSON.stringify({
-            api_token: this.state.api_token,
-        }));
+        Session.setUser(this.state.api_token);
         setTimeout(() => {
             window.location.replace(`/dashboard`);
         }, 1000);
@@ -71,6 +74,9 @@ class LoginBtn extends Component
 
     // Confirm the current login details and attempt a login
     handleConfirmLogin() {
+        this.setState({
+            loaded: false,
+        });
         axios({
             method: 'POST',
             url: `${BASE_API_PATH}/user/login/`,
@@ -98,7 +104,7 @@ class LoginBtn extends Component
     }
 
     handleConfirmSignout() {
-        localStorage.setItem('user', null);
+        Session.setUser(null);
         setTimeout(() => {
             window.location.replace("/");
         }, 1000);
@@ -133,6 +139,9 @@ class LoginBtn extends Component
                                 </div>
                                 :
                                 <Form action="#">
+                                    {
+                                        this.state.success && <UncontrolledAlert color="success">Logged in successfully!</UncontrolledAlert>
+                                    }
                                     <FormGroup className="mb-2 mr-sm-2">
                                         <Label for="exampleEmail" className="mr-sm-2">Email</Label>
                                         <Input type="email" name="email" id="exampleEmail" placeholder="username@email.com" 
@@ -160,6 +169,9 @@ class LoginBtn extends Component
                                                             Register
                                                         </Button>
                                                     </a>
+                                                    {
+                                                        !this.state.loaded && <LoadingSpinner small className="my-auto"/>
+                                                    }
                                                     <Button className="mr-2" color="primary" onClick={this.handleConfirmLogin}>Confirm</Button>
                                                     <Button color="secondary" onClick={this.handleToggleLoginModal}>Cancel</Button>
                                                 </div>
