@@ -17,9 +17,11 @@ export const convertDateFromDb = (dbDateTime) => {
     var timeSplit = split[1].split(":");
 
     // Funnily enough, Date object stores month from 0-11. God knows why!
-    return new Date(dateSplit[0],
+    var date = new Date(dateSplit[0],
         parseInt(dateSplit[1]) - 1, 
         parseInt(dateSplit[2]), 
         parseInt(timeSplit[0]), 
-        parseInt(timeSplit[1]));
+        parseInt(timeSplit[1]), 
+        parseInt(timeSplit[2]));
+    return date;
 }

@@ -29,7 +29,8 @@ if ($result->num_rows > 0)
         $asset->id = intval($row["id"]);
         $asset->display_name = $row["display_name"];
         $asset->category = $row["category"];
-        $asset->location = $row["location"];
+        $asset->latitude = doubleval($row["latitude"]);
+        $asset->longitude = doubleval($row["longitude"]);
         $asset->last_ping_time = $row["last_ping_time"];
         $asset->purchase_cost = doubleval($row["purchase_cost"]);
         $asset->origin = $row["origin"];

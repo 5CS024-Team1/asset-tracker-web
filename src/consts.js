@@ -5,3 +5,6 @@ export const BASE_API_PATH = 'http://localhost:8090/api';
 
 // Time in milliseconds after how long an API request will time out
 export const API_TIMEOUT = 30000;
+
+/// API key to use Google Maps
+export const GOOGLE_MAPS_API_KEY = "AIzaSyA7IfneIbihROWfeoLHitfbixU46jADAGc";

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2020 at 10:18 PM
+-- Generation Time: Mar 11, 2020 at 02:08 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -31,8 +31,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `assets` (
   `id` int(11) NOT NULL,
   `display_name` varchar(100) NOT NULL,
-  `location` varchar(100) DEFAULT NULL,
-  `last_ping_time` float DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `last_ping_time` timestamp NULL DEFAULT NULL,
   `purchase_cost` decimal(10,0) NOT NULL,
   `origin` varchar(100) NOT NULL,
   `category` varchar(25) DEFAULT NULL,
@@ -46,11 +47,11 @@ CREATE TABLE `assets` (
 -- Dumping data for table `assets`
 --
 
-INSERT INTO `assets` (`id`, `display_name`, `location`, `last_ping_time`, `purchase_cost`, `origin`, `category`, `owner_name`, `owner_address`, `owner_date_recieved`, `owner_date_return`) VALUES
-(1, 'Item Has Return', NULL, NULL, '8', 'New Cross Hospital', 'Unknown', 'David Schwimmer', 'Great Russell St, Bloomsbury, London WC1B 3DG', '2020-02-20 12:00', '2020-06-20 14:00'),
-(3, 'Walking Stick', NULL, NULL, '6', 'New Cross Hospital', 'Unknown', NULL, NULL, NULL, NULL),
-(5, 'Item No Return', NULL, NULL, '10', 'New Cross Hospital', 'Unknown', 'John Smith', 'Studio Tour Dr, Leavesden, Watford , Greater London, WD25 7LR', '2020-02-11', NULL),
-(10, 'Catheter', NULL, NULL, '11', 'Russells Hall Hospital', 'Unknown', NULL, NULL, NULL, NULL);
+INSERT INTO `assets` (`id`, `display_name`, `latitude`, `longitude`, `last_ping_time`, `purchase_cost`, `origin`, `category`, `owner_name`, `owner_address`, `owner_date_recieved`, `owner_date_return`) VALUES
+(1, 'Item Has Return', 52.508671, -2.08734, '2020-03-10 11:05:20', '8', 'New Cross Hospital', 'Unknown', 'David Schwimmer', 'Great Russell St, Bloomsbury, London WC1B 3DG', '2020-02-20 12:00', '2020-06-20 14:00'),
+(3, 'Walking Stick', NULL, NULL, NULL, '6', 'New Cross Hospital', 'Unknown', NULL, NULL, NULL, NULL),
+(5, 'Item No Return', NULL, NULL, NULL, '10', 'New Cross Hospital', 'Unknown', 'John Smith', 'Studio Tour Dr, Leavesden, Watford , Greater London, WD25 7LR', '2020-02-11', NULL),
+(10, 'Catheter', NULL, NULL, NULL, '11', 'Russells Hall Hospital', 'Unknown', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

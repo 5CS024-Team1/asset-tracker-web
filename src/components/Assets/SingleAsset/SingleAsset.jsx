@@ -16,10 +16,11 @@ import {
 } from 'react-router-dom';
 
 import {
-    BASE_API_PATH
+    BASE_API_PATH,
 } from "../../../consts";
 import IndiAssetMap from '../AllAssets/IndiAssetMap';
 import LoadingSpinner from "../../LoadingSpinner";
+import { convertDateFromDb } from "../../../utils";
 
 // Element for "/asset/:assetId?"
 // Displays full information about a specific asset
@@ -244,8 +245,19 @@ class SingleAsset extends Component
                     </Col>
                     <Col md={6}>
                         <div className="w-100 h-100">
-                            <IndiAssetMap />
+                            <IndiAssetMap 
+                                assetName={this.state.asset ? this.state.asset.display_name : "Unknown"}
+                                latitude={this.state.asset ? this.state.asset.latitude : 52}
+                                longitude={this.state.asset ? this.state.asset.longitude : -2} />
                         </div>
+                        {
+                            this.state.asset && this.state.asset.last_ping_time &&
+                                <div className="mt-2">
+                                    Location last updated at {' '}
+                                    {convertDateFromDb(this.state.asset.last_ping_time).toLocaleString()}
+                                </div>
+                        }
+                        
                     </Col>
                 </Row>
             </Container>
