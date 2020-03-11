@@ -17,12 +17,28 @@ header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
 /// Builds the full address string from each part
+
 function GetFullAddress($line_1, $city, $region, $postcode) {
+
     // Check we have all info before proceeding
+
     if (empty($line_1) || empty($city) || empty($region) || empty($postcode)) {
+
         return NULL;
-    }
+       }
+    // Limits length of inputs, and returns NULL if excessive.
+    if ( (strlen($line)> 40) || (strlen($city)>35) || (strlen($region)>35) || (strlen($postcode)>9)){
+
+       return NULL;
+       }
+    // Sanitizes user input.
+    $line = filter_var($line, FILTER_SANITIZE_STRING);
+    $city = filter_var($city, FILTER_SANITIZE_STRING);
+    $region = filter_var($region, FILTER_SANITIZE_STRING);
+    $postcode = filter_var($postcode, FILTER_SANITIZE_STRING);
+
     return $line_1 . ", " . $city . ", " . $region . ", " . $postcode;
+
 }
 
 /// Builds the full UPDATE query (UPDATE table SET values WHERE condition)
