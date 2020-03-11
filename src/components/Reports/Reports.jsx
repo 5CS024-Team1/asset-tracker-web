@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {
     Container,
-    Button
+    Button,
+    Breadcrumb,
+    BreadcrumbItem,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -9,6 +11,19 @@ import axios from 'axios';
 import ReturnTable from './ReturnTable';
 import { BASE_API_PATH, API_TIMEOUT } from '../../consts';
 import LoadingSpinner from '../LoadingSpinner';
+
+function PageBreadcrumbs() {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+                Reports
+            </BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 class Reports extends Component {
     constructor(props) {
@@ -97,7 +112,8 @@ class Reports extends Component {
     render() {
         let noLoaded = <div>No info loaded</div>;
         return (
-            <Container className="my-3">
+            <Container>
+                <PageBreadcrumbs />
                 <h1>Reports</h1>
                 <div className="my-3">
                     

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import {
     Button,
     UncontrolledAlert,
+    Breadcrumb,
+    BreadcrumbItem,
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -12,6 +14,17 @@ import {
 } from "../../../consts";
 import LoadingSpinner from "../../LoadingSpinner";
 import AssetsTable from "./AssetsTable";
+
+function PageBreadcrumbs() {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>Assets</BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 class AllAssets extends Component {
     constructor(props) {
@@ -55,7 +68,8 @@ class AllAssets extends Component {
                                 Error Occured!: {this.state.error}
                             </UncontrolledAlert>
                 }
-                <h1 className="mt-3">Assets List</h1>
+                <PageBreadcrumbs />
+                <h1 className="mt-0">Assets List</h1>
                 <div className="d-flex float-right my-3">
                     <Link to="/assets/register" >
                         <Button color="primary">

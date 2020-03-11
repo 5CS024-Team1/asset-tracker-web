@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import {
     Container,
+    Breadcrumb,
+    BreadcrumbItem,
 } from 'reactstrap';
+import { Link } from "react-router-dom";
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment';
 import axios from 'axios';
@@ -18,6 +21,23 @@ import {
 } from "../../../utils";
 
 const localizer = momentLocalizer(moment);
+
+function PageBreadcrumbs() {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+                <Link to="/reports">Reports</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+                Calendar
+            </BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
+
 
 class CollectCalendar extends Component {
     constructor(props){
@@ -66,7 +86,8 @@ class CollectCalendar extends Component {
 
     render() {
         return (
-            <Container className="my-3 h-75">
+            <Container className="calendar-container">
+                <PageBreadcrumbs />
                 <h1>Collection Calendar</h1>
                 <p>A useful calendar view for viewing the date and time to collect assets</p>
                 {/* Spinner for when data hasn't finished loading */}

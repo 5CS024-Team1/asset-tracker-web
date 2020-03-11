@@ -9,6 +9,8 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
+    Breadcrumb,
+    BreadcrumbItem
 } from 'reactstrap';
 import axios from 'axios';
 import {
@@ -25,6 +27,22 @@ import { convertDateFromDb } from "../../../utils";
 // Element for "/asset/:assetId?"
 // Displays full information about a specific asset
 // WIP
+
+function PageBreadcrumbs(props) {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+                <Link to="/assets">Assets</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+                Asset {props.assetId}
+            </BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 function AssetIndiControl(props) {
     return (
@@ -192,12 +210,13 @@ class SingleAsset extends Component
 
     render() {
         return (
-            <Container className="my-3">
+            <Container>
                 {
                     this.state.error && <UncontrolledAlert color="danger">
                                             Error Occured!: {this.state.error}
                                         </UncontrolledAlert>
                 }
+                <PageBreadcrumbs assetId={this.state.asset ? this.state.asset.id : "?"}/>
                 <h1>Device</h1>
                 <AssetIndiControl deviceName={this.state.asset != null ? this.state.asset.display_name : "Unknown"} deviceID={this.state.id} />
                 <Row>

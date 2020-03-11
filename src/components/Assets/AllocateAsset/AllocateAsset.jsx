@@ -8,13 +8,35 @@ import {
     Button,
     FormText,
     Alert,
+    Breadcrumb,
+    BreadcrumbItem,
 } from 'reactstrap';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
 import {
     BASE_API_PATH,
     API_TIMEOUT
 } from '../../../consts';
+
+function PageBreadcrumbs(props) {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+                <Link to="/assets">Assets</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+                <Link to={'/asset/' + props.assetId}>Asset {props.assetId}</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+                Allocate
+            </BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 function DateTimePicker (props) {
     return (
@@ -70,6 +92,11 @@ class AllocateAsset extends Component {
         this.onDismissError = this.onDismissError.bind(this);
     }
 
+    componentDidMount() {
+        // ToDo: Validate that asset hasn't been set.
+        // Might have used Back to return to this page
+    }
+
     handleSubmitAllocate(e) {
         if (this.state.error) {
             // Reset error if data is there
@@ -117,6 +144,7 @@ class AllocateAsset extends Component {
                 <Alert color="danger" className="my-3" isOpen={this.state.error} toggle={this.onDismissError}>
                     Error Occured: {this.state.error}
                 </Alert>
+                <PageBreadcrumbs assetId={this.state.id} />
                 <h1 className="mt-3">Allocate Asset (#{this.state.id})</h1>
                 <p>Allocate this asset to be given out</p>
                 <div>

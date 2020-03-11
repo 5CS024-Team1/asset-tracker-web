@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import {
     Container,
     Row,
@@ -11,6 +12,8 @@ import {
     Button,
     Spinner,
     UncontrolledAlert,
+    Breadcrumb,
+    BreadcrumbItem
 } from 'reactstrap';
 import axios from 'axios';
 import Barcode from 'react-barcode';
@@ -18,6 +21,22 @@ import Barcode from 'react-barcode';
 import {
     BASE_API_PATH
 } from "../../../consts";
+
+function PageBreadcrumbs() {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+                <Link to="/assets">Assets</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+                Register an Asset
+            </BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 // Element at "assets/register"
 // Registers a new asset into the app
@@ -109,13 +128,14 @@ class RegisterAsset extends Component {
                         </div>
 
         return (
-            <Container className="mt-3">
+            <Container>
                 {
                     this.state.assetIdLoaded && this.state.error &&
                         <UncontrolledAlert color="danger">
                             Error Occured: {this.state.error}
                         </UncontrolledAlert>
                 }
+                <PageBreadcrumbs />
                 <h1>Register Asset</h1>
                 <p>Register a new asset into the system database.</p>
                 <Form className="mt-5">
