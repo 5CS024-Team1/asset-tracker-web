@@ -15,4 +15,7 @@ $DB_NAME = "assets_db";
 $ASSETS_TABLE = "assets";
 $USER_TABLE = "user";
 
+/// Secret key for decoding login data info
+$API_SECRET_KEY = "abC123!";
+
 ?>
