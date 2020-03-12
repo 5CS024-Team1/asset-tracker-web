@@ -28,7 +28,7 @@ function BuildQuery($id)
 
 {
     //The Query is retured in paramaters.
-    $query = ("UPDATE assets SET owner_name = NULL, owner_address = NULL, owner_date_recieved = NULL, owner_date_return = NULL WHERE assets.id = ?)";
+    $query = ("UPDATE assets SET owner_name = NULL, owner_address = NULL, owner_date_recieved = NULL, owner_date_return = NULL WHERE assets.id = ?");
     $query->bind_param("s", $id)
     return $query;
 
