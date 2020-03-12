@@ -25,9 +25,13 @@ if (!$conn) {
 }
 
 function BuildQuery($id)
+
 {
-    $query = "UPDATE assets SET owner_name = NULL, owner_address = NULL, owner_date_recieved = NULL, owner_date_return = NULL WHERE assets.id = $id";
+    //The Query is retured in paramaters.
+    $query = ("UPDATE assets SET owner_name = NULL, owner_address = NULL, owner_date_recieved = NULL, owner_date_return = NULL WHERE assets.id = ?)";
+    $query->bind_param("s", $id)
     return $query;
+
 }
 
 // Perform SQL command to deallocate asset from person
