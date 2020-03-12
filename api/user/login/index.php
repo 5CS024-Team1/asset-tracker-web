@@ -51,7 +51,7 @@ if ($result->num_rows > 0)
         $encodedToken = EncryptPayload([
             "user_id" => $user->admin_id,
             "user_type" => $user->admin_type,
-            //"expiry_time" => mktime() + 60 minutes,
+            "expiry_time" => time() + (60 * $API_TOKEN_VALID_DURATION),
         ], $API_SECRET_KEY);
         
         echo json_encode([

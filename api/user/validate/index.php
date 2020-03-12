@@ -1,7 +1,7 @@
 <?php
 
 include_once("../../api_config.php");
-include_once("../cryption/decrypt.php");
+include_once("../cryption/validate.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
@@ -11,10 +11,9 @@ header('Content-Type: application/json');
 
 $token = htmlspecialchars($_GET["token"]);
 
-$decrypted = DecryptPayload($token, $API_SECRET_KEY);
-$jsonData = json_encode($decrypted, JSON_PRETTY_PRINT);
-
-$date = $decrypted->start_datetime;
-echo "Time: " . $date;
+$isValid = ValidatePayload($token, $API_SECRET_KEY);
+echo json_encode([
+    "isValid" => $isValid,
+], JSON_PRETTY_PRINT);
 
 ?>
