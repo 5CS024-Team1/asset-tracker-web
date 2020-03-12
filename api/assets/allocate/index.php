@@ -107,8 +107,13 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
-// Use UPDATE command to set the new values
+
 $full_address = GetFullAddress($_POST['address_line_1'], $_POST['address_city'], $_POST['address_region'], $_POST['address_postcode']);
+if (!$full_address) {
+    die("Unable to get full address from properties");
+}
+
+// Use UPDATE command to set the new values
 $sql = BuildQuery($_POST, $full_address);
 $result = $conn->query($sql);
 
