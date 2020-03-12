@@ -20,6 +20,7 @@ import NotFound from "../NotFound";
 import Search from "../Search";
 import CollectCalendar from "../Reports/CollectCalendar";
 import Reports from "../Reports";
+import Profile from "../Profile";
 
 import User from "../User";
 
@@ -55,6 +56,7 @@ function App() {
                     <Route path="/reports" component={Reports} />
 
                     <Route path="/User" component={User} />
+                    <Route path="/profile" component={Profile} />
 
                     <Route component={NotFound} />
                 </Switch>

@@ -11,8 +11,9 @@ import {
     Label,
     UncontrolledAlert
 } from 'reactstrap';
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignInAlt, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 import {
@@ -68,7 +69,7 @@ class LoginBtn extends Component
     onSuccessfulLogin() {
         Session.setUser(this.state.api_token);
         setTimeout(() => {
-            window.location.replace(`/dashboard`);
+            window.location.reload()
         }, 1000);
     }
 
@@ -113,6 +114,13 @@ class LoginBtn extends Component
     render() {
         return (
             <div className="my-auto mr-3">
+                {
+                    this.state.login_user && <Link className="my-auto mr-3" to='/profile'>
+                                                <Button className="px-3" color="info">
+                                                    <FontAwesomeIcon icon={faUser} />
+                                                </Button>
+                                            </Link>
+                }
                 <Button color="info" onClick={this.handleToggleLoginModal}>
                     {
                         this.state.login_user ? <div>

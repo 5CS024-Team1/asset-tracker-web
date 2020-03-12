@@ -47,7 +47,6 @@ if ($result->num_rows > 0)
     $password = $postData['password'];
     if ($email == $user->admin_email && $password == $user->admin_password) 
     {
-        // To Do: Add datetime and check expiry
         $encodedToken = EncryptPayload([
             "user_id" => $user->admin_id,
             "user_type" => $user->admin_type,
