@@ -92,9 +92,13 @@ class Profile extends Component {
         axios({
             method: 'GET',
             url: `${BASE_API_PATH}/user/get?id=${this.state.id}`,
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+                'content-type': 'application/json', 
+                'authorization': 'Bearer ' + Session.getUser().api_token, 
+            },
             timeout: API_TIMEOUT
         }).then(result => {
+            console.log(result);
             this.setState({
                 user: result.data.user,
                 loaded: true,

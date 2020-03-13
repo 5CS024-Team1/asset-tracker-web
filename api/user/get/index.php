@@ -4,11 +4,30 @@
 * Requires paramater id specifying which asset id to retrieve
 */
 include_once("../../api_config.php");
+include_once("../cryption/validate.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Headers: Content-Type');
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
+header("Access-Control-Allow-Methods: GET");
 header('Content-Type: application/json');
+
+// Check if authorization header is set and validate
+$isValidAuth = false;
+if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
+    $auth = $_SERVER["HTTP_AUTHORIZATION"];
+    $split = explode(' ', $auth);
+    $isValidAuth = ValidatePayload($split[1], $API_SECRET_KEY);
+}
+
+// Exit and don't allow entry if authorization isn't valid
+if( !$isValidAuth ) 
+{
+    echo json_encode([
+        "error" => "No Authorization header found"
+    ], JSON_PRETTY_PRINT);
+    exit();
+}
 
 /// Check we have required data to do the request
 if (!isset($_GET["id"])) {
