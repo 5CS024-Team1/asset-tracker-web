@@ -62,6 +62,7 @@ if ($result->num_rows > 0)
     {
         echo json_encode([
             "success" => false,
+            "error" => "Username and password combination doesn't match. Check you have typed the correct username & password"
         ], JSON_PRETTY_PRINT);
     }
 } 

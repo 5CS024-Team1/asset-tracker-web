@@ -77,6 +77,8 @@ class LoginBtn extends Component
     handleConfirmLogin() {
         this.setState({
             loaded: false,
+            error: "",
+            success: false,
         });
         axios({
             method: 'POST',
@@ -90,6 +92,7 @@ class LoginBtn extends Component
                 loaded: true,
                 success: result.data.success,
                 api_token: result.data.api_token,
+                error: result.data.error,
             });
             if (this.state.success) {
                 this.onSuccessfulLogin();
@@ -149,6 +152,9 @@ class LoginBtn extends Component
                                 <Form action="#">
                                     {
                                         this.state.success && <UncontrolledAlert color="success">Logged in successfully!</UncontrolledAlert>
+                                    }
+                                    {
+                                        !this.state.success && this.state.error && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert>
                                     }
                                     <FormGroup className="mb-2 mr-sm-2">
                                         <Label for="exampleEmail" className="mr-sm-2">Email</Label>
