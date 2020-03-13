@@ -11,6 +11,8 @@ import ReturnUserTable from './ReturnUserTable';
 import { BASE_API_PATH, API_TIMEOUT } from '../../consts';
 import LoadingSpinner from '../LoadingSpinner';
 
+import {allUsers, adminUsers} from '../../helperFile';
+
 class Reports extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +31,7 @@ class Reports extends Component {
         // Using all endpoint for now
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/user/all/`,
+            url: allUsers(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
@@ -57,7 +59,7 @@ class Reports extends Component {
         this.resetLoad();
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/user/admin-users/`,
+            url: adminUsers(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
@@ -78,7 +80,7 @@ class Reports extends Component {
         this.resetLoad()
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/user/all/`,
+            url: allUsers(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {

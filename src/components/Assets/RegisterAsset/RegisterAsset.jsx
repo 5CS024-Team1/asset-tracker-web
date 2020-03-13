@@ -22,6 +22,8 @@ import {
     BASE_API_PATH
 } from "../../../consts";
 
+import {assetNewId, registerAsset} from '../../../helperFile';
+
 function PageBreadcrumbs() {
     return (
         <Breadcrumb className="mt-1">
@@ -65,7 +67,7 @@ class RegisterAsset extends Component {
         /// Retrieve a new asset id from database
         axios({
             method: 'GET',
-            url: `${BASE_API_PATH}/assets/get/new-id`,
+            url: assetNewId(),
             headers: { 'content-type': 'application/json' },
         }).then(result => {
             this.setState({
@@ -85,7 +87,7 @@ class RegisterAsset extends Component {
         /// Register the asset using the inputted information
         axios({
             method: 'post',
-            url: `${BASE_API_PATH}/assets/register/`,
+            url: registerAsset(),
             headers: { 'content-type': 'application/json' },
             data: this.state
         }).then(result => {
