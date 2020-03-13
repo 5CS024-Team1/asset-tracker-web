@@ -11,11 +11,11 @@ header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
 /// Check we have required data to do the request
-if (!isset($_GET["admin_id"])) {
+if (!isset($_GET["id"])) {
     die("Unable to get asset id - Id parameter is missing");
 }
 
-$usid = htmlspecialchars($_GET["admin_id"]);
+$usid = htmlspecialchars($_GET["id"]);
 if (!$usid) {
     die("Unable to parse user id - No id specified");
 }
@@ -40,8 +40,6 @@ if ($result->num_rows > 0)
         $user->admin_id = intval($row["admin_id"]);
         $user->admin_name = $row["admin_name"];
         $user->admin_email = $row["admin_email"];
-        //Might need to get rid of (security)
-        $user->admin_password = $row["admin_password"];
         $user->admin_type = $row["admin_type"];
     }
 

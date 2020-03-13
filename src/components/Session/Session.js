@@ -6,9 +6,6 @@ var Session = (function() {
 
     /// Load the current user auth
     var loadUser = function() {
-        if (_info)
-            return _info;
-        
         // Get the stored auth and pase
         var token = localStorage.getItem('user');
         if (!token) 
@@ -30,6 +27,15 @@ var Session = (function() {
         }
     };
 
+    var getUser = function() {
+        if (_info) {
+            return _info;
+        } else {
+            _info = this.loadUser();
+            return _info;
+        }
+    }
+
     /// Set the current user auth
     var setUser = function(apiToken) {
         localStorage.setItem('user', JSON.stringify({
@@ -49,6 +55,7 @@ var Session = (function() {
     return {
         loadUser: loadUser,
         setUser: setUser,
+        getUser: getUser,
         validate: validate,
     }
   
