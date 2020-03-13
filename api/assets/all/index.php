@@ -26,18 +26,20 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = intval($row["id"]);
-        $asset->display_name = $row["display_name"];
-        $asset->category = $row["category"];
-        $asset->latitude = doubleval($row["latitude"]);
-        $asset->longitude = doubleval($row["longitude"]);
-        $asset->last_ping_time = $row["last_ping_time"];
-        $asset->purchase_cost = doubleval($row["purchase_cost"]);
-        $asset->origin = $row["origin"];
-        $asset->owner_name = $row["owner_name"];
-        $asset->owner_address = $row["owner_address"];
-        $asset->owner_date_recieved = $row["owner_date_recieved"];
-        $asset->owner_date_return = $row["owner_date_return"];
+        $asset->id = $row[$id];
+        $asset->display_name = $row[$display_name];
+        $asset->category = $row[$category];
+        //$asset->latitude = doubleval($row[$latitude]);
+        //$asset->longitude = doubleval($row[$longitude]);
+        $asset->last_ping_time = $row[$last_ping_time];
+
+        //$asset->purchase_cost;
+        //$asset->origin = $row["origin"];
+        //$asset->owner_name = $row["owner_name"];
+        //$asset->owner_address = $row["owner_address"];
+        //$asset->owner_date_recieved = $row["owner_date_recieved"];
+
+        $asset->owner_date_return = $row[$owner_date_return];
 
         // Add asset to array
         $db_array[] = $asset;
