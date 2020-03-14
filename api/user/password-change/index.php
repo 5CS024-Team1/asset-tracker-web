@@ -27,10 +27,12 @@ if (!$conn) {
 }
 
 $user_id = $post_data["id"];
-/// SQL Query command to select all from the 'assets' table
-$sql = "SELECT * FROM `user` WHERE `admin_id` = ?";
-$sql->bind_param("s", $user_id);
-$result = $conn->query($sql);
+/// Create SQL statement to get the user that matches the id
+$sql = "SELECT * FROM $USER_TABLE WHERE `admin_id` = ?";
+$statement = $conn->prepare($sql);
+$statement->bind_param("s", $user_id);
+$statement->execute();
+$result = $statement->get_result();
 
 if ($result && $result->num_rows > 0) 
 {
