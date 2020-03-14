@@ -6,10 +6,24 @@ import {
     ListGroupItem
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Session from "../Session/Session.js";
 
 let pkg = require('../../../package.json');
 
+
 class Sidebar extends Component {
+
+    getOutput() {
+        var usr = Session.loadUser();
+        if(usr && usr.user_type === "admin") {
+            return (
+                <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/user'}>
+                    Users
+                </ListGroupItem>
+            )
+        }
+    }
+
     render() {
         return (
             <Col md="2" className="sidebar">
@@ -40,9 +54,9 @@ class Sidebar extends Component {
                     <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/reports'}>
                         Reports
                     </ListGroupItem>
-                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/user'}>
-                        Users
-                    </ListGroupItem>
+                    {
+                        this.getOutput()
+                    }
                 </ListGroup>
             </Col>
         );
