@@ -28,17 +28,21 @@ if (!$conn) {
 
 $user_id = $post_data["id"];
 /// SQL Query command to select all from the 'assets' table
-$sql = "SELECT * FROM `user` WHERE `admin_id` = " . $user_id;
+$sql = "SELECT * FROM `user` WHERE `admin_id` = ?";
+$sql->bind_param("s", $user_id);
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) 
 {
     $row = $result->fetch_assoc();
+
     // Check current password matches one in database 
-    if ( $row["admin_password"] == $post_data["pass_current"]) 
+    if ( password_verify($post_data["pass_current"], $row["admin_password"]) ) 
     {
         // Set new password in db
-        $updateSql = "UPDATE `user` SET `admin_password` = \"" . $post_data["pass_new"] . "\" WHERE `user`.`admin_id` = 1";
+        $updateSql = "UPDATE `user` SET `admin_password` = \"?\" WHERE `user`.`admin_id` = 1";
+        $pswdHashed = password_hash($post_data["pass_new"], PASSWORD_DEFAULT);
+        $updateSql->bind_param("s", $pswdHashed);
         $result = $conn->query($updateSql);
 
         if ($result) {

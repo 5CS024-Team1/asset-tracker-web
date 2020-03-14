@@ -12,26 +12,36 @@ header('Content-Type: application/json');
 $rest_json = file_get_contents("php://input");
 $postData = json_decode($rest_json, true);
 
-if ( empty($postData['email']) || empty($postData['password']) ) {
+// Check if email and password are set
+if ( empty($postData['email']) && empty($postData['password']) ) {
     exit("No username or password recieved");
 }
 
+//mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
-// echo "Successfully connected <br/>";
 
+// Filter email to prevent SQL injection
 $email = $postData['email'];
-$sql = "SELECT * FROM $USER_TABLE WHERE admin_email='$email'";
-$result = $conn->query($sql);
+if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+    exit("Email failed to filter correctly");
+}
+
+// Bind email and run query
+$sql = "SELECT * FROM $USER_TABLE WHERE admin_email=?";
+$statement = $conn->prepare($sql);
+$statement->bind_param("s", $email);
+$statement->execute();
+$result = $statement->get_result();
 
 class User { }
 
-if ($result->num_rows > 0) 
+if ($result && $result->num_rows > 0) 
 {
     // Create a new array and store all data from table into it
-    $db_array = array();
+    $user = null;
     while($row = $result->fetch_assoc()) {
         $user = new User();
         $user->admin_id = intval($row["admin_id"]);
@@ -39,13 +49,13 @@ if ($result->num_rows > 0)
         $user->admin_email = $row["admin_email"];
         $user->admin_type = $row["admin_type"];
         $user->admin_password = $row["admin_password"];
-
-        // Add asset to array
-        $db_array[] = $user;
     }
 
-    $password = $postData['password'];
-    if ($email == $user->admin_email && $password == $user->admin_password) 
+    if(!$user) {
+        exit("Unable to parse any user data from database");
+    }
+
+    if ($email == $user->admin_email && password_verify($postData['password'], $user->admin_password)) 
     {
         $encodedToken = EncryptPayload([
             "user_id" => $user->admin_id,
