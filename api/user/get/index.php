@@ -4,18 +4,37 @@
 * Requires paramater id specifying which asset id to retrieve
 */
 include_once("../../api_config.php");
+include_once("../cryption/validate.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Headers: Content-Type');
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
+header("Access-Control-Allow-Methods: GET");
 header('Content-Type: application/json');
 
+// Check if authorization header is set and validate
+$isValidAuth = false;
+if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
+    $auth = $_SERVER["HTTP_AUTHORIZATION"];
+    $split = explode(' ', $auth);
+    $isValidAuth = ValidatePayload($split[1], $API_SECRET_KEY);
+}
+
+// Exit and don't allow entry if authorization isn't valid
+if( !$isValidAuth ) 
+{
+    echo json_encode([
+        "error" => "No Authorization header found"
+    ], JSON_PRETTY_PRINT);
+    exit();
+}
+
 /// Check we have required data to do the request
-if (!isset($_GET["admin_id"])) {
+if (!isset($_GET["id"])) {
     die("Unable to get asset id - Id parameter is missing");
 }
 
-$usid = htmlspecialchars($_GET["admin_id"]);
+$usid = htmlspecialchars($_GET["id"]);
 if (!$usid) {
     die("Unable to parse user id - No id specified");
 }
@@ -40,8 +59,6 @@ if ($result->num_rows > 0)
         $user->admin_id = intval($row["admin_id"]);
         $user->admin_name = $row["admin_name"];
         $user->admin_email = $row["admin_email"];
-        //Might need to get rid of (security)
-        $user->admin_password = $row["admin_password"];
         $user->admin_type = $row["admin_type"];
     }
 

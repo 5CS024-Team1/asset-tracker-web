@@ -29,7 +29,8 @@ if (!$conn) {
 }
 
 /// Query for registering user into database
-$sql = BuildQuery($post_data['userId'], $post_data['name'], $post_data['email'], $post_data['password'], $post_data['account']);
+$passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
+$sql = BuildQuery($post_data['userId'], $post_data['name'], $post_data['email'], $passwordHash, $post_data['account']);
 $result = $conn->query($sql);
 
 if($result)
