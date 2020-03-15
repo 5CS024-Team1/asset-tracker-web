@@ -3,9 +3,9 @@ import {
     Container,
     Col, Row,
     Jumbotron,
+    UncontrolledAlert,
 } from 'reactstrap';
 
-import QuickNavigate from "./QuickNavigate";
 import RecentDevices from "./RecentDevices";
 import OverviewMap from "./OverviewMap";
 
@@ -39,17 +39,13 @@ class Dashboard extends Component {
     
     render() {
         return (
-            <Container className="my-3">
-                <Row>
-                    <Col md={6} className="h-100">
+            <Container className="container-full-width">
+                { this.state.error && this.state.loaded && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert> }
+                <Row className="h-100">
+                    <Col md={6}>
                         <Row>
                             <Jumbotron className="w-100">
                                 <AssetStatusControl onlineAmount="2" offlineAmount="5" />
-                            </Jumbotron>
-                        </Row>
-                        <Row>
-                            <Jumbotron className="w-100">
-                                <QuickNavigate />
                             </Jumbotron>
                         </Row>
                         <Row>

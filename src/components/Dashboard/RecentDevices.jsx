@@ -6,7 +6,7 @@ import {
 class RecentDevices extends Component {
     render() {
         return (
-            <div>
+            <div style={{"overflow-y": "auto"}}>
                 <h3>Recent Devices</h3>
                 <Table size="sm">
                     <thead>
@@ -18,6 +18,24 @@ class RecentDevices extends Component {
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <th>#1</th>
+                            <th>Walking Stick</th>
+                            <th>ONLINE</th>
+                            <th>Wolverhampton, UK</th>
+                        </tr>
+                        <tr>
+                            <th>#3</th>
+                            <th>Walking Stick</th>
+                            <th>ONLINE</th>
+                            <th>Wolverhampton, UK</th>
+                        </tr>
+                        <tr>
+                            <th>#5</th>
+                            <th>Walking Stick</th>
+                            <th>ONLINE</th>
+                            <th>Wolverhampton, UK</th>
+                        </tr>
                         <tr>
                             <th>#12</th>
                             <th>Walking Stick</th>

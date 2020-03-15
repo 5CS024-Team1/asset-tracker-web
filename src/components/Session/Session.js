@@ -51,12 +51,20 @@ var Session = (function() {
             window.location.replace("/");
         }
     }
+
+    var isAdminUser = function() {
+        if (!_info)
+            Session.getUser();
+        console.log(_info.user_type);
+        return _info && _info.user_type == "admin";
+    }
   
     return {
         loadUser: loadUser,
         setUser: setUser,
         getUser: getUser,
         validate: validate,
+        isAdminUser: isAdminUser,
     }
   
   })();
