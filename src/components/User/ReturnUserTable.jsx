@@ -15,12 +15,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faUserTimes } from '@fortawesome/free-solid-svg-icons';
 
-function IdFormatter (cell, row) {
-    return  <Link to={"user/" + cell}>
-                {cell}
-            </Link>
-}
-
 class ReturnUserTable extends Component {
     constructor(props) {
         super(props);
@@ -37,10 +31,12 @@ class ReturnUserTable extends Component {
     editRemoveColumnFormatter = (cell, row, rowIndex) => {
         return (
             <div className="d-flex">
-                <Button color="warning" className="px-2 py-1">
-                    <FontAwesomeIcon icon={faPencilAlt} />
-                </Button>
-                <Button color="danger" className="px-2 py-1 ml-1" onClick={() => this.toggleDeleteUserModal(row.admin_id)}>
+                <Link to={'/users/edit/' + row.admin_id}>
+                    <Button color="warning" className="px-2 py-1" title="Edit this user">
+                        <FontAwesomeIcon icon={faPencilAlt} />
+                    </Button>
+                </Link>
+                <Button color="danger" title="Delete this user" className="px-2 py-1 ml-1" onClick={() => this.toggleDeleteUserModal(row.admin_id)}>
                     <FontAwesomeIcon icon={faUserTimes} />
                 </Button>
             </div>
@@ -74,7 +70,6 @@ class ReturnUserTable extends Component {
             dataField: "admin_id",
             text: "Id",
             sort: true,
-            formatter: IdFormatter,
             filter: textFilter()
         },
         {

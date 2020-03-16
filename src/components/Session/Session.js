@@ -55,7 +55,6 @@ var Session = (function() {
     var isAdminUser = function() {
         if (!_info)
             Session.getUser();
-        console.log(_info.user_type);
         return _info && _info.user_type == "admin";
     }
   
