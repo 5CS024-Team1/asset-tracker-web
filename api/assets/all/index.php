@@ -26,12 +26,12 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = $row[$id];
-        $asset->display_name = $row[$display_name];
-        $asset->category = $row[$category];
+        $asset->id = $row["PK_ID"];
+        $asset->display_name = $row["Name"];
+        $asset->category = $row["Category"];
         //$asset->latitude = doubleval($row[$latitude]);
         //$asset->longitude = doubleval($row[$longitude]);
-        $asset->last_ping_time = $row[$last_ping_time];
+        $asset->last_ping_time = $row["Ping_Time"];
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
@@ -39,7 +39,7 @@ if ($result->num_rows > 0)
         //$asset->owner_address = $row["owner_address"];
         //$asset->owner_date_recieved = $row["owner_date_recieved"];
 
-        $asset->owner_date_return = $row[$owner_date_return];
+        $asset->owner_date_return = $row["Return_due"];
 
         // Add asset to array
         $db_array[] = $asset;
@@ -47,14 +47,14 @@ if ($result->num_rows > 0)
 
     // Return the array of assets
     echo json_encode(array(
-        "assets" => $db_array
+        "asset" => $db_array
     ), JSON_PRETTY_PRINT);
 } 
 else 
 {
     // Unable to get any data from table or table is empty, return null array
     $arr = array(
-        "assets" => null
+        "asset" => null
     );
     echo json_encode($arr);
 }

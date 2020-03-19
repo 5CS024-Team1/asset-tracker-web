@@ -60,7 +60,6 @@ class AssetsTable extends Component {
             dataField: "id",
             text: "Id",
             sort: true,
-            formatter: IdFormatter,
             filter: textFilter()
         }, {
             dataField: "display_name",
@@ -80,17 +79,6 @@ class AssetsTable extends Component {
             text: "Last Pinged Time",
             formatter: NullCheck,
             sort: true,
-        }, {
-            dataField: "location",
-            text: "Location",
-            formatter: NullCheck,
-            sort: true,
-        }, {
-            dataField: "owner_name",
-            text: "Allocated Owner",
-            formatter: NullCheck,
-            sort: true,
-            filter: textFilter()
         }, {
             dataField: "owner_date_return",
             text: "Return Date",
