@@ -10,7 +10,7 @@ $SERVER_USERNAME = "root";
 $SERVER_PASSWORD = "";
 
 // Name of the database
-$DB_NAME = "assets_db";
+$DB_NAME = "db1824591";
 // Name of the table that holds all assets
 $ASSETS_TABLE = "equipment";
 $USER_TABLE = "person";

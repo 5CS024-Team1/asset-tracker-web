@@ -29,17 +29,18 @@ if ($result->num_rows > 0)
         $asset->id = $row["PK_ID"];
         $asset->display_name = $row["Name"];
         $asset->category = $row["Category"];
-        //$asset->latitude = doubleval($row[$latitude]);
-        //$asset->longitude = doubleval($row[$longitude]);
+        $asset->latitude = doubleval($row["Latittude"]);
+        $asset->longitude = doubleval($row["Longitude"]);
         $asset->last_ping_time = $row["Ping_Time"];
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
         //$asset->owner_name = $row["owner_name"];
         //$asset->owner_address = $row["owner_address"];
-        //$asset->owner_date_recieved = $row["owner_date_recieved"];
-
-        $asset->owner_date_return = $row["Return_due"];
+        
+        $asset->date_loaned = $row["Loaned"];
+        $asset->date_return = $row["Return_due"];
+        $asset->date_last_cleaned = $row["Last_Cleaned"];
 
         // Add asset to array
         $db_array[] = $asset;
@@ -47,14 +48,14 @@ if ($result->num_rows > 0)
 
     // Return the array of assets
     echo json_encode(array(
-        "asset" => $db_array
+        "assets" => $db_array
     ), JSON_PRETTY_PRINT);
 } 
 else 
 {
     // Unable to get any data from table or table is empty, return null array
     $arr = array(
-        "asset" => null
+        "assets" => null
     );
     echo json_encode($arr);
 }

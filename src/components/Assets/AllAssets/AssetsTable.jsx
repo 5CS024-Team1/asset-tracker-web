@@ -31,7 +31,7 @@ function IdFormatter (cell, row) {
 // Key should match expected data, value change to be it's display value
 const categoryOptions = {
     "Unknown": 'Unknown',
-    "A": "a",
+    "General": "General",
     "B": "b",
 };
 
@@ -80,7 +80,12 @@ class AssetsTable extends Component {
             formatter: NullCheck,
             sort: true,
         }, {
-            dataField: "owner_date_return",
+            dataField: "date_loaned",
+            text: "Loaned",
+            formatter: NullCheck,
+            sort: true,
+        }, {
+            dataField: "date_return",
             text: "Return Date",
             formatter: NullCheck,
             sort: true,
