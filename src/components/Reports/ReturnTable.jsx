@@ -6,6 +6,8 @@ import filterFactory, {
 } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 
+import { id, display_name, category, last_ping_time, date_loaned, date_return } from '../../helperFile';
+
 function IdFormatter (cell, row) {
     return  <Link to={"asset/" + cell}>
                 {cell}
@@ -20,7 +22,7 @@ function NullCheck (cell) {
 // Key should match expected data, value change to be it's display value
 const categoryOptions = {
     "Unknown": 'Unknown',
-    "A": "a",
+    "General": "General",
     "B": "b",
 };
 
@@ -43,20 +45,20 @@ class ReturnTable extends Component {
 
     render() {
         const columns =[{
-            dataField: "id",
+            dataField: id,
             text: "Id",
             sort: true,
             formatter: IdFormatter,
             filter: textFilter()
         },
         {
-            dataField: "display_name",
+            dataField: display_name,
             text: "Display Name",
             sort: true,
             filter: textFilter()
         }, 
         {
-            dataField: "category",
+            dataField: category,
             text: "Category",
             sort: true,
             formatter: cell => categoryOptions[cell],
@@ -65,17 +67,23 @@ class ReturnTable extends Component {
             })
         }, 
         {
-            dataField: "owner_date_recieved",
-            text: "Recieved Date",
+            dataField: last_ping_time,
+            text: "Last Pinged Time",
             formatter: NullCheck,
             sort: true,
         },
         {
-            dataField: "owner_date_return",
+            dataField: date_loaned,
+            text: "Loaned",
+            formatter: NullCheck,
+            sort: true,
+        },
+        {
+            dataField: date_return,
             text: "Return Date",
             formatter: NullCheck,
             sort: true,
-        }, 
+        },
         {
             text: "Overdue",
             isDummyField: true,
@@ -83,7 +91,7 @@ class ReturnTable extends Component {
         }];
 
         const defaultSort = [{
-            dataField: "id",
+            dataField: id,
             order: "asc", //ascending or descending (asc/desc)
         }];
         

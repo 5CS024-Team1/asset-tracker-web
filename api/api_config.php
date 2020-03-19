@@ -20,17 +20,17 @@ $API_SECRET_KEY = "abC123!";
 /// Duration in minutes of how long an API token (JWT/Login auth) is valid 
 $API_TOKEN_VALID_DURATION = 60;
 
-//Data from tables
-///$id = "PK_ID";
-///$barcode = $row["Barcode"];
-///$display_name = "Name";
-///$category = "Category";
-///$latitude = "Latittude"; //Yes I know it's spelt wrong, thats how its in the database
-///$longitude = "Longitude";
-///$last_ping_time = "Ping_Time";
-///$loaned = $row["Loaned"];
-///$owner_date_return = "Return_due";
-///$last_cleaned = $row["Last_Cleaned"];
+//equipment Table
+$id = "PK_ID";
+$barcode = "Barcode";
+$display_name = "Name";
+$category = "Category";
+$latitude = "Latittude"; //Yes I know it's spelt wrong, thats how its in the database
+$longitude = "Longitude";
+$last_ping_time = "Ping_Time";
+$loaned = "Loaned";
+$owner_date_return = "Return_due";
+$last_cleaned = "Last_Cleaned";
 
 //In but not from right table
 ///$origin = $row["origin"];

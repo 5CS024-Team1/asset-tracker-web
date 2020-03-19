@@ -52,9 +52,11 @@ class RegisterAsset extends Component {
             assetSet: false,
 
             name: "",
-            origin: "",
-            purchase_cost: 0.0,
+            //origin: "",
+            //purchase_cost: 0.0,
             category: "Unknown",
+            latitude: "",
+            longitude: "",
 
             error: "",
         };
@@ -157,19 +159,6 @@ class RegisterAsset extends Component {
                                     onChange={ e => this.setState({ name: e.target.value }) } />
                             </FormGroup>
                             <FormGroup>
-                                <Label>Origin:</Label>
-                                <Input type="text" name="origin" id="originInput" placeholder="Location origin of asset" 
-                                    onChange={ e => this.setState({ origin: e.target.value })} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Purchase Cost:</Label>
-                                <div className="d-flex">
-                                    <div className="my-auto mr-2">£</div>
-                                    <Input type="number" step=".01" name="purchase" id="purchaseCost" placeholder="9.99" 
-                                        onChange={ e => this.setState({ purchase_cost: e.target.value })}/>
-                                </div>
-                            </FormGroup>
-                            <FormGroup>
                                 <Label>Category:</Label>
                                 <Input type="select" name="select" id="categorySelect">
                                     <option>Unknown</option>
@@ -177,6 +166,16 @@ class RegisterAsset extends Component {
                                     <option>Category 2</option>
                                     <option>Category 3</option>
                                 </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="latInput">Latitude:</Label>
+                                <Input type="text" name="latitude" id="latInput" placeholder="52.5086710" 
+                                    onChange={ e => this.setState({ latitude: e.target.value }) } />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="longInput">Longitude:</Label>
+                                <Input type="text" name="longitude" id="longInput" placeholder="-2.0873400" 
+                                    onChange={ e => this.setState({ longitude: e.target.value }) } />
                             </FormGroup>
                         </Col>
                         <Col md={6} className="pl-3">

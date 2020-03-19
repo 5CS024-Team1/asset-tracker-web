@@ -26,21 +26,22 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = $row["PK_ID"];
-        $asset->display_name = $row["Name"];
-        $asset->category = $row["Category"];
-        $asset->latitude = doubleval($row["Latittude"]);
-        $asset->longitude = doubleval($row["Longitude"]);
-        $asset->last_ping_time = $row["Ping_Time"];
+        $asset->id = $row[$id];
+        $asset->display_name = $row[$display_name];
+        $asset->category = $row[$category];
+        $asset->latitude = doubleval($row[$latitude]);
+        $asset->longitude = doubleval($row[$longitude]);
+        $asset->last_ping_time = $row[$last_ping_time];
+        $asset->barcode = $row[$barcode];
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
         //$asset->owner_name = $row["owner_name"];
         //$asset->owner_address = $row["owner_address"];
         
-        $asset->date_loaned = $row["Loaned"];
-        $asset->date_return = $row["Return_due"];
-        $asset->date_last_cleaned = $row["Last_Cleaned"];
+        $asset->date_loaned = $row[$loaned];
+        $asset->date_return = $row[$owner_date_return];
+        $asset->date_last_cleaned = $row[$last_cleaned];
 
         // Add asset to array
         $db_array[] = $asset;

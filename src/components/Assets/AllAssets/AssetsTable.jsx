@@ -10,6 +10,7 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { id, display_name, category, last_ping_time, date_loaned, date_return } from '../../../helperFile';
 
 // Checker for if a value is null and what to return instead
 function NullCheck (cell) {
@@ -57,17 +58,17 @@ class AssetsTable extends Component {
 
     render() {
         const columns = [{
-            dataField: "id",
+            dataField: id,
             text: "Id",
             sort: true,
             filter: textFilter()
         }, {
-            dataField: "display_name",
+            dataField: display_name,
             text: "Display Name",
             sort: true,
             filter: textFilter()
         }, {
-            dataField: "category",
+            dataField: category,
             text: "Category",
             sort: true,
             formatter: cell => categoryOptions[cell],
@@ -75,17 +76,17 @@ class AssetsTable extends Component {
                 options: categoryOptions
             })
         }, {
-            dataField: "last_ping_time",
+            dataField: last_ping_time,
             text: "Last Pinged Time",
             formatter: NullCheck,
             sort: true,
         }, {
-            dataField: "date_loaned",
+            dataField: date_loaned,
             text: "Loaned",
             formatter: NullCheck,
             sort: true,
         }, {
-            dataField: "date_return",
+            dataField: date_return,
             text: "Return Date",
             formatter: NullCheck,
             sort: true,
@@ -97,7 +98,7 @@ class AssetsTable extends Component {
         }];
 
         const defaultSort = [{
-            dataField: "id",
+            dataField: id,
             order: "asc", //ascending or descending (asc/desc)
         }];
 

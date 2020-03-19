@@ -20,6 +20,8 @@ import {
     convertDateFromDb
 } from "../../../utils";
 
+import { allAssets, date_return } from '../../../helperFile';
+
 const localizer = momentLocalizer(moment);
 
 function PageBreadcrumbs() {
@@ -54,20 +56,20 @@ class CollectCalendar extends Component {
         /// Get relevent query results from api
         axios({
             method: 'GET',
-            url: `${BASE_API_PATH}/assets/all`,
+            url: allAssets(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
             let results = [];
             result.data.assets.forEach((element, index) => {
-                if (!element.owner_date_return)
+                if (!element.date_return)
                     return;
                 results.push(
                     {
                         id: index,
                         title: element.display_name,
-                        start: convertDateFromDb(element.owner_date_return),
-                        end: convertDateFromDb(element.owner_date_return),
+                        start: convertDateFromDb(element.date_return),
+                        end: convertDateFromDb(element.date_return),
                     }
                 );
             });
