@@ -38,7 +38,7 @@ if($query)
     // If is a number, search only through ids
     if (is_numeric($query)) 
     {
-        $sql = "SELECT * FROM assets WHERE id LIKE '%$query%'";
+        $sql = "SELECT * FROM assets WHERE $id LIKE '%$query%'";
         $res = mysqli_query($conn, $sql);
 
         if(mysqli_num_rows($res) > 0)
@@ -46,17 +46,22 @@ if($query)
             $results->assets = array();
             while($row = $res->fetch_assoc()) {
                 $asset = new Asset();
-                $asset->id = intval($row["id"]);
-                $asset->display_name = $row["display_name"];
-                $asset->category = $row["category"];
-                $asset->location = $row["location"];
-                $asset->last_ping_time = $row["last_ping_time"];
-                $asset->purchase_cost = doubleval($row["purchase_cost"]);
-                $asset->origin = $row["origin"];
-                $asset->owner_name = $row["owner_name"];
-                $asset->owner_address = $row["owner_address"];
-                $asset->owner_date_recieved = $row["owner_date_recieved"];
-                $asset->owner_date_return = $row["owner_date_return"];
+                $asset->id = $row[$id];
+                $asset->display_name = $row[$display_name];
+                $asset->category = $row[$category];
+                $asset->latitude = doubleval($row[$latitude]);
+                $asset->longitude = doubleval($row[$longitude]);
+                $asset->last_ping_time = $row[$last_ping_time];
+                $asset->barcode = $row[$barcode];
+        
+                //$asset->purchase_cost;
+                //$asset->origin = $row["origin"];
+                //$asset->owner_name = $row["owner_name"];
+                //$asset->owner_address = $row["owner_address"];
+                
+                $asset->date_loaned = $row[$loaned];
+                $asset->date_return = $row[$owner_date_return];
+                $asset->date_last_cleaned = $row[$last_cleaned];
         
                 // Add asset to array
                 $results->assets[] = $asset;
