@@ -19,6 +19,8 @@ import {
     API_TIMEOUT
 } from '../../../consts';
 
+import {allocateAsset} from '../../../helperFile';
+
 function PageBreadcrumbs(props) {
     return (
         <Breadcrumb className="mt-1">
@@ -103,7 +105,7 @@ class AllocateAsset extends Component {
             this.onDismissError();
         }
 
-        var url = `${BASE_API_PATH}/assets/allocate`
+        var url = allocateAsset()
         axios({
             method: 'POST',
             url: url,

@@ -24,6 +24,8 @@ import IndiAssetMap from '../AllAssets/IndiAssetMap';
 import LoadingSpinner from "../../LoadingSpinner";
 import { convertDateFromDb } from "../../../utils";
 
+import { id, display_name, category, last_ping_time, date_loaned, date_return } from "../../../helperFile";
+
 // Element for "/asset/:assetId?"
 // Displays full information about a specific asset
 // WIP

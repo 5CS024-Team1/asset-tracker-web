@@ -9,10 +9,10 @@ header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
 /// Creates an INSERT INTO query using the given data
-function BuildQuery($idNum, $name, $origin, $cost, $category)
+function BuildQuery($idNum, $name, $Category, $Barcode, $Latitude, $Longitude)
 {
-    $query = "INSERT INTO assets (id, display_name, purchase_cost, origin, category)";
-    $query = "$query VALUES ('$idNum', '$name', '$cost', '$origin', '$category')";
+    $query = "INSERT INTO assets ($id, $display_name, $category, $barcode, $latitude, $longitude)";
+    $query = "$query VALUES ('$idNum', '$name', '$Category', $Barcode, $Latitude, $Longitude)";
     return $query;
 }
 
@@ -28,8 +28,8 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
-/// Query for registering asset into database
-$sql = BuildQuery($post_data['assetId'], $post_data['name'], $post_data['origin'], $post_data['purchase_cost'], $post_data['category']);
+/// Query for registering asset into database (lat and long are temporary)
+$sql = BuildQuery($post_data['assetId'], $post_data['name'], $post_data['category'], $post_data['assetId'], $post_data['latitude'], $post_data['longitude']);
 $result = $conn->query($sql);
 
 if($result)

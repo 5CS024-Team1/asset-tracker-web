@@ -20,6 +20,8 @@ import {
     BASE_API_PATH
 } from "../../consts";
 
+import {userNewId, addUser} from '../../helperFile';
+
 function PageBreadcrumbs() {
     return (
         <Breadcrumb className="mt-1">
@@ -58,7 +60,7 @@ class RegisterUser extends Component
         /// Get new user id from db
         axios({
             method: 'GET',
-            url: `${BASE_API_PATH}/user/get/new-id`,
+            url: userNewId(),
             headers: { 'content-type': 'application/json' },
         }).then(result => {
             this.setState({
@@ -78,7 +80,7 @@ class RegisterUser extends Component
         //console.log(`Register User - Email:'${this.state.email}' Pass:'${this.state.password}'`);
         axios({
             method: 'post',
-            url: `${BASE_API_PATH}/user/add/`,
+            url: addUser(),
             headers: { 'content-type': 'application/json' },
             data: this.state
           }).then(result => {

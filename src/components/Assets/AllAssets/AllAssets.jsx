@@ -15,6 +15,8 @@ import {
 import LoadingSpinner from "../../LoadingSpinner";
 import AssetsTable from "./AssetsTable";
 
+import {allAssets} from '../../../helperFile';
+
 function PageBreadcrumbs() {
     return (
         <Breadcrumb className="mt-1">
@@ -40,7 +42,7 @@ class AllAssets extends Component {
         /// Get all assets from database
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/assets/all/`,
+            url: allAssets(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {

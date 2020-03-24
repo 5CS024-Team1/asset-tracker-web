@@ -13,6 +13,8 @@ import ReturnTable from './ReturnTable';
 import { BASE_API_PATH, API_TIMEOUT } from '../../consts';
 import LoadingSpinner from '../LoadingSpinner';
 
+import {allAssets, assignedAssets} from '../../helperFile';
+
 function PageBreadcrumbs() {
     return (
         <Breadcrumb className="mt-1">
@@ -44,7 +46,7 @@ class Reports extends Component {
         // Using all endpoint for now
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/assets/all/`,
+            url: allAssets(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
@@ -72,7 +74,7 @@ class Reports extends Component {
         this.resetLoad();
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/assets/assigned-assets/`,
+            url: assignedAssets(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
@@ -93,7 +95,7 @@ class Reports extends Component {
         this.resetLoad()
         axios({
             method: 'get',
-            url: `${BASE_API_PATH}/assets/all/`,
+            url: allAssets(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
