@@ -9,7 +9,11 @@ import {
     Label,
     Button,
     Spinner,
+    Breadcrumb,
+    BreadcrumbItem,
+    UncontrolledAlert
 } from 'reactstrap';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
 import {
@@ -17,6 +21,20 @@ import {
 } from "../../consts";
 
 import {userNewId, addUser} from '../../helperFile';
+
+function PageBreadcrumbs() {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+                <Link to="/users">Users</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>Register</BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 class RegisterUser extends Component
 {
@@ -59,8 +77,7 @@ class RegisterUser extends Component
     }
 
     handleOnAdd(e) {
-        console.log(`Register User - Email:'${this.state.email}' Pass:'${this.state.password}'`);
-
+        //console.log(`Register User - Email:'${this.state.email}' Pass:'${this.state.password}'`);
         axios({
             method: 'post',
             url: addUser(),
@@ -72,7 +89,7 @@ class RegisterUser extends Component
               })
           }).catch(error => this.setState({ error: error.message }));
     }
-
+    
     render() {
         let idNumHtml = <div>
                             <Label>Id Number:</Label>
@@ -85,9 +102,13 @@ class RegisterUser extends Component
                         </div>
         return (
             <Container className="mt-3">
+                { this.state.loaded && this.state.error && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert>}
+                <PageBreadcrumbs />
+                <h1>Register a New User</h1>
+                <p>Insert new information to add a new user of the site.</p>
                 <Form>
                     <Row form>
-                        <Col md={1}>
+                        <Col md={6}>
                             <FormGroup>
                                 { this.state.userIdLoaded ? 
                                     idNumHtml 
@@ -95,29 +116,21 @@ class RegisterUser extends Component
                                     <Spinner size="sm" color="primary" />
                                 }
                             </FormGroup>
-                        </Col>
-                        <Col md={3}>
                             <FormGroup>
                                 <Label for="exampleEmail">Email</Label>
                                 <Input type="text" name="email" id="exampleEmail" placeholder="email@example.com" 
                                     onChange={ e => this.setState({ email: e.target.value }) } />
                             </FormGroup>
-                        </Col>
-                        <Col md={3}>
                             <FormGroup>
                                 <Label for="examplePassword">Password</Label>
-                                <Input type="text" name="password" id="examplePassword" placeholder="" 
+                                <Input type="password" name="password" id="examplePassword" placeholder="A super secure password" 
                                     onChange={ e => this.setState({ password: e.target.value }) } />
                             </FormGroup>
-                        </Col>
-                        <Col md={3}>
                             <FormGroup>
                                 <Label for="exampleName">Name</Label>
-                                <Input type="text" name="name" id="exampleName" placeholder="" 
+                                <Input type="text" name="name" id="exampleName" placeholder="First and Last Name" 
                                     onChange={ e => this.setState({ name: e.target.value }) } />
                             </FormGroup>
-                        </Col>
-                        <Col md={2}>
                             <FormGroup>
                                 <Label>Account Type:</Label>
                                 <Input type="select" name="account" id="exampleAccount">
@@ -128,7 +141,12 @@ class RegisterUser extends Component
                             </FormGroup>
                         </Col>
                     </Row>
-                    <Button onClick={this.handleOnAdd}>Register</Button>
+                    <div className="w-100">
+                        <Button className="ml-auto" color="primary" onClick={this.handleOnAdd}>
+                            Register
+                        </Button>
+                    </div>
+            
                     { this.state.userSet && sentHtml }
                 </Form>
             </Container>

@@ -10,19 +10,16 @@ import Session from "../Session/Session.js";
 
 let pkg = require('../../../package.json');
 
+/// HTML for one element of the navigation list
+function SidebarListElement(props) {
+    return (
+        <ListGroupItem className="py-4" tag="a" action href={props.href}>
+            <h5 className="text-center my-auto">{props.text}</h5>
+        </ListGroupItem>
+    );
+}
 
 class Sidebar extends Component {
-
-    getOutput() {
-        var usr = Session.loadUser();
-        if(usr && usr.user_type === "admin") {
-            return (
-                <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/user'}>
-                    Users
-                </ListGroupItem>
-            )
-        }
-    }
 
     render() {
         return (
@@ -42,20 +39,12 @@ class Sidebar extends Component {
                     </Link>
                 </div>
                 <ListGroup>
-                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/dashboard'}>
-                        Dashboard
-                    </ListGroupItem>
-                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/assets'}>
-                        Assets
-                    </ListGroupItem>
-                    <ListGroupItem tag="a" action  href={process.env.PUBLIC_URL + '/assets/register'}>
-                        Register
-                    </ListGroupItem>
-                    <ListGroupItem tag="a" action href={process.env.PUBLIC_URL + '/reports'}>
-                        Reports
-                    </ListGroupItem>
+                    <SidebarListElement text="Dashboard"  href={process.env.PUBLIC_URL + '/dashboard'} />
+                    <SidebarListElement text="Assets" href={process.env.PUBLIC_URL + '/assets'} />
+                    <SidebarListElement text="Register" href={process.env.PUBLIC_URL + '/assets/register'} />
+                    <SidebarListElement text="Reports" href={process.env.PUBLIC_URL + '/reports'} />
                     {
-                        this.getOutput()
+                        Session.isAdminUser() && <SidebarListElement className="bg-secondary" text="Users" href={process.env.PUBLIC_URL + '/users'} />
                     }
                 </ListGroup>
             </Col>

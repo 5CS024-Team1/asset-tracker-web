@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import {
     Container,
-    Button
+    Button,
+    UncontrolledAlert,
+    Breadcrumb,
+    BreadcrumbItem
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -12,6 +15,17 @@ import { BASE_API_PATH, API_TIMEOUT } from '../../consts';
 import LoadingSpinner from '../LoadingSpinner';
 
 import {allUsers, adminUsers} from '../../helperFile';
+
+function PageBreadcrumbs() {
+    return (
+        <Breadcrumb className="mt-1">
+            <BreadcrumbItem>
+                <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>Users</BreadcrumbItem>
+        </Breadcrumb>
+    );
+}
 
 class Reports extends Component {
     constructor(props) {
@@ -101,6 +115,8 @@ class Reports extends Component {
         let noLoaded = <div>No info loaded</div>;
         return (
             <Container className="my-3">
+                { this.state.loaded && this.state.error && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert>}
+                <PageBreadcrumbs />
                 <h1>Users</h1>
                 <div className="my-3">
                     
@@ -112,6 +128,11 @@ class Reports extends Component {
                     <Button className="mx-2" color="primary" onClick={this.handleOnAdmin}>
                         Admin Users
                     </Button>
+                    <Link to="/users/register" className="ml-auto">
+                        <Button color="primary">
+                            Register a new user
+                        </Button>
+                    </Link>
                 </div>
                 
                 { this.state.loaded && this.state.returnUsers && <ReturnUserTable data={this.state.returnUsers} /> }

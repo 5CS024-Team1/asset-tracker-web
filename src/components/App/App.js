@@ -2,7 +2,8 @@ import React from 'react';
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect
 } from 'react-router-dom';
 import { 
     Row,
@@ -14,20 +15,32 @@ import './App.css';
 import Sidebar from "../Sidebar";
 import Home from "../Home";
 import Header from "../Header";
-import RegisterUser from "../RegisterUser";
 import Dashboard from "../Dashboard";
 import NotFound from "../NotFound";
 import Search from "../Search";
 import CollectCalendar from "../Reports/CollectCalendar";
 import Reports from "../Reports";
+
+import Session from "../Session/Session.js";
+
+// User/Profile components
+import User from "../User";
+import RegisterUser from "../RegisterUser";
+import EditUser from "../EditUser";
 import Profile from "../Profile";
 
-import User from "../User";
-
+// Asset components
 import SingleAsset from "../Assets/SingleAsset";
 import AllAssets from "../Assets/AllAssets";
 import RegisterAsset from "../Assets/RegisterAsset";
 import AllocateAsset from "../Assets/AllocateAsset";
+
+function requireAuth(component) {
+    if (Session.getUser())
+        return component;
+    else
+        return (<Redirect to="/"/>)
+}
 
 function App() {
   return (
@@ -48,14 +61,16 @@ function App() {
                     <Route exact path="/asset/:assetId?" component={SingleAsset} />
                     <Route exact path="/asset/:assetId?/allocate" component={AllocateAsset} />
 
-                    <Route exact path="/dashboard" component={Dashboard} />
-                    <Route exact path="/register-user" component={RegisterUser} />
+                    <Route exact path="/dashboard" component={Dashboard} /> {/* render={() => requireAuth(<Dashboard />) } */}
+
                     <Route path="/search" component={Search} />
 
                     <Route exact path="/reports/calendar" component={CollectCalendar} />
                     <Route path="/reports" component={Reports} />
 
-                    <Route path="/User" component={User} />
+                    <Route exact path="/users/edit/:userId?" component={EditUser} />
+                    <Route exact path="/users/register" component={RegisterUser} />
+                    <Route path="/users" component={User} />
                     <Route path="/profile" component={Profile} />
 
                     <Route component={NotFound} />

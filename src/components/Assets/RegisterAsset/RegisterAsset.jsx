@@ -135,7 +135,7 @@ class RegisterAsset extends Component {
             <Container>
                 {
                     this.state.assetIdLoaded && this.state.error &&
-                        <UncontrolledAlert color="danger">
+                        <UncontrolledAlert color="danger" className="my-3">
                             Error Occured: {this.state.error}
                         </UncontrolledAlert>
                 }

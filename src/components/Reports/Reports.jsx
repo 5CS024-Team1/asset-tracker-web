@@ -4,6 +4,7 @@ import {
     Button,
     Breadcrumb,
     BreadcrumbItem,
+    UncontrolledAlert,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -115,6 +116,7 @@ class Reports extends Component {
         let noLoaded = <div>No info loaded</div>;
         return (
             <Container>
+                { this.state.loaded && this.state.error && <UncontrolledAlert color="danger" className="my-3">Error: {this.state.error}</UncontrolledAlert> }
                 <PageBreadcrumbs />
                 <h1>Reports</h1>
                 <div className="my-3">
