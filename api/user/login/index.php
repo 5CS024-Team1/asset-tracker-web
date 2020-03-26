@@ -1,7 +1,7 @@
 <?php
 /// Entrypoint for getting all assets that have been assigned with a date
 include_once("../../api_config.php");
-include_once("../cryption/encrypt.php");
+include_once("../authentication.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
@@ -57,7 +57,7 @@ if ($result && $result->num_rows > 0)
 
     if ($email == $user->admin_email && password_verify($postData['password'], $user->admin_password)) 
     {
-        $encodedToken = EncryptPayload([
+        $encodedToken = Authentication::encryptPayload([
             "user_id" => $user->admin_id,
             "user_type" => $user->admin_type,
             "expiry_time" => time() + (60 * $API_TOKEN_VALID_DURATION),

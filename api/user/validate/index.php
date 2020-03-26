@@ -1,7 +1,7 @@
 <?php
 
 include_once("../../api_config.php");
-include_once("../cryption/validate.php");
+include_once("../authentication.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 
 $token = htmlspecialchars($_GET["token"]);
 
-$isValid = ValidatePayload($token, $API_SECRET_KEY);
+$isValid = Authentication::validatePayload($token, $API_SECRET_KEY);
 echo json_encode([
     "isValid" => $isValid,
 ], JSON_PRETTY_PRINT);

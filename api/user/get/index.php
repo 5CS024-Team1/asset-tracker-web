@@ -4,7 +4,7 @@
 * Requires paramater id specifying which asset id to retrieve
 */
 include_once("../../api_config.php");
-include_once("../cryption/validate.php");
+include_once("../authentication.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
@@ -17,7 +17,7 @@ $isValidAuth = false;
 if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
     $auth = $_SERVER["HTTP_AUTHORIZATION"];
     $split = explode(' ', $auth);
-    $isValidAuth = ValidatePayload($split[1], $API_SECRET_KEY);
+    $isValidAuth = Authentication::validatePayload($split[1], $API_SECRET_KEY);
 }
 
 // Exit and don't allow entry if authorization isn't valid
