@@ -12,20 +12,12 @@ header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header("Access-Control-Allow-Methods: GET");
 header('Content-Type: application/json');
 
-// Check if authorization header is set and validate
-$isValidAuth = false;
-if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
-    $auth = $_SERVER["HTTP_AUTHORIZATION"];
-    $split = explode(' ', $auth);
-    $isValidAuth = Authentication::validatePayload($split[1], $API_SECRET_KEY);
-}
-
-// Exit and don't allow entry if authorization isn't valid
-if( !$isValidAuth ) 
-{
+// Check if authorization header is set, exit if not
+if (!Authentication::requestContainsAuth($_SERVER)) {
     echo json_encode([
-        "error" => "No Authorization header found"
-    ], JSON_PRETTY_PRINT);
+        "user" => null, 
+        "error" => "No Authorization found in request"
+    ]);
     exit();
 }
 

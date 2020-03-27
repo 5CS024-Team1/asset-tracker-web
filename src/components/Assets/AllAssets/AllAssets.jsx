@@ -35,7 +35,7 @@ class AllAssets extends Component {
             assets: null,
             loaded: false,
             error: "",
-        }
+        };
     }
 
     componentDidMount() {
@@ -50,9 +50,8 @@ class AllAssets extends Component {
                 assets: result.data.assets,
                 loaded: true,
             });
-            console.log(this.state.assets);
         }).catch(error => {
-            console.log(error);
+            console.error(error);
             this.setState({ 
                 error: error.message,
                 loaded: true, 

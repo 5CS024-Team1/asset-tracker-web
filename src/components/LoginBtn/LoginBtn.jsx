@@ -46,7 +46,7 @@ class LoginBtn extends Component
 
     componentDidMount() {
         var user = Session.loadUser();
-        console.log(user);
+        console.log("User auth: " + (user ? user.stringify() : "null"));
         if (user && user.api_token) {
             this.setState({
                 api_token: user.api_token,

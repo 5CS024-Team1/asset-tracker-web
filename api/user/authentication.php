@@ -62,6 +62,19 @@ class Authentication
         $result = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+', $payloadToken))));
         return $result;
     }
+
+    // Check if authorization header is set and validates the auth token
+    public static function requestContainsAuth($server)
+    {
+        $isValidAuth = false;
+        if (isset($server["HTTP_AUTHORIZATION"])) {
+            $auth = $server["HTTP_AUTHORIZATION"];
+            $split = explode(' ', $auth);
+            $isValidAuth = Authentication::validatePayload($split[1], $API_SECRET_KEY);
+        }
+
+        return $isValidAuth;
+    }
 }
 
 
