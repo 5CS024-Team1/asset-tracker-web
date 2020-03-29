@@ -1,11 +1,22 @@
 <?php
 /// Entrypoint for getting the next available id number for when adding a new asset
 include_once("../../../api_config.php");
+include_once("../../../user/authentication.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Headers: Content-Type');
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header('Content-Type: application/json');
+
+// Check if request contains user auth
+if (!Authentication::requestContainsAuth($_SERVER)) {
+    echo json_encode([
+        "assetId" => null,
+        "error" => "Authorization token is required",
+    ], JSON_PRETTY_PRINT);
+    http_response_code(401);
+    exit();
+}
 
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {

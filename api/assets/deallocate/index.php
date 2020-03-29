@@ -5,12 +5,23 @@
 */
 
 include_once("../../api_config.php");
+include_once("../../user/authentication.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Headers: Content-Type');
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
 // Make page display JSON_PRETTY_PRINT
 header('Content-Type: application/json');
+
+// Check if request contains user auth
+if (!Authentication::requestContainsAuth($_SERVER)) {
+    echo json_encode([
+        "changes_set" => false,
+        "error" => "Authorization token is required",
+    ], JSON_PRETTY_PRINT);
+    http_response_code(401);
+    exit();
+}
 
 // Parse deallocate id from url
 $asset_id = htmlspecialchars($_GET["id"]);
