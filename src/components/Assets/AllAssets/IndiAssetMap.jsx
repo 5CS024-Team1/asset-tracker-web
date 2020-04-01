@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import {
     GOOGLE_MAPS_API_KEY
-} from "../../../consts"
+} from "../../../consts";
 
 function AssetMarker(props) {
     return (
