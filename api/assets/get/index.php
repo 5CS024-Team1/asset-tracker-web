@@ -22,12 +22,12 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
 }
 
 /// Check we have required data to do the request
-if (!isset($_GET["id"])) {
+if (!isset($_GET["Equi_ID"])) {
     die("Unable to get asset id - Id parameter is missing");
 }
 
-$asset_id = htmlspecialchars($_GET["id"]);
-if (!$asset_id) {
+$asset_id = htmlspecialchars($_GET["Equi_ID"]);
+if (!$eqid) {
     die("Unable to parse asset id - No id specified");
 }
 
@@ -38,7 +38,7 @@ if (!$conn) {
 }
 
 /// Query to determine the next available asset id in table
-$sql = "SELECT * FROM assets WHERE id=" . $asset_id;
+$sql = "SELECT * FROM assets WHERE Equi_ID=" . $eqid;
 $result = $conn->query($sql);
 
 class Asset { }
@@ -48,22 +48,33 @@ if ($result->num_rows > 0)
     // Map individual asset onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = $row[$id];
-        $asset->display_name = $row[$display_name];
+        $asset->id = $row[$eqid];
+        $asset->barcode = $row[$barcode];
+        $asset->display_name = $row[$eqname];
         $asset->category = $row[$category];
         $asset->latitude = doubleval($row[$latitude]);
         $asset->longitude = doubleval($row[$longitude]);
         $asset->last_ping_time = $row[$last_ping_time];
-        $asset->barcode = $row[$barcode];
+        $asset->eqpatid = $row[$eqpatid];
+        $asset->date_loaned = $row[$loaned];
+        $asset->date_return = $row[$owner_date_return];
+        $asset->eqdept = $row[$eqdept];
+        $asset->last_cleaned = $row[$last_cleaned];
+
+        $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $eqid";
+        $sqlresult = $conn->query($sqlquery);
+        if ($sqlresult->num_rows > 0) 
+        {
+            while($row = $sqlresult->fetch_assoc()) {
+                $asset->surname = $row[$surname];
+                $asset->forename = $row[$forename];
+                $asset->personaddress = $row[$personaddress];
+                $asset->personidspatient = $row[$personidspatient];
+            }
+        }
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
-        //$asset->owner_name = $row["owner_name"];
-        //$asset->owner_address = $row["owner_address"];
-        
-        $asset->date_loaned = $row[$loaned];
-        $asset->date_return = $row[$owner_date_return];
-        $asset->date_last_cleaned = $row[$last_cleaned];
     }
 
     // Return the array of assets
