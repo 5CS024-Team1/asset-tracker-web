@@ -50,6 +50,7 @@ if ($result->num_rows > 0)
         $asset->eqdept = $row[$eqdept];
         $asset->last_cleaned = $row[$last_cleaned];
 
+        /*
         $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $eqid";
         $sqlresult = $conn->query($sqlquery);
         if ($sqlresult->num_rows > 0) 
@@ -61,6 +62,7 @@ if ($result->num_rows > 0)
                 $asset->personidspatient = $row[$personidspatient];
             }
         }
+        */
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
