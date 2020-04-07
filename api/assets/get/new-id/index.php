@@ -11,16 +11,21 @@ header('Content-Type: application/json');
 // Check if request contains user auth
 if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
     echo json_encode([
-        "assetId" => null,
+        "assetId" => -1,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
-    exit();
+    die();
 }
 
-$conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
-if (!$conn) {
-    die("Unable to open connection - " . mysqli_connect_error());
+// Use @ to suppress the warning and handle it ourselves
+@$conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
+if(!$conn) 
+{
+    echo json_encode([
+        "assetId" => -1,
+        "error" => $e->getMessage(),
+    ], JSON_PRETTY_PRINT);
+    die();
 }
 
 /// Query to determine the next available asset id in table
@@ -31,7 +36,6 @@ if (!$conn) {
 
 echo json_encode([
     "assetId" => rand(0, 999),
-    "name" => "testing",
 ], JSON_PRETTY_PRINT);
 
 $conn->close();

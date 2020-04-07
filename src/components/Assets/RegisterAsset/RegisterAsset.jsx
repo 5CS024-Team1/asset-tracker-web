@@ -19,8 +19,9 @@ import axios from 'axios';
 import Barcode from 'react-barcode';
 
 import {
-    BASE_API_PATH
+    API_TIMEOUT
 } from "../../../consts";
+import Session from "../../Session/Session.js";
 
 import {assetNewId, registerAsset} from '../../../helperFile';
 
@@ -70,11 +71,16 @@ class RegisterAsset extends Component {
         axios({
             method: 'GET',
             url: assetNewId(),
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token,
+            },
+            timeout: API_TIMEOUT,
         }).then(result => {
             this.setState({
                 assetId: result.data.assetId,
                 assetIdLoaded: true,
+                error: result.data.error,
             });
         }).catch(error => {
             this.setState({
@@ -90,17 +96,22 @@ class RegisterAsset extends Component {
         axios({
             method: 'post',
             url: registerAsset(),
-            headers: { 'content-type': 'application/json' },
-            data: this.state
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token,
+            },
+            data: this.state,
+            timeout: API_TIMEOUT,
         }).then(result => {
             console.log(result);
             this.setState({
-                assetSet: result.data.asset_set
+                assetSet: result.data.asset_set,
+                error: result.data.error,
             });
             /// Redirect user once complete
-            setTimeout(() => {
-                window.location.replace(`/assets`);
-            }, 1000);
+            // setTimeout(() => {
+            //     window.location.replace(`/assets`);
+            // }, 1000);
         }).catch(error => this.setState({ error: error.message }));
     }
 

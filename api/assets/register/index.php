@@ -15,14 +15,13 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
         "asset_set" => false,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
     exit();
 }
 
 /// Creates an INSERT INTO query using the given data
 function BuildQuery($idNum, $Barcode, $name, $Category, $Latitude, $Longitude, $Eqdept, $Last_cleaned)
 {
-    $query = "INSERT INTO assets ($eqid, $barcode, $eqname, $category, $latitude, $longitude, $eqdept, $last_cleaned)";
+    $query = "INSERT INTO $ASSETS_TABLE ($eqid, $barcode, $eqname, $category, $latitude, $longitude, $eqdept, $last_cleaned)";
     $query = "$query VALUES ('$idNum', '$Barcode', '$name', '$Category', '$Latitude', '$Longitude', '$Eqdept', '$Last_cleaned')";
     return $query;
 }
