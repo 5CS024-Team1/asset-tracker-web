@@ -10,7 +10,6 @@ header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header('Content-Type: application/json');
 
 // Check if request contains user auth
-
 if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
     echo json_encode([
         "assets" => null,
@@ -19,7 +18,6 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
     //http_response_code(401);
     exit();
 }
-
 
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {

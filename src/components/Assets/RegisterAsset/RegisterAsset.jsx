@@ -67,28 +67,30 @@ class RegisterAsset extends Component {
     }
 
     componentDidMount() {
-        /// Retrieve a new asset id from database
-        axios({
-            method: 'GET',
-            url: assetNewId(),
-            headers: { 
-                'content-type': 'application/json',
-                'authorization': 'Bearer ' + Session.getUser().api_token,
-            },
-            timeout: API_TIMEOUT,
-        }).then(result => {
-            this.setState({
-                assetId: result.data.assetId,
-                assetIdLoaded: true,
-                error: result.data.error,
-            });
-        }).catch(error => {
-            this.setState({
-                assetIdLoaded: true,
-                assetId: "?",
-                error: error.message,
+        if ( Session.isSignedIn() ) {
+            /// Retrieve a new asset id from database
+            axios({
+                method: 'GET',
+                url: assetNewId(),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token,
+                },
+                timeout: API_TIMEOUT,
+            }).then(result => {
+                this.setState({
+                    assetId: result.data.assetId,
+                    assetIdLoaded: true,
+                    error: result.data.error,
+                });
+            }).catch(error => {
+                this.setState({
+                    assetIdLoaded: true,
+                    assetId: "?",
+                    error: error.message,
+                })
             })
-        })
+        }
     }
 
     handleOnRegisterAsset(e) {

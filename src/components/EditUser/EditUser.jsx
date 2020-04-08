@@ -54,31 +54,33 @@ class EditUser extends Component {
     }
 
     componentDidMount() {
-        axios({
-            method: 'GET',
-            url: `${BASE_API_PATH}/user/get?id=${this.state.id}`,
-            headers: { 
-                'content-type': 'application/json', 
-                'authorization': 'Bearer ' + Session.getUser().api_token, 
-            },
-            timeout: API_TIMEOUT
-        }).then(result => {
-            this.setState({
-                loaded: true,
-                user: result.data.user,
-                user_newName: result.data.user.admin_name,
-                user_newEmail: result.data.user.admin_email,
-                user_newType: result.data.user.admin_type,
-                pass_new: "",
-                pass_newCheck: "",
+        if ( Session.isSignedIn() ) {
+            axios({
+                method: 'GET',
+                url: `${BASE_API_PATH}/user/get?id=${this.state.id}`,
+                headers: { 
+                    'content-type': 'application/json', 
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                this.setState({
+                    loaded: true,
+                    user: result.data.user,
+                    user_newName: result.data.user.admin_name,
+                    user_newEmail: result.data.user.admin_email,
+                    user_newType: result.data.user.admin_type,
+                    pass_new: "",
+                    pass_newCheck: "",
+                });
+            }).catch(error => {
+                console.log(error);
+                this.setState({ 
+                    error: error.message,
+                    loaded: true, 
+                });
             });
-        }).catch(error => {
-            console.log(error);
-            this.setState({ 
-                error: error.message,
-                loaded: true, 
-            });
-        });
+        }
     }
 
     handleSubmitEdits() {

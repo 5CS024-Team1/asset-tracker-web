@@ -45,10 +45,13 @@ class AllAssets extends Component {
             axios({
                 method: 'get',
                 url: allAssets(),
-                headers: { 'content-type': 'application/json' },
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
                 timeout: API_TIMEOUT
             }).then(result => {
-                console.log(result);
+                console.log(result.data);
                 this.setState({
                     assets: result.data.assets,
                     loaded: true,

@@ -20,6 +20,7 @@ import {
 } from '../../../consts';
 
 import {allocateAsset} from '../../../helperFile';
+import Session from "../../Session/Session.js";
 
 function PageBreadcrumbs(props) {
     return (

@@ -23,6 +23,7 @@ import {
 import IndiAssetMap from '../AllAssets/IndiAssetMap';
 import LoadingSpinner from "../../LoadingSpinner";
 import { convertDateFromDb } from "../../../utils";
+import Session from "../../Session/Session.js";
 
 import { id, display_name, category, last_ping_time, date_loaned, date_return } from "../../../helperFile";
 
@@ -160,26 +161,31 @@ class SingleAsset extends Component
     }
 
     componentDidMount() {
-        /// Retrieve correct asset from database
-        axios({
-            method: 'get',
-            // No api set up currently, being left for now
-            url: `${BASE_API_PATH}/assets/get?id=${this.state.id}`,
-            headers: { 'content-type': 'application/json' },
-        }).then(result => {
-            console.log(result);
-            this.setState({
-                asset: result.data.asset,
-                assetIdLoaded: true,
+        if ( Session.isSignedIn() ) {
+            /// Retrieve correct asset from database
+            axios({
+                method: 'get',
+                // No api set up currently, being left for now
+                url: `${BASE_API_PATH}/assets/get?id=${this.state.id}`,
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+            }).then(result => {
+                console.log(result);
+                this.setState({
+                    asset: result.data.asset,
+                    assetIdLoaded: true,
+                });
+            }).catch(error => {
+                console.log(error);
+                this.setState({
+                    assetIdLoaded: true,
+                    assetId: "?",
+                    error: error.message,
+                })
             });
-        }).catch(error => {
-            console.log(error);
-            this.setState({
-                assetIdLoaded: true,
-                assetId: "?",
-                error: error.message,
-            })
-        });
+        }
     }
 
     toggleDeallocateModal() {
