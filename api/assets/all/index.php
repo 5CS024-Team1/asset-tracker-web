@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header('Content-Type: application/json');
 
 // Check if request contains user auth
+
 if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
     echo json_encode([
         "assets" => null,
@@ -18,6 +19,7 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
     //http_response_code(401);
     exit();
 }
+
 
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
@@ -44,7 +46,7 @@ if ($result->num_rows > 0)
         $asset->latitude = doubleval($row[$latitude]);
         $asset->longitude = doubleval($row[$longitude]);
         $asset->last_ping_time = $row[$last_ping_time];
-        $asset->eqpatid = $row[$eqpatid];
+        //$asset->eqpatid = $row[$eqpatid];
         $asset->date_loaned = $row[$loaned];
         $asset->date_return = $row[$owner_date_return];
         $asset->eqdept = $row[$eqdept];
