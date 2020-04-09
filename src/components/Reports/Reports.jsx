@@ -14,6 +14,7 @@ import { BASE_API_PATH, API_TIMEOUT } from '../../consts';
 import LoadingSpinner from '../LoadingSpinner';
 
 import {allAssets, assignedAssets} from '../../helperFile';
+import Session from "../Session/Session.js";
 
 function PageBreadcrumbs() {
     return (
@@ -43,23 +44,28 @@ class Reports extends Component {
 
     
     componentDidMount() {
-        // Using all endpoint for now
-        axios({
-            method: 'get',
-            url: allAssets(),
-            headers: { 'content-type': 'application/json' },
-            timeout: API_TIMEOUT
-        }).then(result => {
-            this.setState({
-                returnAssets: result.data.assets,
-                loaded: true,
+        if ( Session.isSignedIn() ) {
+            // Using all endpoint for now
+            axios({
+                method: 'get',
+                url: allAssets(),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                this.setState({
+                    returnAssets: result.data.assets,
+                    loaded: true,
+                });
+            }).catch(error => {
+                this.setState({ 
+                    error: error.message,
+                    loaded: true, 
+                });
             });
-        }).catch(error => {
-            this.setState({ 
-                error: error.message,
-                loaded: true, 
-            });
-        });
+        }
     }
     
     //Rests the load state, needed to refresh the report page
@@ -71,44 +77,56 @@ class Reports extends Component {
 
     //Changes path to assigned assets
     handleOnAssigned() {
-        this.resetLoad();
-        axios({
-            method: 'get',
-            url: assignedAssets(),
-            headers: { 'content-type': 'application/json' },
-            timeout: API_TIMEOUT
-        }).then(result => {
-            this.setState({
-                returnAssets: result.data.assets,
-                loaded: true,
+        if ( Session.isSignedIn() ) {
+            this.resetLoad();
+            axios({
+                method: 'get',
+                url: assignedAssets(),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                console.log(result.data);
+                this.setState({
+                    returnAssets: result.data.assets,
+                    loaded: true,
+                });
+            }).catch(error => {
+                this.setState({ 
+                    error: error.message,
+                    loaded: true, 
+                });
             });
-        }).catch(error => {
-            this.setState({ 
-                error: error.message,
-                loaded: true, 
-            });
-        });
+        }
     }
 
     //Changes path to assets all
     handleOnAll() {
-        this.resetLoad()
-        axios({
-            method: 'get',
-            url: allAssets(),
-            headers: { 'content-type': 'application/json' },
-            timeout: API_TIMEOUT
-        }).then(result => {
-            this.setState({
-                returnAssets: result.data.assets,
-                loaded: true,
+        if ( Session.isSignedIn() ) {
+            this.resetLoad()
+            axios({
+                method: 'get',
+                url: allAssets(),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                console.log(result.data);
+                this.setState({
+                    returnAssets: result.data.assets,
+                    loaded: true,
+                });
+            }).catch(error => {
+                this.setState({ 
+                    error: error.message,
+                    loaded: true, 
+                });
             });
-        }).catch(error => {
-            this.setState({ 
-                error: error.message,
-                loaded: true, 
-            });
-        });
+        }
     }
 
     //Displays information on screen when render is done

@@ -15,7 +15,7 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
         "assets" => null,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
+    //http_response_code(401);
     exit();
 }
 
@@ -26,7 +26,7 @@ if (!$conn) {
 // echo "Successfully connected <br/>";
 
 /// SQL Query command to select assets that have been assigned from the 'assets' table
-$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return";
+$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return IS NOT NULL";
 //$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return IS NOT NULL AND owner_name IS NOT NULL";
 $result = $conn->query($sql);
 
@@ -45,12 +45,13 @@ if ($result->num_rows > 0)
         $asset->latitude = doubleval($row[$latitude]);
         $asset->longitude = doubleval($row[$longitude]);
         $asset->last_ping_time = $row[$last_ping_time];
-        $asset->eqpatid = $row[$eqpatid];
+        //$asset->eqpatid = $row[$eqpatid];
         $asset->date_loaned = $row[$loaned];
         $asset->date_return = $row[$owner_date_return];
         $asset->eqdept = $row[$eqdept];
         $asset->last_cleaned = $row[$last_cleaned];
-
+        
+        /*
         $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $eqid";
         $sqlresult = $conn->query($sqlquery);
         if ($sqlresult->num_rows > 0) 
@@ -62,6 +63,7 @@ if ($result->num_rows > 0)
                 $asset->personidspatient = $row[$personidspatient];
             }
         }
+        */
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
