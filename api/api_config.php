@@ -40,7 +40,7 @@ $category = "Equi_Category";
 $latitude = "Equi_Latittude"; //Yes I know it's spelt wrong, thats how its in the database
 $longitude = "Equi_Longitude";
 $last_ping_time = "Equi_Timestamp";
-$eqpatid = "Equi_Assinged_Pats_IDs";
+$eqpatid = "Equi_Assigned_Pats_IDs";
 $loaned = "Equi_Loaned";
 $owner_date_return = "Equi_Return_due";
 $eqdept = "Equi_Dept";
@@ -68,11 +68,11 @@ $mhospid = "Hosp_ID";
 $mainlastcleaned = "Main_Last_Cleaned";
 
 //Person(user) Table
-$surname = "Person_Surname";
-$forename = "Person_Forename";
-$personaddress = "Person_Address";
-$persontown = "Person_Town";
-$personcounty = "Person_County";
+$surname = "Pers_Surname";
+$forename = "Pers_Forename";
+$personaddress = "Pers_Address";
+$persontown = "Pers_Town";
+$personcounty = "Pers_County";
 $personidspatient = "IDs_Patient";
 $personidsstaff = "IDs_Staff";
 

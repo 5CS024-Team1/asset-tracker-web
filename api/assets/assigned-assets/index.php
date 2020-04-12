@@ -45,25 +45,36 @@ if ($result->num_rows > 0)
         $asset->latitude = doubleval($row[$latitude]);
         $asset->longitude = doubleval($row[$longitude]);
         $asset->last_ping_time = $row[$last_ping_time];
-        //$asset->eqpatid = $row[$eqpatid];
+        $asset->eqpatid = $row[$eqpatid];
         $asset->date_loaned = $row[$loaned];
         $asset->date_return = $row[$owner_date_return];
         $asset->eqdept = $row[$eqdept];
         $asset->last_cleaned = $row[$last_cleaned];
-        
-        /*
-        $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $eqid";
-        $sqlresult = $conn->query($sqlquery);
-        if ($sqlresult->num_rows > 0) 
+        $check = $row[$eqpatid];
+
+        if (!empty($row[$eqpatid]))
         {
-            while($row = $sqlresult->fetch_assoc()) {
-                $asset->surname = $row[$surname];
-                $asset->forename = $row[$forename];
-                $asset->personaddress = $row[$personaddress];
-                $asset->personidspatient = $row[$personidspatient];
+            $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $check";
+            $sqlresult = $conn->query($sqlquery);
+            if ($sqlresult->num_rows > 0)
+                {
+                while($rows = $sqlresult->fetch_assoc()) {
+                    $asset->surname = $rows[$surname];
+                    $asset->forename = $rows[$forename];
+                    $asset->personaddress = $rows[$personaddress];
+                    $asset->personidspatient = $rows[$personidspatient];
+                }
             }
         }
-        */
+        else
+        {
+            $asset->surname = Null;
+            $asset->forename = Null;
+            $asset->personaddress = Null;
+            $asset->personidspatient = Null;
+        }
+        
+        
 
         //$asset->purchase_cost;
         //$asset->origin = $row["origin"];
