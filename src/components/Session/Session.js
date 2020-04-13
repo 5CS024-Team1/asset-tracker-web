@@ -6,19 +6,20 @@ var Session = (function() {
 
     /// Load the current user auth
     var loadUser = function() {
+        /*
         // Get the stored auth and pase
         var token = localStorage.getItem('user');
         if (!token) 
             return null;
         var parsedToken = JSON.parse(token);
-
-        /*
+        */
+        
         // Temp login code
         var parsedToken = {
             api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdGFydF9kYXRlIjoxNTgzOTUxMjUzfQ.nwGTGoPSgDk2Inl7b09DUZl2crB8hkjwo_1fBIM2f4U",
             expiry_time: new Date().getTime() / 1000,
         };
-        */
+        
         
         
         if (parsedToken && parsedToken.api_token) {

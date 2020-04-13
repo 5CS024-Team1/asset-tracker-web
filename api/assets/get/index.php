@@ -22,12 +22,12 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
 }
 
 /// Check we have required data to do the request
-if (!isset($_GET["Equi_ID"])) {
+if (!isset($_GET["id"])) {
     die("Unable to get asset id - Id parameter is missing");
 }
 
-$asset_id = htmlspecialchars($_GET["Equi_ID"]);
-if (!$eqid) {
+$asset_id = htmlspecialchars($_GET["id"]);
+if (!$asset_id) {
     die("Unable to parse asset id - No id specified");
 }
 
@@ -38,7 +38,7 @@ if (!$conn) {
 }
 
 /// Query to determine the next available asset id in table
-$sql = "SELECT * FROM $ASSETS_TABLE WHERE Equi_ID=" . $eqid;
+$sql = "SELECT * FROM $ASSETS_TABLE WHERE Equi_ID=" . $asset_id;
 $result = $conn->query($sql);
 
 class Asset { }

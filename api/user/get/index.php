@@ -38,7 +38,7 @@ if (!$conn) {
 }
 
 /// Query to determine the next available user id in table
-$sql = "SELECT * FROM user WHERE admin_id=" . $usid;
+$sql = "SELECT * FROM ID_TABLE WHERE IDs_Staff=" . $usid;
 $result = $conn->query($sql);
 
 class User { }
@@ -48,10 +48,7 @@ if ($result->num_rows > 0)
     // Map individual user onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
         $user = new User();
-        $user->admin_id = intval($row["admin_id"]);
-        $user->admin_name = $row["admin_name"];
-        $user->admin_email = $row["admin_email"];
-        $user->admin_type = $row["admin_type"];
+        $user->admin_id = $row[$idsstaff];
     }
 
     // Return the array of assets
