@@ -105,7 +105,7 @@ class AssetsTable extends Component {
         return (
             <BootstrapTable 
                 bootstrap4 hover
-                keyField="id"
+                keyField="eqid"
                 data={this.state.assets}
                 columns={columns}
                 defaultSorted={defaultSort}

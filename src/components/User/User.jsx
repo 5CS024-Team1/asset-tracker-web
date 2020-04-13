@@ -49,6 +49,7 @@ class Reports extends Component {
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
+            console.log(result.data);
             this.setState({
                 returnUsers: result.data.user,
                 loaded: true,
@@ -77,6 +78,7 @@ class Reports extends Component {
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
+            console.log(result.data);
             this.setState({
                 returnUsers: result.data.user,
                 loaded: true,
@@ -98,6 +100,7 @@ class Reports extends Component {
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT
         }).then(result => {
+            console.log(result.data);
             this.setState({
                 returnUsers: result.data.user,
                 loaded: true,

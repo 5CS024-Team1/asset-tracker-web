@@ -69,4 +69,6 @@ var category = "category";
 var last_ping_time = "last_ping_time";
 var date_loaned = "loaned";
 var date_return = "owner_date_return";
-export { id, display_name, category, last_ping_time, date_loaned, date_return };
+
+var stfid = "idsstaff";
+export { id, display_name, category, last_ping_time, date_loaned, date_return, stfid };

@@ -172,7 +172,7 @@ class SingleAsset extends Component
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
                  },
             }).then(result => {
-                console.log(result);
+                console.log(result.data);
                 this.setState({
                     asset: result.data.asset,
                     assetIdLoaded: true,

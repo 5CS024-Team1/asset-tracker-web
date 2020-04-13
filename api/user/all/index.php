@@ -1,5 +1,5 @@
 <?php
-/// Entrypoint for getting all assets available in the database
+/// Entrypoint for getting all accounts in the database
 include_once("../../api_config.php");
 
 // Include cross origin headers
@@ -14,8 +14,8 @@ if (!$conn) {
 }
 // echo "Successfully connected <br/>";
 
-/// SQL Query command to select all from the 'assets' table
-$sql = "SELECT * FROM " . $USER_TABLE;
+/// SQL Query command to select all accounts from the ID_TABLE
+$sql = "SELECT * FROM $ID_TABLE WHERE $idsstaff IS NOT NULL";
 $result = $conn->query($sql);
 
 class User { }
@@ -26,10 +26,7 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $user = new User();
-        $user->admin_id = intval($row["admin_id"]);
-        $user->admin_name = $row["admin_name"];
-        $user->admin_email = $row["admin_email"];
-        $user->admin_type = $row["admin_type"];
+        $user->admin_id = $row[$idsstaff];
 
         // Add user to array
         $db_array[] = $user;
