@@ -15,7 +15,7 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
         "assets" => null,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
+    //http_response_code(401);
     exit();
 }
 
@@ -26,7 +26,7 @@ if (!$conn) {
 // echo "Successfully connected <br/>";
 
 /// SQL Query command to select assets that have been assigned from the 'assets' table
-$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return";
+$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return IS NOT NULL";
 //$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return IS NOT NULL AND owner_name IS NOT NULL";
 $result = $conn->query($sql);
 
@@ -38,22 +38,46 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = $row[$id];
-        $asset->display_name = $row[$display_name];
+        $asset->id = $row[$eqid];
+        $asset->barcode = $row[$barcode];
+        $asset->display_name = $row[$eqname];
         $asset->category = $row[$category];
         $asset->latitude = doubleval($row[$latitude]);
         $asset->longitude = doubleval($row[$longitude]);
         $asset->last_ping_time = $row[$last_ping_time];
-        $asset->barcode = $row[$barcode];
-
-        //$asset->purchase_cost = doubleval($row["purchase_cost"]);
-        //$asset->origin = $row["origin"];
-        //$asset->owner_name = $row["owner_name"];
-        //$asset->owner_address = $row["owner_address"];
-
+        $asset->eqpatid = $row[$eqpatid];
         $asset->date_loaned = $row[$loaned];
         $asset->date_return = $row[$owner_date_return];
-        $asset->date_last_cleaned = $row[$last_cleaned];
+        $asset->eqdept = $row[$eqdept];
+        $asset->last_cleaned = $row[$last_cleaned];
+        $check = $row[$eqpatid];
+
+        if (!empty($row[$eqpatid]))
+        {
+            $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $check";
+            $sqlresult = $conn->query($sqlquery);
+            if ($sqlresult->num_rows > 0)
+                {
+                while($rows = $sqlresult->fetch_assoc()) {
+                    $asset->surname = $rows[$surname];
+                    $asset->forename = $rows[$forename];
+                    $asset->personaddress = $rows[$personaddress];
+                    $asset->personidspatient = $rows[$personidspatient];
+                }
+            }
+        }
+        else
+        {
+            $asset->surname = Null;
+            $asset->forename = Null;
+            $asset->personaddress = Null;
+            $asset->personidspatient = Null;
+        }
+        
+        
+
+        //$asset->purchase_cost;
+        //$asset->origin = $row["origin"];
 
         // Add asset to array
         $db_array[] = $asset;

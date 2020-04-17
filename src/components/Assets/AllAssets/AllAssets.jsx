@@ -16,6 +16,7 @@ import LoadingSpinner from "../../LoadingSpinner";
 import AssetsTable from "./AssetsTable";
 
 import {allAssets} from '../../../helperFile';
+import Session from "../../Session/Session.js";
 
 function PageBreadcrumbs() {
     return (
@@ -39,24 +40,30 @@ class AllAssets extends Component {
     }
 
     componentDidMount() {
+        if ( Session.isSignedIn() ) {
         /// Get all assets from database
-        axios({
-            method: 'get',
-            url: allAssets(),
-            headers: { 'content-type': 'application/json' },
-            timeout: API_TIMEOUT
-        }).then(result => {
-            this.setState({
-                assets: result.data.assets,
-                loaded: true,
+            axios({
+                method: 'get',
+                url: allAssets(),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                console.log(result.data);
+                this.setState({
+                    assets: result.data.assets,
+                    loaded: true,
+                });
+            }).catch(error => {
+                console.error(error);
+                this.setState({ 
+                    error: error.message,
+                    loaded: true, 
+                });
             });
-        }).catch(error => {
-            console.error(error);
-            this.setState({ 
-                error: error.message,
-                loaded: true, 
-            });
-        });
+        }
     }
 
     render() {

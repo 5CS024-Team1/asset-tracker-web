@@ -44,6 +44,12 @@ export function deallocateAsset() {
 export function assignedAssets() {
     return `${BASE_API_PATH}/assets/assigned-assets/`
 }
+export function getAsset(id) {
+    return `${BASE_API_PATH}/assets/get?id=${id}`
+}
+export function searchAsset(query) {
+    return `${BASE_API_PATH}/assets/search?q=${query}`
+}
 
 //Add User
 export function addUser() {
@@ -61,12 +67,17 @@ export function userNewId() {
 export function adminUsers() {
     return `${BASE_API_PATH}/user/admin-users/`
 }
+export function getUser(id) {
+    return `${BASE_API_PATH}/user/get?id=${id}`
+}
 
 // Export list (names are variable names from config file NOT the names from the DB)
-var id = "id";
-var display_name = "display_name";
+var id = "eqid";
+var display_name = "eqname";
 var category = "category";
 var last_ping_time = "last_ping_time";
-var date_loaned = "date_loaned";
-var date_return = "date_return";
-export { id, display_name, category, last_ping_time, date_loaned, date_return };
+var date_loaned = "loaned";
+var date_return = "owner_date_return";
+
+var stfid = "idsstaff";
+export { id, display_name, category, last_ping_time, date_loaned, date_return, stfid };

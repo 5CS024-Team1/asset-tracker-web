@@ -21,6 +21,7 @@ import {
 } from "../../consts";
 
 import {userNewId, addUser} from '../../helperFile';
+import Session from "../Session/Session.js";
 
 function PageBreadcrumbs() {
     return (
@@ -57,23 +58,28 @@ class RegisterUser extends Component
     }
 
     componentDidMount() {
-        /// Get new user id from db
-        axios({
-            method: 'GET',
-            url: userNewId(),
-            headers: { 'content-type': 'application/json' },
-        }).then(result => {
-            this.setState({
-                userId: result.data.userId,
-                userIdLoaded: true,
-            });
-        }).catch(error => {
-            this.setState({
-                userIdLoaded: true,
-                userId: "?",
-                error: error.message,
+        if ( Session.isSignedIn() ) {
+            /// Get new user id from db
+            axios({
+                method: 'GET',
+                url: userNewId(),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+            }).then(result => {
+                this.setState({
+                    userId: result.data.userId,
+                    userIdLoaded: true,
+                });
+            }).catch(error => {
+                this.setState({
+                    userIdLoaded: true,
+                    userId: "?",
+                    error: error.message,
+                })
             })
-        })
+        }
     }
 
     handleOnAdd(e) {

@@ -17,6 +17,8 @@ import {
 } from "../../consts";
 
 import LoadingSpinner from "../LoadingSpinner";
+import Session from "../Session/Session.js";
+import {searchAsset} from '../../helperFile';
 
 function Results(props) {
     return (
@@ -61,25 +63,31 @@ class Search extends Component {
     }
 
     componentDidMount() {
-        /// Get relevent query results from api
-        axios({
-            method: 'get',
-            url: `${BASE_API_PATH}/assets/search?q=${this.state.query}`,
-            headers: { 'content-type': 'application/json' },
-            timeout: API_TIMEOUT
-        }).then(result => {
-            this.setState({
-                results: result.data.assets,
-                loaded: true,
+        if ( Session.isSignedIn() ) {
+            /// Get relevent query results from api
+            console.log(`Searching for '${this.state.query}'`)
+            axios({
+                method: 'get',
+                url: searchAsset(this.state.query),
+                headers: { 
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + Session.getUser().api_token, 
+                 },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                console.log(result.data);
+                this.setState({
+                    results: result.data.assets,
+                    loaded: true,
+                });
+            }).catch(error => {
+                console.log(error);
+                this.setState({ 
+                    error: error.message,
+                    loaded: true, 
+                });
             });
-            console.log(this.state.assets);
-        }).catch(error => {
-            console.log(error);
-            this.setState({ 
-                error: error.message,
-                loaded: true, 
-            });
-        });
+        }
     }
 
     render() {

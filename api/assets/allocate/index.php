@@ -130,18 +130,14 @@ $result = $conn->query($sql);
 
 if ($result) 
 {
-    echo json_encode(
-        [
+    echo json_encode([
         "changes_set" => true,
-        ]
-    );
+    ]);
 } 
 else 
 {
-    echo json_encode(
-        [
+    echo json_encode([
         "changes_set" => false,
-        ]
-    );
+    ]);
 }
 ?>

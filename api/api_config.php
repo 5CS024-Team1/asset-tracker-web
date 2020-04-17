@@ -10,34 +10,73 @@ $SERVER_USERNAME = "root";
 $SERVER_PASSWORD = "";
 
 // Name of the database
-$DB_NAME = "db1824591";
+$DB_NAME = "nhs_asset_tracker";
 // Name of the table that holds all assets
+$DEPARTMENT_TABLE = "department";
 $ASSETS_TABLE = "equipment";
+$HOSPITAL_TABLE = "hospital";
+$ID_TABLE = "ids";
+$MAINTENANCE_TABLE = "maintenance";
 $USER_TABLE = "person";
+$LOGIN_TABLE = "user";
 
 /// Secret key for decoding login data info
 $API_SECRET_KEY = "abC123!";
 /// Duration in minutes of how long an API token (JWT/Login auth) is valid 
 $API_TOKEN_VALID_DURATION = 60;
 
+//department Table
+$deptid = "Dept_ID";
+$deptname = "Dept_Name";
+$depthospid = "Hosp_ID";
+$depthospfloor = "Hosp_Floor";
+$depthospward = "Hosp_Ward";
+
 //equipment Table
-$id = "PK_ID";
-$barcode = "Barcode";
-$display_name = "Name";
-$category = "Category";
-$latitude = "Latittude"; //Yes I know it's spelt wrong, thats how its in the database
-$longitude = "Longitude";
-$last_ping_time = "Ping_Time";
-$loaned = "Loaned";
-$owner_date_return = "Return_due";
-$last_cleaned = "Last_Cleaned";
+$eqid = "Equi_ID";
+$barcode = "Equi_Barcode";
+$eqname = "Equi_Name";
+$category = "Equi_Category";
+$latitude = "Equi_Latittude"; //Yes I know it's spelt wrong, thats how its in the database
+$longitude = "Equi_Longitude";
+$last_ping_time = "Equi_Timestamp";
+$eqpatid = "Equi_Assigned_Pats_IDs";
+$loaned = "Equi_Loaned";
+$owner_date_return = "Equi_Return_due";
+$eqdept = "Equi_Dept";
+$last_cleaned = "Equi_Main_Last_Cleaned";
 
-//In but not from right table
-///$origin = $row["origin"];
-///$owner_name = $row["owner_name"];
-///$owner_address = $row["owner_address"];
-///$owner_date_recieved = $row["owner_date_recieved"];
+//hospital Table
+$hospid = "Hosp_ID";
+$hospname = "Hosp_Name";
+$hospaddress = "Hosp_Address";
+$hosptown = "Hosp_Town";
+$hospcounty = "Hosp_County";
+$hospfloor = "Hosp_Floor";
+$hospward = "Hosp_Ward";
 
-//To do
-///$purchase_cost = doubleval($row["purchase_cost"]);
+//ids Table
+$idspatient = "IDs_Patient";
+$idsstaff = "IDs_Staff";
+$idsinpatient = "IDs_Inpatient";
+
+//Maintenance Table
+$issue = "Issue #";
+$details = "Details";
+$cleaningrecord = "Cleaning_Record";
+$mhospid = "Hosp_ID";
+$mainlastcleaned = "Main_Last_Cleaned";
+
+//Person(user) Table
+$surname = "Pers_Surname";
+$forename = "Pers_Forename";
+$personaddress = "Pers_Address";
+$persontown = "Pers_Town";
+$personcounty = "Pers_County";
+$personidspatient = "IDs_Patient";
+$personidsstaff = "IDs_Staff";
+
+//Login Table
+$loginame = "Username";
+$loginpass = "User_Pass"
 ?>

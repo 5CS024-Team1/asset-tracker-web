@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faUserTimes } from '@fortawesome/free-solid-svg-icons';
+import { stfid } from '../../helperFile';
 
 class ReturnUserTable extends Component {
     constructor(props) {
@@ -67,27 +68,10 @@ class ReturnUserTable extends Component {
 
     render() {
         const columns =[{
-            dataField: "admin_id",
+            dataField: stfid,
             text: "Id",
             sort: true,
             filter: textFilter()
-        },
-        {
-            dataField: "admin_name",
-            text: "User Name",
-            sort: true,
-            filter: textFilter()
-        }, 
-        {
-            dataField: "admin_email",
-            text: "User Email",
-            sort: true,
-            filter: textFilter()
-        }, 
-        {
-            dataField: "admin_type",
-            text: "User Type",
-            sort: true,
         }, {
             text: "",
             isDummyField: true,
@@ -96,7 +80,7 @@ class ReturnUserTable extends Component {
         }];
 
         const defaultSort = [{
-            dataField: "admin_id",
+            dataField: stfid,
             order: "asc", //ascending or descending (asc/desc)
         }];
         
@@ -104,7 +88,7 @@ class ReturnUserTable extends Component {
             <div>
                 <BootstrapTable 
                     bootstrap4 hover
-                    keyField="admin_id"
+                    keyField="idsstaff"
                     data={this.state.returnUsers}
                     columns={columns}
                     defaultSorted={defaultSort} 

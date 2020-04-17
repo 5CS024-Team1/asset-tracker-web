@@ -1,5 +1,5 @@
 <?php
-/// Entrypoint for getting all assets that have been assigned with a date
+/// Entrypoint for getting all accounts with admin access
 include_once("../../api_config.php");
 
 // Include cross origin headers
@@ -14,8 +14,8 @@ if (!$conn) {
 }
 // echo "Successfully connected <br/>";
 
-/// SQL Query command to select assets that have been assigned from the 'assets' table
-$sql = "SELECT * FROM $USER_TABLE WHERE admin_type='admin'";
+/// SQL Query command to select accounts starting with AD in the id table
+$sql = "SELECT * FROM $ID_TABLE WHERE $idsstaff LIKE '%AD%'";
 $result = $conn->query($sql);
 
 class User { }
@@ -26,12 +26,9 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $user = new User();
-        $user->admin_id = intval($row["admin_id"]);
-        $user->admin_name = $row["admin_name"];
-        $user->admin_email = $row["admin_email"];
-        $user->admin_type = $row["admin_type"];
+        $user->admin_id = $row[$idsstaff];
 
-        // Add asset to array
+        // Add user to array
         $db_array[] = $user;
     }
 
