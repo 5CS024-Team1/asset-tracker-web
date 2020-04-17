@@ -38,7 +38,7 @@ if (!$conn) {
 }
 
 /// Query to determine the next available asset id in table
-$sql = "SELECT * FROM $ASSETS_TABLE WHERE Equi_ID=" . $asset_id;
+$sql = "SELECT * FROM $ASSETS_TABLE WHERE $eqid=" . $asset_id;
 $result = $conn->query($sql);
 
 class Asset { }

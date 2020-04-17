@@ -18,6 +18,7 @@ import {
 
 import LoadingSpinner from "../LoadingSpinner";
 import Session from "../Session/Session.js";
+import {searchAsset} from '../../helperFile';
 
 function Results(props) {
     return (
@@ -66,7 +67,7 @@ class Search extends Component {
             /// Get relevent query results from api
             axios({
                 method: 'get',
-                url: `${BASE_API_PATH}/assets/search?q=${this.state.query}`,
+                url: searchAsset(),
                 headers: { 
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + Session.getUser().api_token, 

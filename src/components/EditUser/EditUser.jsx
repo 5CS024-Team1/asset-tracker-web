@@ -18,6 +18,7 @@ import {
     API_TIMEOUT,
 } from "../../consts";
 import LoadingSpinner from '../LoadingSpinner/index.js';
+import {getUser} from '../../helperFile';
 
 
 function PageBreadcrumbs() {
@@ -57,7 +58,7 @@ class EditUser extends Component {
         if ( Session.isSignedIn() ) {
             axios({
                 method: 'GET',
-                url: `${BASE_API_PATH}/user/get?id=${this.state.id}`,
+                url: getUser(),
                 headers: { 
                     'content-type': 'application/json', 
                     'authorization': 'Bearer ' + Session.getUser().api_token, 

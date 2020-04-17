@@ -25,7 +25,7 @@ import LoadingSpinner from "../../LoadingSpinner";
 import { convertDateFromDb } from "../../../utils";
 import Session from "../../Session/Session.js";
 
-import { id, display_name, category, last_ping_time, date_loaned, date_return } from "../../../helperFile";
+import { getAsset, id, display_name, category, last_ping_time, date_loaned, date_return } from "../../../helperFile";
 
 // Element for "/asset/:assetId?"
 // Displays full information about a specific asset
@@ -166,7 +166,7 @@ class SingleAsset extends Component
             axios({
                 method: 'get',
                 // No api set up currently, being left for now
-                url: `${BASE_API_PATH}/assets/get?id=${this.state.id}`,
+                url: getAsset(),
                 headers: { 
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
