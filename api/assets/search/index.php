@@ -19,7 +19,6 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
         "assets" => null,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
     exit();
 }
 

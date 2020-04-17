@@ -58,7 +58,7 @@ class EditUser extends Component {
         if ( Session.isSignedIn() ) {
             axios({
                 method: 'GET',
-                url: getUser(),
+                url: getUser(this.state.id),
                 headers: { 
                     'content-type': 'application/json', 
                     'authorization': 'Bearer ' + Session.getUser().api_token, 

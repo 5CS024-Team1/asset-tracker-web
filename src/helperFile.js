@@ -44,11 +44,11 @@ export function deallocateAsset() {
 export function assignedAssets() {
     return `${BASE_API_PATH}/assets/assigned-assets/`
 }
-export function getAsset() {
-    return `${BASE_API_PATH}/assets/get?id=${this.state.id}`
+export function getAsset(id) {
+    return `${BASE_API_PATH}/assets/get?id=${id}`
 }
-export function searchAsset() {
-    return `${BASE_API_PATH}/assets/search?q=${this.state.query}`
+export function searchAsset(query) {
+    return `${BASE_API_PATH}/assets/search?q=${query}`
 }
 
 //Add User
@@ -67,8 +67,8 @@ export function userNewId() {
 export function adminUsers() {
     return `${BASE_API_PATH}/user/admin-users/`
 }
-export function getUser() {
-    return `${BASE_API_PATH}/user/get?id=${this.state.id}`
+export function getUser(id) {
+    return `${BASE_API_PATH}/user/get?id=${id}`
 }
 
 // Export list (names are variable names from config file NOT the names from the DB)

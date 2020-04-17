@@ -65,9 +65,10 @@ class Search extends Component {
     componentDidMount() {
         if ( Session.isSignedIn() ) {
             /// Get relevent query results from api
+            console.log(`Searching for '${this.state.query}'`)
             axios({
                 method: 'get',
-                url: searchAsset(),
+                url: searchAsset(this.state.query),
                 headers: { 
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
@@ -79,7 +80,6 @@ class Search extends Component {
                     results: result.data.assets,
                     loaded: true,
                 });
-                console.log(this.state.assets);
             }).catch(error => {
                 console.log(error);
                 this.setState({ 

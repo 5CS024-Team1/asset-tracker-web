@@ -165,8 +165,7 @@ class SingleAsset extends Component
             /// Retrieve correct asset from database
             axios({
                 method: 'get',
-                // No api set up currently, being left for now
-                url: getAsset(),
+                url: getAsset(this.state.id),
                 headers: { 
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
