@@ -6,31 +6,28 @@ var Session = (function() {
 
     /// Load the current user auth
     var loadUser = function() {
-        /*
+        
         // Get the stored auth and pase
         var token = localStorage.getItem('user');
         if (!token) 
             return null;
         var parsedToken = JSON.parse(token);
-        */
-        
+
         // Temp login code
-        var parsedToken = {
-            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdGFydF9kYXRlIjoxNTgzOTUxMjUzfQ.nwGTGoPSgDk2Inl7b09DUZl2crB8hkjwo_1fBIM2f4U",
-            expiry_time: new Date().getTime() / 1000,
-        };
-        
-        
+        // var parsedToken = {
+        //     api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdGFydF9kYXRlIjoxNTgzOTUxMjUzfQ.nwGTGoPSgDk2Inl7b09DUZl2crB8hkjwo_1fBIM2f4U",
+        //     expiry_time: new Date().getTime() / 1000,
+        // };
         
         if (parsedToken && parsedToken.api_token) {
             // Decode the token
             _info = jwt_decode(parsedToken.api_token);
             _info.api_token = parsedToken.api_token;
             // Convert php time to date object
-            _info.expiry_time = new Date(_info.start_date * 1000);
+            _info.expiry_time = new Date(_info.expiry_time * 1000);
             
             // validate it's expiry to make sure it's valid
-            //Session.validate(_info.expiry_time);
+            Session.validate(_info.expiry_time);
 
             return _info;
         } else {

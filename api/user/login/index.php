@@ -24,15 +24,20 @@ if (!$conn) {
 }
 
 // Filter email to prevent SQL injection
-$email = $postData['email'];
-if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
-    exit("Email failed to filter correctly");
+$user_id = $postData['id'];
+if ( !filter_var($user_id, FILTER_SANITIZE_STRING) ) 
+{
+    echo json_encode([
+        "success" => false,
+        "error" => "Unable to sanitize user id",
+    ]);
+    die();
 }
 
 // Bind email and run query
-$sql = "SELECT * FROM $USER_TABLE WHERE admin_email=?";
+$sql = "SELECT * FROM $LOGIN_TABLE WHERE $loginame=?";
 $statement = $conn->prepare($sql);
-$statement->bind_param("s", $email);
+$statement->bind_param("s", $user_id);
 $statement->execute();
 $result = $statement->get_result();
 
@@ -44,22 +49,19 @@ if ($result && $result->num_rows > 0)
     $user = null;
     while($row = $result->fetch_assoc()) {
         $user = new User();
-        $user->admin_id = intval($row["admin_id"]);
-        $user->admin_name = $row["admin_name"];
-        $user->admin_email = $row["admin_email"];
-        $user->admin_type = $row["admin_type"];
-        $user->admin_password = $row["admin_password"];
+        $user->id = $row["Username"];
+        $user->password = $row["User_Pass"];
     }
 
     if(!$user) {
         exit("Unable to parse any user data from database");
     }
 
-    if ($email == $user->admin_email && password_verify($postData['password'], $user->admin_password)) 
+    if ($user_id == $user->id && password_verify($postData['password'], $user->password)) 
     {
         $encodedToken = Authentication::encryptPayload([
-            "user_id" => $user->admin_id,
-            "user_type" => $user->admin_type,
+            "user_id" => $user->id,
+            "user_type" => strpos($user->id, "AD") !== false, // Id contains AD if admin, else regular user
             "expiry_time" => time() + (60 * $API_TOKEN_VALID_DURATION),
         ], $API_SECRET_KEY);
         
@@ -80,6 +82,7 @@ else
 {
     echo json_encode([
         "success" => false,
+        "error" => "Unable to find any data",
     ], JSON_PRETTY_PRINT);
 }
 

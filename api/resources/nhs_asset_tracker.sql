@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2020 at 01:38 AM
+-- Generation Time: Apr 18, 2020 at 11:18 AM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- PHP Version: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -175,7 +175,7 @@ INSERT INTO `person` (`Pers_Surname`, `Pers_Forename`, `Pers_Address`, `Pers_Tow
 
 CREATE TABLE `user` (
   `Username` varchar(15) NOT NULL,
-  `User_Pass` varchar(20) NOT NULL
+  `User_Pass` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -183,8 +183,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`Username`, `User_Pass`) VALUES
-('AD1', 'password'),
-('1', 'password1');
+('1', '$2y$10$d2NxOAeRONPCcJkbQx5My.uaLSgqNHciSsxoaJeCNkO\\/1Jo9EMSzq'),
+('AD1', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m');
 
 --
 -- Indexes for dumped tables

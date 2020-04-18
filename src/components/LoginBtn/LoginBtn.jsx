@@ -31,7 +31,7 @@ class LoginBtn extends Component
         // Setup state of control
         this.state = {
             modalToggle: false,
-            email: "",
+            id: "",
             password: "",
             api_token: "",
             login_user: null,
@@ -158,9 +158,9 @@ class LoginBtn extends Component
                                         !this.state.success && this.state.error && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert>
                                     }
                                     <FormGroup className="mb-2 mr-sm-2">
-                                        <Label for="exampleEmail" className="mr-sm-2">Email</Label>
-                                        <Input type="email" name="email" id="exampleEmail" placeholder="username@email.com" 
-                                            onChange={e => this.setState({ email: e.target.value })}/>
+                                        <Label for="exampleId" className="mr-sm-2">User Id:</Label>
+                                        <Input type="text" name="id" id="exampleId" placeholder="ABC123" 
+                                            onChange={e => this.setState({ id: e.target.value })}/>
                                     </FormGroup>
                                     <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                         <Label for="examplePassword" className="mr-sm-2">Password</Label>
