@@ -43,6 +43,20 @@ $result = $statement->get_result();
 
 class User { }
 
+// Gets a string representation of the current user
+function getUserType($id)
+{
+    if (strpos($id, "AD") !== false)
+    {
+        return "admin";
+    }
+    else if (strpos($id, "REG") !== false)
+    {
+        return "staff";
+    }
+    return "user";
+}
+
 if ($result && $result->num_rows > 0) 
 {
     // Create a new array and store all data from table into it
@@ -61,7 +75,7 @@ if ($result && $result->num_rows > 0)
     {
         $encodedToken = Authentication::encryptPayload([
             "user_id" => $user->id,
-            "user_type" => strpos($user->id, "AD") !== false, // Id contains AD if admin, else regular user
+            "user_type" => getUserType($user->id),
             "expiry_time" => time() + (60 * $API_TOKEN_VALID_DURATION),
         ], $API_SECRET_KEY);
         

@@ -61,20 +61,22 @@ class AssetsTable extends Component {
             dataField: id,
             text: "Id",
             sort: true,
+            formatter: IdFormatter,
             filter: textFilter()
         }, {
             dataField: display_name,
             text: "Display Name",
             sort: true,
+            formatter: NullCheck,
             filter: textFilter()
         }, {
             dataField: category,
             text: "Category",
             sort: true,
-            formatter: cell => categoryOptions[cell],
-            filter: selectFilter({
-                options: categoryOptions
-            })
+            //formatter: cell => categoryOptions[cell],
+            // filter: selectFilter({
+            //     options: categoryOptions
+            // })
         }, {
             dataField: last_ping_time,
             text: "Last Pinged Time",

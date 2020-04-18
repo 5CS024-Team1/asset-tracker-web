@@ -61,10 +61,10 @@ class ReturnTable extends Component {
             dataField: category,
             text: "Category",
             sort: true,
-            formatter: cell => categoryOptions[cell],
-            filter: selectFilter({
-                options: categoryOptions
-            })
+            // formatter: cell => categoryOptions[cell],
+            // filter: selectFilter({
+            //     options: categoryOptions
+            // })
         }, 
         {
             dataField: last_ping_time,

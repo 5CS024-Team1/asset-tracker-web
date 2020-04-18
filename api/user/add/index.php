@@ -9,9 +9,9 @@ header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
 /// Creates an INSERT INTO query using the given data
-function BuildQuery($usid, $name, $email, $password, $account)
+function BuildQuery($user_table, $usid, $first_name, $last_name, $email, $password, $account)
 {
-    $query = "INSERT INTO user (admin_id, admin_name, admin_email, admin_password, admin_type)";
+    $query = "INSERT INTO $user_table (admin_id, admin_name, admin_email, admin_password, admin_type)";
     $query = "$query VALUES ('$usid', '$name', '$email', '$password', '$account')";
     return $query;
 }
@@ -30,7 +30,7 @@ if (!$conn) {
 
 /// Query for registering user into database
 $passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
-$sql = BuildQuery($post_data['userId'], $post_data['name'], $post_data['email'], $passwordHash, $post_data['account']);
+$sql = BuildQuery($LOGIN_TABLE, $post_data['userId'], $post_data['first_name'], $post_data['last_name'], $post_data['email'], $passwordHash, $post_data['account']);
 $result = $conn->query($sql);
 
 if($result)

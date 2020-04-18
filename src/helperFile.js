@@ -72,12 +72,12 @@ export function getUser(id) {
 }
 
 // Export list (names are variable names from config file NOT the names from the DB)
-var id = "eqid";
-var display_name = "eqname";
+var id = "id";
+var display_name = "display_name";
 var category = "category";
 var last_ping_time = "last_ping_time";
-var date_loaned = "loaned";
-var date_return = "owner_date_return";
+var date_loaned = "date_loaned";
+var date_return = "date_return";
 
 var stfid = "idsstaff";
 export { id, display_name, category, last_ping_time, date_loaned, date_return, stfid };

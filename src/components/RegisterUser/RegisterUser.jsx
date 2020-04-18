@@ -47,8 +47,8 @@ class RegisterUser extends Component
             userIdLoaded: false,
             userSet: false,
 
-            email: "",
-            name: "",
+            first_name: "",
+            last_name: "",
             password: "",
             account: "",
 
@@ -98,8 +98,8 @@ class RegisterUser extends Component
     
     render() {
         let idNumHtml = <div>
-                            <Label>Id Number:</Label>
-                            <Input type="number" name="usid" placeholder="User Id number" disabled value={this.state.userId} />
+                            <Label>Id:</Label>
+                            <Input type="number" name="usid" placeholder="?" disabled value={this.state.userId} />
                         </div>
         let sentHtml =  <div className="d-flex">
                             <div className="ml-auto">
@@ -123,27 +123,27 @@ class RegisterUser extends Component
                                 }
                             </FormGroup>
                             <FormGroup>
-                                <Label for="exampleEmail">Email</Label>
-                                <Input type="text" name="email" id="exampleEmail" placeholder="email@example.com" 
-                                    onChange={ e => this.setState({ email: e.target.value }) } />
+                                <Label>Account Type:</Label>
+                                <Input type="select" name="account" id="accountType" onChange={ e => this.setState({ account: e.target.value }) }>
+                                    <option value="normal">Normal</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="firstNameInput">First Name</Label>
+                                <Input type="text" name="name" id="firstNameInput" placeholder="Alan" 
+                                    onChange={ e => this.setState({ first_name: e.target.value }) } />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="lastNameInput">Last Name</Label>
+                                <Input type="text" name="name" id="lastNameInput" placeholder="Smith"
+                                    onChange={ e=> this.setState({ last_name: e.target.value })} />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="examplePassword">Password</Label>
                                 <Input type="password" name="password" id="examplePassword" placeholder="A super secure password" 
                                     onChange={ e => this.setState({ password: e.target.value }) } />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="exampleName">Name</Label>
-                                <Input type="text" name="name" id="exampleName" placeholder="First and Last Name" 
-                                    onChange={ e => this.setState({ name: e.target.value }) } />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Account Type:</Label>
-                                <Input type="select" name="account" id="exampleAccount">
-                                    <option value="normal">Normal</option>
-                                    <option value="admin">Admin</option>
-                                    onChange={ e => this.setState({ account: e.target.value }) } />
-                                </Input>
                             </FormGroup>
                         </Col>
                     </Row>
