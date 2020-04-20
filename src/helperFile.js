@@ -71,6 +71,10 @@ export function adminUsers() {
 export function getUser(id) {
     return `${BASE_API_PATH}/user/get?id=${id}`
 }
+/// Login API path
+export function login() {
+    return `${BASE_API_PATH}/user/login/`;
+}
 
 // Export list (names are variable names from config file NOT the names from the DB)
 var id = "id";

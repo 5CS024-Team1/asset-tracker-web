@@ -17,11 +17,11 @@ import { faSignInAlt, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-i
 import axios from 'axios';
 
 import {
-    BASE_API_PATH,
     API_TIMEOUT
 } from '../../consts';
 import Session from "../Session/Session.js";
 import LoadingSpinner from "../LoadingSpinner";
+import { login } from '../../helperFile';
 
 class LoginBtn extends Component
 {
@@ -83,7 +83,7 @@ class LoginBtn extends Component
         });
         axios({
             method: 'POST',
-            url: `${BASE_API_PATH}/user/login/`,
+            url: login(),
             headers: { 'content-type': 'application/json' },
             timeout: API_TIMEOUT,
             data: this.state,

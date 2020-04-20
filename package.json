@@ -1,7 +1,7 @@
 {
   "name": "asset-tracker-web",
   "homepage": "https://mi-linux.wlv.ac.uk/~1700471/asset-tracker-web",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
