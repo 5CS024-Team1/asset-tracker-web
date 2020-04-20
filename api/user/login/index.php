@@ -12,18 +12,27 @@ header('Content-Type: application/json');
 $rest_json = file_get_contents("php://input");
 $postData = json_decode($rest_json, true);
 
-// Check if email and password are set
-if ( empty($postData['email']) && empty($postData['password']) ) {
-    exit("No username or password recieved");
+// Check if id and password are set
+if ( empty($postData['id']) || empty($postData['password']) ) 
+{
+    echo json_encode([
+        "success" => false,
+        "error" => "No user id or password recieved",
+    ]);
+    die();
 }
 
 //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
-    die("Unable to open connection - " . mysqli_connect_error());
+    echo json_encode([
+        "success" => false,
+        "error" => "Unable to open connection - " . mysqli_connect_error(),
+    ]);
+    die();
 }
 
-// Filter email to prevent SQL injection
+// Filter id to prevent SQL injection
 $user_id = $postData['id'];
 if ( !filter_var($user_id, FILTER_SANITIZE_STRING) ) 
 {
@@ -34,7 +43,7 @@ if ( !filter_var($user_id, FILTER_SANITIZE_STRING) )
     die();
 }
 
-// Bind email and run query
+// Bind id and run query
 $sql = "SELECT * FROM $LOGIN_TABLE WHERE $loginame=?";
 $statement = $conn->prepare($sql);
 $statement->bind_param("s", $user_id);
@@ -68,10 +77,14 @@ if ($result && $result->num_rows > 0)
     }
 
     if(!$user) {
-        exit("Unable to parse any user data from database");
+        echo json_encode([
+            "success" => false,
+            "error" => "Unable to parse any user data from database",
+        ]);
+        die();
     }
 
-    if ($user_id == $user->id && password_verify($postData['password'], $user->password)) 
+    if (strtolower($user_id) == strtolower($user->id) && password_verify($postData['password'], $user->password)) 
     {
         $encodedToken = Authentication::encryptPayload([
             "user_id" => $user->id,
