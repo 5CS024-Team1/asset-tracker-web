@@ -67,6 +67,7 @@ export function userNewId() {
 export function adminUsers() {
     return `${BASE_API_PATH}/user/admin-users/`
 }
+// Get user info from id
 export function getUser(id) {
     return `${BASE_API_PATH}/user/get?id=${id}`
 }

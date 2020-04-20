@@ -9,7 +9,8 @@ import {
     FormGroup,
     Input,
     Label,
-    Button
+    Button,
+    UncontrolledAlert
 } from "reactstrap";
 import axios from 'axios';
 
@@ -19,6 +20,7 @@ import {
 } from "../../consts.js";
 import Session from "../Session/Session.js";
 import LoadingSpinner from "../LoadingSpinner";
+import { getUser } from '../../helperFile.js';
 
 function PageBreadcrumbs() {
     return (
@@ -89,9 +91,13 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        if (!this.state.id) {
+            console.error("No Id!");
+            return;
+        }
         axios({
             method: 'GET',
-            url: `${BASE_API_PATH}/user/get?id=${this.state.id}`,
+            url: getUser(this.state.id),
             headers: { 
                 'content-type': 'application/json', 
                 'authorization': 'Bearer ' + Session.getUser().api_token, 
@@ -102,6 +108,7 @@ class Profile extends Component {
             this.setState({
                 user: result.data.user,
                 loaded: true,
+                error: result.data.error,
             });
             console.log(this.state.assets);
         }).catch(error => {
@@ -124,8 +131,10 @@ class Profile extends Component {
         }).then(result => {
             console.log(result);
             this.setState({
-                passSuccess: result.success,
+                passSuccess: result.data.success,
                 passLoaded: true,
+                successMessage: "Sucessfully changed password!",
+                error: result.data.error,
             });
         }).catch(error => {
             console.log(error);
@@ -140,6 +149,18 @@ class Profile extends Component {
     render() {
         return (
             <Container>
+                {
+                    this.state.error && 
+                        <UncontrolledAlert color="danger" className="my-3">
+                            Error: {this.state.error}
+                        </UncontrolledAlert>
+                }
+                {
+                    this.state.successMessage &&
+                        <UncontrolledAlert color="danger" className="my-3">
+                            {this.state.successMessage}
+                        </UncontrolledAlert>
+                }
                 <PageBreadcrumbs />
                 <h1>Profile</h1>
                 { !this.state.loaded && <LoadingSpinner /> }
