@@ -64,11 +64,13 @@ class Authentication
     }
 
     // Check if authorization header is set and validates the auth token
-    public static function requestContainsAuth($server, $secretKey)
+    public static function requestContainsAuth($secretKey)
     {
         $isValidAuth = false;
-        if (isset($server["HTTP_AUTHORIZATION"])) {
-            $auth = $server["HTTP_AUTHORIZATION"];
+        $allHeaders = getallheaders();
+        if (isset($allHeaders["authorization"])) {
+            $auth = $allHeaders["authorization"];
+            
             $split = explode(' ', $auth);
             $isValidAuth = Authentication::validatePayload($split[1], $secretKey);
         }

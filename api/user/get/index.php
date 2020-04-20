@@ -13,7 +13,7 @@ header("Access-Control-Allow-Methods: GET");
 header('Content-Type: application/json');
 
 // Check if authorization header is set, exit if not
-if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
+if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
     echo json_encode([
         "user" => null, 
         "error" => "No Authorization found in request"

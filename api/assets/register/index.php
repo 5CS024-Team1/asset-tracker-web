@@ -10,7 +10,7 @@ header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header('Content-Type: application/json');
 
 // Check if request contains user auth
-if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
+if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
     echo json_encode([
         "asset_set" => false,
         "error" => "Authorization token is required",
