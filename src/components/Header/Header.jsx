@@ -3,7 +3,7 @@ import {
     Input,
     Button
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +23,7 @@ class Header extends Component {
     handleInputKeyDown(e) {
         // Redirect to search when enter pressed on Input
         if (e.key === 'Enter') {
-            window.location.replace(`/search?query=${this.state.search}`);
+            this.setState({ redirect: `/search?query=${this.state.search}` });
         }
     }
 
@@ -45,6 +45,7 @@ class Header extends Component {
                 </div>
                 {/* Login button */}
                 <LoginBtn />
+                { this.state.redirect && <Redirect push to={this.state.redirect}/> }
             </div>
         );
     }

@@ -56,22 +56,22 @@ function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     
-                    <Route exact path="/assets" component={AllAssets} />
-                    <Route path="/assets/register" component={RegisterAsset} />
-                    <Route exact path="/asset/:assetId?" component={SingleAsset} />
-                    <Route exact path="/asset/:assetId?/allocate" component={AllocateAsset} />
+                    <Route exact path="/assets" render={(props) => requireAuth(<AllAssets props={props} />) } />
+                    <Route path="/assets/register" render={(props) => requireAuth(<RegisterAsset props={props} />) } />
+                    <Route exact path="/asset/:assetId?" render={(props) => requireAuth(<SingleAsset props={props} />) } />
+                    <Route exact path="/asset/:assetId?/allocate" render={(props) => requireAuth(<AllocateAsset props={props} />) } />
 
-                    <Route exact path="/dashboard" component={Dashboard} /> {/* render={() => requireAuth(<Dashboard />) } */}
+                    <Route exact path="/dashboard" render={(props) => requireAuth(<Dashboard props={props} />) }/> 
 
                     <Route path="/search" component={Search} />
 
-                    <Route exact path="/reports/calendar" component={CollectCalendar} />
-                    <Route path="/reports" component={Reports} />
+                    <Route exact path="/reports/calendar" render={(props) => requireAuth(<CollectCalendar props={props}/>) } />
+                    <Route path="/reports" render={(props) => requireAuth(<Reports props={props} />) } />
 
-                    <Route exact path="/users/edit/:userId?" component={EditUser} />
-                    <Route exact path="/users/register" component={RegisterUser} />
-                    <Route path="/users" component={User} />
-                    <Route path="/profile" component={Profile} />
+                    <Route exact path="/users/edit/:userId?" render={(props) => requireAuth(<EditUser props={props} />) } />
+                    <Route exact path="/users/register"  render={(props) => requireAuth(<RegisterUser props={props} />) } />
+                    <Route path="/users"  render={(props) => requireAuth(<User props={props}/>) }  />
+                    <Route path="/profile"  render={(props) => requireAuth(<Profile props={props}/>) } />
 
                     <Route component={NotFound} />
                 </Switch>

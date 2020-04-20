@@ -9,7 +9,7 @@ import {
     Button,
     Row, Col
 } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
 import Session from "../Session/Session.js";
@@ -40,7 +40,7 @@ class EditUser extends Component {
         super(props);
         
         // Get asset id from Path parameters
-        const { params } = this.props.match;
+        const { params } = this.props.props.match;
         this.state = {
             loaded: false,
             error: "",
@@ -102,7 +102,7 @@ class EditUser extends Component {
             });
             if (this.state.success) {
                 setTimeout(() => {
-                    window.location.replace(`/users`);
+                    this.setState({ redirect: "/users" });
                 }, 1000);
             } else {
                 this.setState({
@@ -191,6 +191,7 @@ class EditUser extends Component {
                         </Form>
                     </Col>
                 </Row>
+                { this.state.redirect && <Redirect push to={this.state.redirect}/> }
             </Container>
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import {
     Container,
     Row,
@@ -111,11 +111,12 @@ class RegisterAsset extends Component {
             this.setState({
                 assetSet: result.data.asset_set,
                 error: result.data.error,
+                successMessage: result.data.asset_set ? "Asset has been registered successfully!" : "",
             });
             /// Redirect user once complete
-            // setTimeout(() => {
-            //     window.location.replace(`/assets`);
-            // }, 1000);
+            setTimeout(() => {
+                this.setState({ redirect: "/assets" });
+            }, 1000);
         }).catch(error => this.setState({ error: error.message }));
     }
 
@@ -140,12 +141,6 @@ class RegisterAsset extends Component {
                             <Label>Id Number:</Label>
                             <Input type="number" name="idNumber" placeholder="Asset Id number" disabled value={this.state.assetId} />
                         </div>
-        let sentHtml =  <div className="d-flex">
-                            <div className="ml-auto">
-                                Asset has been set!
-                            </div>
-                        </div>
-
         return (
             <Container>
                 {
@@ -153,6 +148,12 @@ class RegisterAsset extends Component {
                         <UncontrolledAlert color="danger" className="my-3">
                             Error Occured: {this.state.error}
                         </UncontrolledAlert>
+                }
+                {
+                    this.state.successMessage &&
+                    <UncontrolledAlert color="success" className="my-3">
+                        {this.state.successMessage}
+                    </UncontrolledAlert>
                 }
                 <PageBreadcrumbs />
                 <h1>Register Asset</h1>
@@ -217,8 +218,9 @@ class RegisterAsset extends Component {
                             Submit
                         </Button>
                     </div>
-                    { this.state.assetSet && sentHtml }
                 </Form>
+                {/* Redirect using ReactRouterDom once register success */}
+                { this.state.redirect && <Redirect push to={this.state.redirect}/>}
             </Container>
         );
     }

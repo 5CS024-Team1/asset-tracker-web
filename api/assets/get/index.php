@@ -17,7 +17,6 @@ if (!Authentication::requestContainsAuth($_SERVER, $API_SECRET_KEY)) {
         "assets" => null,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
     exit();
 }
 
@@ -90,16 +89,16 @@ if ($result->num_rows > 0)
         //$asset->origin = $row["origin"];
     }
 
-    // Return the array of assets
+    // Return single asset
     echo json_encode([
-        "assets" => $asset
+        "asset" => $asset
     ], JSON_PRETTY_PRINT);
 } 
 else 
 {
-    // Unable to get any data from table or table is empty, return null array
+    // Unable to get any data from table or table is empty, return null asset
     $arr = array(
-        "assets" => null
+        "asset" => null
     );
     echo json_encode($arr, JSON_PRETTY_PRINT);
 }

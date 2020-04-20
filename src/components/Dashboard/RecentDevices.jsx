@@ -18,10 +18,15 @@ import { convertDateFromDb } from "../../utils.js";
 
 // Sorts assets by their return date and returns the top amount (0 to amount)
 function sortByReturnDate(assets, amount) {
-    var sorted = assets.sort(function(a, b) {
+    // Remove any assets that don't have return date
+    var filtered = assets.filter(function (element) {
+        return element.date_return != null;
+    });
+    
+    var sorted = filtered.sort(function(a, b) {
         // convert to js date and compare
         var dateA = convertDateFromDb(a.date_return), dateB = convertDateFromDb(b.date_return);
-        if(dateA > dateB)
+        if( dateA > dateB)
             return 1;
         else 
             return -1;
@@ -99,6 +104,7 @@ class RecentDevices extends Component {
         return (
             <div style={{"overflowY": "auto"}}>
                 <h3>Return Devices</h3>
+                <h6>Sorted in chronological order</h6>
                 <Table size="sm">
                     <thead>
                         <tr>

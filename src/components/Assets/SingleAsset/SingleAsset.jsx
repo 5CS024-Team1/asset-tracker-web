@@ -148,7 +148,7 @@ class SingleAsset extends Component
         super(props);
         
         // Get asset id from Path parameters
-        const { params } = this.props.match;
+        const { params } = this.props.props.match;
         this.state = {
             id: params.assetId,
             error: "",
@@ -164,20 +164,19 @@ class SingleAsset extends Component
         if ( Session.isSignedIn() ) {
             /// Retrieve correct asset from database
             axios({
-                method: 'get',
+                method: 'GET',
                 url: getAsset(this.state.id),
                 headers: { 
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
                  },
             }).then(result => {
-                console.log(result.data);
                 this.setState({
                     asset: result.data.asset,
                     assetIdLoaded: true,
+                    error: result.data.error,
                 });
             }).catch(error => {
-                console.log(error);
                 this.setState({
                     assetIdLoaded: true,
                     assetId: "?",

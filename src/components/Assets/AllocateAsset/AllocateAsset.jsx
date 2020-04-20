@@ -11,7 +11,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
 } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 
 import {
@@ -74,7 +74,7 @@ class AllocateAsset extends Component {
     constructor(props) {
         super(props);
 
-        const { params } = this.props.match;
+        const { params } = this.props.props.match;
         this.state = {
             id: params.assetId,
             error: "",
@@ -123,7 +123,7 @@ class AllocateAsset extends Component {
             if (this.state.changes_set) {
                 /// Redirect user once complete
                 setTimeout(() => {
-                    window.location.replace(`/asset/${this.state.id}`);
+                    this.setState({ redirect: `/asset/${this.state.id}` });
                 }, 1000);
             }
         }).catch(error => {
@@ -203,6 +203,7 @@ class AllocateAsset extends Component {
                         this.state.changes_set && <div>Sucessfully set the new changes</div>
                     }
                 </div>
+                { this.state.redirect && <Redirect push to={this.state.redirect} />}
             </Container>
         );
     }

@@ -11,7 +11,7 @@ import {
     Label,
     UncontrolledAlert
 } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -111,8 +111,12 @@ class LoginBtn extends Component
     handleConfirmSignout() {
         Session.setUser(null);
         setTimeout(() => {
-            window.location.replace("/");
+            this.setState({ 
+                redirect: "/",
+                api_token: null,
+            });
         }, 1000);
+        this.handleToggleLoginModal();
     }
 
     render() {
@@ -141,7 +145,7 @@ class LoginBtn extends Component
                 {/* Login Modal */}
                 <Modal isOpen={this.state.modalToggle}>
                     <ModalHeader>
-                        { this.state.login_info ? "Sign In" : "Sign Out" }
+                        { this.state.login_user ? "Sign Out" : "Sign In" }
                     </ModalHeader>
                     <ModalBody>
                         {
@@ -193,6 +197,7 @@ class LoginBtn extends Component
                         }
                     </ModalFooter>
                 </Modal>
+                { this.state.redirect && <Redirect push to={this.state.redirect} /> }
             </div>
         );
     }

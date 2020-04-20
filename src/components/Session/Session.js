@@ -57,6 +57,7 @@ var Session = (function() {
     var validate = function (expiryDate) {
         if (expiryDate <= new Date()) {
             Session.setUser(null);
+            console.log("Signed out user, credentials have expired");
             window.location.replace("/");
         }
     }

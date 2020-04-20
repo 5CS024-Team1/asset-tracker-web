@@ -4,7 +4,7 @@ import filterFactory, {
     textFilter,
     selectFilter,
 } from 'react-bootstrap-table2-filter';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
     Button,
     Modal,
@@ -62,7 +62,7 @@ class ReturnUserTable extends Component {
         this.toggleDeleteUserModal(-1);
         /// Redirect user once complete
         setTimeout(() => {
-            window.location.replace(`/users`);
+            this.setState({ redirect: "/users" });
         }, 1000);
     }
 
@@ -104,6 +104,7 @@ class ReturnUserTable extends Component {
                         <Button color="secondary" onClick={this.toggleDeleteUserModal}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+                { this.state.redirect && <Redirect push to={this.state.redirect} />}
             </div>
         );
     }

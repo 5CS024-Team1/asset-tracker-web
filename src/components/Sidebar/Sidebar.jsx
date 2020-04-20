@@ -6,6 +6,10 @@ import {
     ListGroupItem
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
 import Session from "../Session/Session.js";
 
 let pkg = require('../../../package.json');
@@ -31,7 +35,12 @@ class Sidebar extends Component {
                         className="mx-auto">
                         Asset Angels
                     </NavbarBrand>
-                    <div className="version-number muted mx-auto">{pkg ? pkg.version : "Unknown"}</div>
+                    <div className="d-flex mx-auto">
+                        <div className="version-number muted my-auto">{pkg ? pkg.version : "Unknown"}</div>
+                        <a className="my-auto ml-2" href="https://github.com/5CS024-Team1/asset-tracker-web/" style={{ color: "black" }}>
+                            <FontAwesomeIcon icon={faGithub} />
+                        </a>
+                    </div>
                     <Link to="/" className="mx-auto mt-2 mb-4">
                         <img src={process.env.PUBLIC_URL + '/aa_logo.png'} 
                             alt="Asset Angels logo" 
