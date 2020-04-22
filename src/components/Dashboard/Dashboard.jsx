@@ -8,18 +8,33 @@ import {
 
 import RecentDevices from "./RecentDevices";
 import OverviewMap from "./OverviewMap";
+import axios from 'axios';
 
-function AssetStatusControl(props) {
+import {
+    API_TIMEOUT
+} from "../../consts";
+import { allAssets } from '../../helperFile';
+import Session from "../Session/Session.js";
+import LoadingSpinner from '../LoadingSpinner';
+
+function StatsControl(props) {
     return (
-        <Row >
-            <Col md={6}>
-                <h5>{props.onlineAmount}</h5>
-                <div>Online</div>
+        <Row>
+            <Col md={6} className="mx-auto">
+                { 
+                    props.assetsTotal 
+                    ? <div><h5 className="text-center">{props.assetsTotal}</h5><div className="text-center">Registered Assets</div></div> 
+                    : <LoadingSpinner className="mx-auto" medium /> 
+                }
             </Col>
             <Col md={6}>
-                <h5>{props.offlineAmount}</h5>
-                <div>Offline</div>
+                {
+                    props.assignedTotal
+                    ? <div><h5 className="text-center">{props.assignedTotal}</h5><div className="text-center">Assigned to Patients</div></div>
+                    : <LoadingSpinner medium />
+                }
             </Col>
+            
         </Row>
     );
 }
@@ -29,12 +44,34 @@ class Dashboard extends Component {
         super(props);
 
         this.state = {
-            assetStatus: {
-                online: 0,
-                offline: 0
-            },
-            recentAssets : [ ],
         }
+    }
+
+    componentDidMount() {
+        axios({
+            method: 'GET',
+            url: allAssets(),
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token, 
+            },
+            timeout: API_TIMEOUT,
+        }).then(result => {
+            console.log(result);
+            this.setState({
+                loaded: true,
+                totalAssets: result.data.assets.length,
+                totalAssigned: result.data.assets.filter(function (value) {
+                    return value.date_loaned != null ? value : null;
+                }).length,
+            });
+        }).catch(error => {
+            console.log(error);
+            this.setState({
+                loaded: true,
+                error: error.message,
+            })
+        });
     }
     
     render() {
@@ -45,7 +82,7 @@ class Dashboard extends Component {
                     <Col md={6}>
                         <Row>
                             <Jumbotron className="w-100">
-                                <AssetStatusControl onlineAmount="2" offlineAmount="5" />
+                                <StatsControl assetsTotal={this.state.totalAssets} assignedTotal={this.state.totalAssigned} />
                             </Jumbotron>
                         </Row>
                         <Row>

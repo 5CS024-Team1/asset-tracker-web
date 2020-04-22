@@ -19,7 +19,7 @@ if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
         "changes_set" => false,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
+    //http_response_code(401);
     exit();
 }
 
@@ -36,13 +36,11 @@ if (!$conn) {
 }
 
 function BuildQuery($id)
-
 {
     //The Query is retured in paramaters.
     $query = ("UPDATE assets SET owner_name = NULL, owner_address = NULL, owner_date_recieved = NULL, owner_date_return = NULL WHERE assets.id = ?");
-    $query->bind_param("s", $id)
+    $query->bind_param("s", $id);
     return $query;
-
 }
 
 // Perform SQL command to deallocate asset from person
