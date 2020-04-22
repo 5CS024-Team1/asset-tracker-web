@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2020 at 11:18 AM
+-- Generation Time: Apr 22, 2020 at 11:50 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.3.10
+-- PHP Version: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -72,8 +72,8 @@ CREATE TABLE `equipment` (
 --
 
 INSERT INTO `equipment` (`Equi_ID`, `Equi_Barcode`, `Equi_Name`, `Equi_Category`, `Equi_Latittude`, `Equi_Longitude`, `Equi_Timestamp`, `Equi_Assigned_Pats_IDs`, `Equi_Loaned`, `Equi_Return_due`, `Equi_Dept`, `Equi_Main_Last_Cleaned`) VALUES
-('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-04-11 23:30:10', 1, '2020-04-01 00:29:05', '2020-04-22 00:29:05', 3, NULL),
-('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-11 23:37:43', NULL, NULL, NULL, 2, NULL);
+('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-04-11 22:30:10', 1, '2020-04-01 00:29:05', '2020-04-22 00:29:05', 3, NULL),
+('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-11 22:37:43', NULL, NULL, NULL, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -120,8 +120,8 @@ CREATE TABLE `ids` (
 INSERT INTO `ids` (`IDs_Patient`, `IDs_Staff`, `IDs_Inpatient`) VALUES
 (NULL, 'AD1', NULL),
 (NULL, 'AD2', NULL),
-(NULL, 'REG1', NULL),
-(NULL, 'REG2', NULL),
+(NULL, 'STF1', NULL),
+(NULL, 'STF2', NULL),
 (1, NULL, NULL),
 (2, NULL, NULL),
 (3, NULL, NULL),
@@ -164,8 +164,8 @@ CREATE TABLE `person` (
 INSERT INTO `person` (`Pers_Surname`, `Pers_Forename`, `Pers_Address`, `Pers_Town`, `Pers_County`, `IDs_Patient`, `IDs_Staff`) VALUES
 ('Goodyear', 'Jane', '9 Snowshill', 'Dudley', 'West Midlands', 1, 'AD1'),
 ('Samson', 'Joe', '9 Brownhill', 'Dudley', 'West Midlands', 2, 'AD2'),
-('Whitehouse', 'Sarah', '12 Bromsgrove', 'Stourbridge', 'West Midlands', 3, 'REG1'),
-('Blakesly', 'Luke', '342 Himley Road', 'Dudley', 'West Midlands', 4, 'REG2');
+('Whitehouse', 'Sarah', '12 Bromsgrove', 'Stourbridge', 'West Midlands', 3, 'STF1'),
+('Blakesly', 'Luke', '342 Himley Road', 'Dudley', 'West Midlands', 4, 'STF2');
 
 -- --------------------------------------------------------
 
@@ -175,16 +175,17 @@ INSERT INTO `person` (`Pers_Surname`, `Pers_Forename`, `Pers_Address`, `Pers_Tow
 
 CREATE TABLE `user` (
   `Username` varchar(15) NOT NULL,
-  `User_Pass` varchar(100) NOT NULL
+  `User_Pass` varchar(100) NOT NULL,
+  `STAFF_ID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`Username`, `User_Pass`) VALUES
-('1', '$2y$10$d2NxOAeRONPCcJkbQx5My.uaLSgqNHciSsxoaJeCNkO\\/1Jo9EMSzq'),
-('AD1', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m');
+INSERT INTO `user` (`Username`, `User_Pass`, `STAFF_ID`) VALUES
+('admin', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'AD1'),
+('Bob1', '$2y$10$d2NxOAeRONPCcJkbQx5My.uaLSgqNHciSsxoaJeCNkO\\/1Jo9EMSzq', 'STF1');
 
 --
 -- Indexes for dumped tables
@@ -239,7 +240,8 @@ ALTER TABLE `person`
 --
 ALTER TABLE `user`
   ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `User_Pass` (`User_Pass`);
+  ADD UNIQUE KEY `User_Pass` (`User_Pass`),
+  ADD KEY `IDs_Staff` (`STAFF_ID`);
 
 --
 -- Constraints for dumped tables
@@ -271,6 +273,12 @@ ALTER TABLE `maintenance`
 ALTER TABLE `person`
   ADD CONSTRAINT `Pers_Pats_ID` FOREIGN KEY (`IDs_Patient`) REFERENCES `ids` (`IDs_Patient`) ON UPDATE CASCADE,
   ADD CONSTRAINT `Pers_Staf_ID` FOREIGN KEY (`IDs_Staff`) REFERENCES `ids` (`IDs_Staff`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `IDs_Staff` FOREIGN KEY (`STAFF_ID`) REFERENCES `ids` (`IDs_Staff`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
