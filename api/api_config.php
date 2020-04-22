@@ -78,5 +78,6 @@ $personidsstaff = "IDs_Staff";
 
 //Login Table
 $loginame = "Username";
-$loginpass = "User_Pass"
+$loginpass = "User_Pass";
+$loginID = "STAFF_ID";
 ?>

@@ -44,7 +44,7 @@ if ( !filter_var($user_id, FILTER_SANITIZE_STRING) )
 }
 
 // Bind id and run query
-$sql = "SELECT * FROM $LOGIN_TABLE WHERE $loginame=?";
+$sql = "SELECT * FROM $LOGIN_TABLE WHERE $loginID=?";
 $statement = $conn->prepare($sql);
 $statement->bind_param("s", $user_id);
 $statement->execute();
@@ -59,7 +59,7 @@ function getUserType($id)
     {
         return "admin";
     }
-    else if (strpos($id, "REG") !== false)
+    else if (strpos($id, "STF") !== false)
     {
         return "staff";
     }
@@ -72,7 +72,7 @@ if ($result && $result->num_rows > 0)
     $user = null;
     while($row = $result->fetch_assoc()) {
         $user = new User();
-        $user->id = $row["Username"];
+        $user->id = $row["STAFF_ID"];
         $user->password = $row["User_Pass"];
     }
 
