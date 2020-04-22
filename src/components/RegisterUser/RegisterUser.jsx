@@ -68,6 +68,7 @@ class RegisterUser extends Component
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
                  },
             }).then(result => {
+                console.log(result.data);
                 this.setState({
                     userId: result.data.userId,
                     userIdLoaded: true,
