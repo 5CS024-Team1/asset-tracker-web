@@ -80,6 +80,7 @@ class RegisterAsset extends Component {
                 },
                 timeout: API_TIMEOUT,
             }).then(result => {
+                console.log(result);
                 this.setState({
                     assetId: result.data.assetId,
                     assetIdLoaded: true,

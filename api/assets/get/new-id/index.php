@@ -29,15 +29,29 @@ if(!$conn)
 }
 
 /// Query to determine the next available asset id in table
-// $sql = "sql query";
-// $result = $conn->query($sql);
+$sql = "SELECT $eqid FROM $ASSETS_TABLE ORDER BY $eqid DESC LIMIT 1";
+$result = $conn->query($sql);
 
 // Return determined free index
+if ($result && $result->num_rows > 0)
+{
+    $row = $result->fetch_assoc();
+    
+    // Get the last index and increment by one
+    $newId = $row[$eqid] + 1;
+    echo json_encode([
+        "assetId" => $newId,
+    ], JSON_PRETTY_PRINT);
+}
+else
+{
+    echo json_encode([
+        "assetId" => -1,
+        "error" => "Unable to find any data",
+    ], JSON_PRETTY_PRINT);
+}
 
-echo json_encode([
-    "assetId" => rand(0, 999),
-], JSON_PRETTY_PRINT);
-
+// Close connection when complete
 $conn->close();
 
 ?>
