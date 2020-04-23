@@ -19,7 +19,6 @@ if(!$conn)
 
 /// Query to determine the next available asset id in table
 $sql = "SELECT $idsstaff FROM $ID_TABLE WHERE $idsstaff LIKE '%STF%' ORDER BY $idsstaff DESC";
-//$sql = "SELECT IDs_Staff FROM ids WHERE IDs_Staff LIKE '%STF%' ORDER BY IDs_Staff DESC";
 $result = $conn->query($sql);
 
 
@@ -28,7 +27,7 @@ if ($result && $result->num_rows > 0)
 {
     $row = $result->fetch_assoc();
     
-    // Get the last index and increment by one
+    // Get the last index and increment by one(does this by getting the number after the string and adding 1 to it the re-adding the string to it)
     $newId = "STF";
     $tempId = $row[$idsstaff];
     $tempId1 = substr($tempId,3);
@@ -45,12 +44,4 @@ else
         "error" => "Unable to find any data",
     ], JSON_PRETTY_PRINT);
 }
-/// Query to determine the next available asset id in table
-// $sql = "sql query";
-// $result = $conn->query($sql);
-
-// Return determined free index
-//$array = array("userId" => rand(0, 999));
-//echo json_encode($array);
-
 ?>
