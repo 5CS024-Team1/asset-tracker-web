@@ -100,7 +100,7 @@ class RegisterUser extends Component
     render() {
         let idNumHtml = <div>
                             <Label>Id:</Label>
-                            <Input type="number" name="usid" placeholder="?" disabled value={this.state.userId} />
+                            <Input type="text" name="usid" placeholder="?" disabled value={this.state.userId} />
                         </div>
         let sentHtml =  <div className="d-flex">
                             <div className="ml-auto">

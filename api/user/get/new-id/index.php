@@ -4,7 +4,7 @@ include_once("../../../api_config.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Headers: Content-Type');
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
 
 // Use @ to suppress the warning and handle it ourselves
 @$conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
@@ -18,7 +18,8 @@ if(!$conn)
 }
 
 /// Query to determine the next available asset id in table
-$sql = "SELECT $idsstaff FROM $ID_TABLE WHERE $idsstaff LIKE '%STF%' ORDER BY DESC";
+$sql = "SELECT $idsstaff FROM $ID_TABLE WHERE $idsstaff LIKE '%STF%' ORDER BY $idsstaff DESC";
+//$sql = "SELECT IDs_Staff FROM ids WHERE IDs_Staff LIKE '%STF%' ORDER BY IDs_Staff DESC";
 $result = $conn->query($sql);
 
 
@@ -28,12 +29,20 @@ if ($result && $result->num_rows > 0)
     $row = $result->fetch_assoc();
     
     // Get the last index and increment by one
+    $newId = "STF";
     $tempId = $row[$idsstaff];
-    $tempId1 = substr($tempId,2);
+    $tempId1 = substr($tempId,3);
     $intvar = (int)$tempId1 + 1;
-    $newId = $intvar;
+    $newId .= strval($intvar);
     echo json_encode([
         "userId" => $newId,
+    ], JSON_PRETTY_PRINT);
+}
+else
+{
+    echo json_encode([
+        "userId" => -1,
+        "error" => "Unable to find any data",
     ], JSON_PRETTY_PRINT);
 }
 /// Query to determine the next available asset id in table
@@ -41,7 +50,7 @@ if ($result && $result->num_rows > 0)
 // $result = $conn->query($sql);
 
 // Return determined free index
-$array = array("userId" => rand(0, 999));
-echo json_encode($array);
+//$array = array("userId" => rand(0, 999));
+//echo json_encode($array);
 
 ?>
