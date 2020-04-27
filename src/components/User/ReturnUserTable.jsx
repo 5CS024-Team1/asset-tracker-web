@@ -32,12 +32,12 @@ class ReturnUserTable extends Component {
     editRemoveColumnFormatter = (cell, row, rowIndex) => {
         return (
             <div className="d-flex">
-                <Link to={'/users/edit/' + row.admin_id}>
+                <Link to={'/users/edit/' + row.user_id}>
                     <Button color="warning" className="px-2 py-1" title="Edit this user">
                         <FontAwesomeIcon icon={faPencilAlt} />
                     </Button>
                 </Link>
-                <Button color="danger" title="Delete this user" className="px-2 py-1 ml-1" onClick={() => this.toggleDeleteUserModal(row.admin_id)}>
+                <Button color="danger" title="Delete this user" className="px-2 py-1 ml-1" onClick={() => this.toggleDeleteUserModal(row.user_id)}>
                     <FontAwesomeIcon icon={faUserTimes} />
                 </Button>
             </div>
@@ -68,8 +68,8 @@ class ReturnUserTable extends Component {
 
     render() {
         const columns =[{
-            dataField: stfid,
-            text: "Id",
+            dataField: "user_id",
+            text: "User ID",
             sort: true,
             filter: textFilter()
         }, {
@@ -88,7 +88,7 @@ class ReturnUserTable extends Component {
             <div>
                 <BootstrapTable 
                     bootstrap4 hover
-                    keyField="idsstaff"
+                    keyField="user_id"
                     data={this.state.returnUsers}
                     columns={columns}
                     defaultSorted={defaultSort} 

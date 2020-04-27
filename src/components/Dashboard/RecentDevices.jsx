@@ -94,7 +94,7 @@ class RecentDevices extends Component {
                         </Link>
                     </th>
                     <th>{asset.display_name}</th>
-                    <th>{asset.date_return}</th>
+                    <th>{convertDateFromDb(asset.date_return).toLocaleString('en-GB')}</th>
                 </tr>
             );
         });

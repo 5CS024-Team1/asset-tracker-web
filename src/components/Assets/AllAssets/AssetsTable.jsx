@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { id, display_name, category, last_ping_time, date_loaned, date_return } from '../../../helperFile';
+import { convertDateFromDb } from "../../../utils";
 
 // Checker for if a value is null and what to return instead
 function NullCheck (cell) {
@@ -26,6 +27,13 @@ function IdFormatter (cell, row) {
     return  <Link to={"asset/" + cell}>
                 {cell}
             </Link>
+}
+
+function DateFormatter (cell, row) {
+    if (cell)
+        return convertDateFromDb(cell).toLocaleString('en-GB');
+    else
+        return "-";
 }
 
 // All options of categories. 
@@ -80,17 +88,17 @@ class AssetsTable extends Component {
         }, {
             dataField: last_ping_time,
             text: "Last Pinged Time",
-            formatter: NullCheck,
+            formatter: DateFormatter,
             sort: true,
         }, {
             dataField: date_loaned,
             text: "Loaned",
-            formatter: NullCheck,
+            formatter: DateFormatter,
             sort: true,
         }, {
             dataField: date_return,
             text: "Return Date",
-            formatter: NullCheck,
+            formatter: DateFormatter,
             sort: true,
         }, {
             text: "",

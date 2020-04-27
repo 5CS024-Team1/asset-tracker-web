@@ -133,7 +133,7 @@ class Reports extends Component {
     render() {
         let noLoaded = <div>No info loaded</div>;
         return (
-            <Container>
+            <div className="mx-5">
                 { this.state.loaded && this.state.error && <UncontrolledAlert color="danger" className="my-3">Error: {this.state.error}</UncontrolledAlert> }
                 <PageBreadcrumbs />
                 <h1>Reports</h1>
@@ -160,7 +160,7 @@ class Reports extends Component {
                     { !this.state.loaded && <LoadingSpinner /> }
                     { this.state.loaded && !this.state.returnAssets && noLoaded }
                 </div>
-            </Container>
+            </div>
         );
     }
 }

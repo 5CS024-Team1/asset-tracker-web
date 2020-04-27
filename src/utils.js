@@ -1,7 +1,7 @@
 /* Utility for storing functions to use around the app */
 
-/// Converts the dateTime stores in the database to a date object
-/// Expected format "YYYY-MM-DD HH:MM"
+/// Converts a dateTime string stored in the database to a JS date object
+/// Expected string format "YYYY-MM-DD HH:MM"
 export const convertDateFromDb = (dbDateTime) => {
     if(!dbDateTime)
         return new Date();

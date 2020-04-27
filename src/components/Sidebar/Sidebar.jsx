@@ -44,7 +44,7 @@ class Sidebar extends Component {
                     <Link to="/" className="mx-auto mt-2 mb-4">
                         <img src={process.env.PUBLIC_URL + '/aa_logo.png'} 
                             alt="Asset Angels logo" 
-                            height="250" width="200" />
+                            height="250" width="150" />
                     </Link>
                 </div>
                 <ListGroup>

@@ -32,8 +32,10 @@ class Reports extends Component {
         super(props);
         
         this.state = {
-            returnUsers: null,
+            users: null,
+            admins: null,
             loaded: false,
+            error: "",
         }
         this.handleOnAll = this.handleOnAll.bind(this);
         this.handleOnAdmin = this.handleOnAdmin.bind(this);
@@ -51,8 +53,11 @@ class Reports extends Component {
         }).then(result => {
             console.log(result.data);
             this.setState({
-                returnUsers: result.data.user,
+                users: result.data.users,
+                admins: null,
                 loaded: true,
+                
+                error: result.data.error,
             });
         }).catch(error => {
             this.setState({ 
@@ -80,8 +85,11 @@ class Reports extends Component {
         }).then(result => {
             console.log(result.data);
             this.setState({
-                returnUsers: result.data.user,
+                admins: result.data.admins,
+                users: null,
                 loaded: true,
+
+                error: result.data.error,
             });
         }).catch(error => {
             this.setState({ 
@@ -102,8 +110,11 @@ class Reports extends Component {
         }).then(result => {
             console.log(result.data);
             this.setState({
-                returnUsers: result.data.user,
+                users: result.data.users,
+                admins: null,
                 loaded: true,
+
+                error: result.data.error,
             });
         }).catch(error => {
             this.setState({ 
@@ -138,11 +149,15 @@ class Reports extends Component {
                     </Link>
                 </div>
                 
-                { this.state.loaded && this.state.returnUsers && <ReturnUserTable data={this.state.returnUsers} /> }
+                {/* Table for all Users */}
+                { this.state.loaded && this.state.users && !this.state.admins && <ReturnUserTable data={this.state.users} /> }
+
+                {/* Table for only Admins */}
+                { this.state.loaded && this.state.admins && !this.state.users && <ReturnUserTable data={this.state.admins} /> }
 
                 <div className="d-flex">
                     { !this.state.loaded && <LoadingSpinner /> }
-                    { this.state.loaded && !this.state.returnUsers && noLoaded }
+                    { this.state.loaded && !this.state.users && !this.state.admins && noLoaded }
                 </div>
             </Container>
         );

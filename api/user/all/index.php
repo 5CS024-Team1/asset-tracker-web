@@ -26,7 +26,7 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $user = new User();
-        $user->admin_id = $row[$idsstaff];
+        $user->user_id = $row[$idsstaff];
 
         // Add user to array
         $db_array[] = $user;
@@ -34,14 +34,14 @@ if ($result->num_rows > 0)
 
     // Return the array of assets
     echo json_encode(array(
-        "user" => $db_array
+        "users" => $db_array
     ), JSON_PRETTY_PRINT);
 } 
 else 
 {
     // Unable to get any data from table or table is empty, return null array
     $arr = array(
-        "user" => null
+        "users" => null
     );
     echo json_encode($arr);
 }
