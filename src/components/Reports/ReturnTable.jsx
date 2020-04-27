@@ -3,6 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { 
     textFilter,
     selectFilter,
+    dateFilter,
 } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 
@@ -26,12 +27,9 @@ function DateFormatter (cell, row) {
         return "-";
 }
 
-// All options of categories. 
-// Key should match expected data, value change to be it's display value
-const categoryOptions = {
-    "Unknown": 'Unknown',
-    "General": "General",
-    "B": "b",
+const isOverdueOptions = {
+    0 : "Not Overdue",
+    1: "Overdue",
 };
 
 class ReturnTable extends Component {
@@ -43,12 +41,15 @@ class ReturnTable extends Component {
         }
     }
 
+    /// Formats the date_return to isOverdue or not. 1 = overdue, 0 = not overdue
     overdueFormatter = (cell, row, rowIndex) => {
-        return (
-            <div className="d-flex">
-                <div style={{ "color": row.return }}></div>
-            </div>
-        );
+        var date = convertDateFromDb(row.date_return);
+        if (date) {
+            var isOverdue = date < new Date();
+            return isOverdue ? 1 : 0;  
+        } else {
+            return 0;
+        }
     }
 
     render() {
@@ -79,23 +80,28 @@ class ReturnTable extends Component {
             text: "Last Pinged Time",
             formatter: DateFormatter,
             sort: true,
+            filter: dateFilter(),
         },
         {
             dataField: date_loaned,
             text: "Loaned",
             formatter: DateFormatter,
             sort: true,
+            filter: dateFilter(),
         },
         {
             dataField: date_return,
             text: "Return Date",
             formatter: DateFormatter,
             sort: true,
+            filter: dateFilter(),
         },
         {
+            //isDummyField: true,
+            dataField: date_return,
             text: "Overdue",
-            isDummyField: true,
-            formatter: this.overdueFormatter,
+            sort: true,
+            formatter: (cell, row, index) => isOverdueOptions[this.overdueFormatter(cell, row, index)],
         }];
 
         const defaultSort = [{
@@ -106,7 +112,7 @@ class ReturnTable extends Component {
         return (
             <BootstrapTable 
                 bootstrap4 hover
-                keyField="id"
+                keyField='id'
                 data={this.state.returnAssets}
                 columns={columns}
                 defaultSorted={defaultSort} 

@@ -39,8 +39,8 @@ function DateFormatter (cell, row) {
 // All options of categories. 
 // Key should match expected data, value change to be it's display value
 const categoryOptions = {
-    "Unknown": 'Unknown',
-    "General": "General",
+    "Emergency": 'Emergency',
+    "Non Emergency": "Non Emergency",
     "B": "b",
 };
 
@@ -81,10 +81,10 @@ class AssetsTable extends Component {
             dataField: category,
             text: "Category",
             sort: true,
-            //formatter: cell => categoryOptions[cell],
-            // filter: selectFilter({
-            //     options: categoryOptions
-            // })
+            formatter: cell => categoryOptions[cell],
+            filter: selectFilter({
+                options: categoryOptions
+            })
         }, {
             dataField: last_ping_time,
             text: "Last Pinged Time",

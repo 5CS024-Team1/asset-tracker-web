@@ -4,7 +4,7 @@
 /// Expected string format "YYYY-MM-DD HH:MM"
 export const convertDateFromDb = (dbDateTime) => {
     if(!dbDateTime)
-        return new Date();
+        return null;
 
     // Split original string by space
     var split = dbDateTime.split(' ');

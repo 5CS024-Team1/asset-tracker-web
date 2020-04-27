@@ -53,12 +53,16 @@ var Session = (function() {
         _info = null;
     };
 
+    var insertAfter = function (referenceNode, newNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+
     /// Checks if user auth hasn't expired, resets if it has
     var validate = function (expiryDate) {
         if (expiryDate <= new Date()) {
             Session.setUser(null);
             console.log("Signed out user, credentials have expired");
-            window.location.replace("/");
+            window.location.replace("/?expired=true");
         }
     }
 
