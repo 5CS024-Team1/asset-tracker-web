@@ -3,7 +3,7 @@ import {
     Input,
     Button
 } from 'reactstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,6 +15,7 @@ class Header extends Component {
 
         this.state = {
             search: "",
+            isHomePage: this.props.location.pathname == '/',
         };
 
         this.handleInputKeyDown = this.handleInputKeyDown.bind(this);
@@ -32,16 +33,21 @@ class Header extends Component {
             <div className="header d-flex ">
                 {/* Search bar*/}
                 <div className="mr-auto my-auto w-75 d-flex">
-                    <Input className="ml-5" 
-                        placeholder="Search for an asset..." 
-                        onChange={e => this.setState({ search: e.target.value })}
-                        onKeyDown={this.handleInputKeyDown}/>
+                    {
+                        !this.state.isHomePage && 
+                            <div className="d-flex w-100">
+                                <Input className="ml-5" 
+                                    placeholder="Search for an asset..." 
+                                    onChange={e => this.setState({ search: e.target.value })}
+                                    onKeyDown={this.handleInputKeyDown}/>
 
-                    <Link to={'/search?query=' + this.state.search}>
-                        <Button className="px-3" color="primary">
-                            <FontAwesomeIcon icon={faSearch} />
-                        </Button>
-                    </Link>
+                                <Link to={'/search?query=' + this.state.search}>
+                                    <Button className="px-3" color="primary">
+                                        <FontAwesomeIcon icon={faSearch} />
+                                    </Button>
+                                </Link>
+                            </div>
+                    }
                 </div>
                 {/* Login button */}
                 <LoginBtn />
@@ -51,4 +57,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);

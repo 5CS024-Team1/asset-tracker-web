@@ -59,6 +59,7 @@ class Search extends Component {
             query: parsed.query,
             loaded: false,
             results: null,
+            error: null,
         };
     }
 
@@ -79,6 +80,7 @@ class Search extends Component {
                 this.setState({
                     results: result.data.assets,
                     loaded: true,
+                    error: result.data.error,
                 });
             }).catch(error => {
                 console.log(error);

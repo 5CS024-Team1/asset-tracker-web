@@ -38,7 +38,6 @@ if (!$conn) {
 class Results { }
 class Asset { }
 
-
 $results = new Results();
 // Store relevent assets in array that is initialized as null
 $results->assets = null;
@@ -46,71 +45,79 @@ $results->assets = null;
 if($query)
 {
     // If is a number, search only through ids
+    $sql = "";
     if (is_numeric($query)) 
     {
         $sql = "SELECT * FROM $ASSETS_TABLE WHERE $eqid LIKE '%$query%'";
-        $res = mysqli_query($conn, $sql);
-
-        if(mysqli_num_rows($res) > 0)
-        {
-            $results->assets = array();
-            while($row = $res->fetch_assoc()) {
-                $asset = new Asset();
-                $asset->id = $row[$eqid];
-                $asset->barcode = $row[$barcode];
-                $asset->display_name = $row[$eqname];
-                $asset->category = $row[$category];
-                $asset->latitude = doubleval($row[$latitude]);
-                $asset->longitude = doubleval($row[$longitude]);
-                $asset->last_ping_time = $row[$last_ping_time];
-                $asset->eqpatid = $row[$eqpatid];
-                $asset->date_loaned = $row[$loaned];
-                $asset->date_return = $row[$owner_date_return];
-                $asset->eqdept = $row[$eqdept];
-                $asset->last_cleaned = $row[$last_cleaned];
-                $check = $row[$eqpatid];
-        
-                if (!empty($row[$eqpatid]))
-                {
-                    $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $check";
-                    $sqlresult = $conn->query($sqlquery);
-                    if ($sqlresult->num_rows > 0)
-                        {
-                        while($rows = $sqlresult->fetch_assoc()) {
-                            $asset->surname = $rows[$surname];
-                            $asset->forename = $rows[$forename];
-                            $asset->personaddress = $rows[$personaddress];
-                            $asset->personidspatient = $rows[$personidspatient];
-                        }
-                    }
-                }
-                else
-                {
-                    $asset->surname = Null;
-                    $asset->forename = Null;
-                    $asset->personaddress = Null;
-                    $asset->personidspatient = Null;
-                }
-                
-                
-        
-                //$asset->purchase_cost;
-                //$asset->origin = $row["origin"];
-        
-                // Add asset to array
-                $results->assets[] = $asset;
-            }
-        }
     }
     else
     {
         // Isnt a number, search by phrase
-        //ToDo
+        $sql = "SELECT * FROM $ASSETS_TABLE WHERE $eqname LIKE '%$query%'";
     }
+
+    $res = mysqli_query($conn, $sql);
+    if(mysqli_num_rows($res) > 0)
+    {
+        $results->assets = array();
+        while($row = $res->fetch_assoc()) {
+            $asset = new Asset();
+            $asset->id = $row[$eqid];
+            $asset->barcode = $row[$barcode];
+            $asset->display_name = $row[$eqname];
+            $asset->category = $row[$category];
+            $asset->latitude = doubleval($row[$latitude]);
+            $asset->longitude = doubleval($row[$longitude]);
+            $asset->last_ping_time = $row[$last_ping_time];
+            $asset->eqpatid = $row[$eqpatid];
+            $asset->date_loaned = $row[$loaned];
+            $asset->date_return = $row[$owner_date_return];
+            $asset->eqdept = $row[$eqdept];
+            $asset->last_cleaned = $row[$last_cleaned];
+            $check = $row[$eqpatid];
+    
+            if (!empty($row[$eqpatid]))
+            {
+                $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $check";
+                $sqlresult = $conn->query($sqlquery);
+                if ($sqlresult->num_rows > 0)
+                    {
+                    while($rows = $sqlresult->fetch_assoc()) {
+                        $asset->surname = $rows[$surname];
+                        $asset->forename = $rows[$forename];
+                        $asset->personaddress = $rows[$personaddress];
+                        $asset->personidspatient = $rows[$personidspatient];
+                    }
+                }
+            }
+            else
+            {
+                $asset->surname = Null;
+                $asset->forename = Null;
+                $asset->personaddress = Null;
+                $asset->personidspatient = Null;
+            }
+            
+            //$asset->purchase_cost;
+            //$asset->origin = $row["origin"];
+    
+            // Add asset to array
+            $results->assets[] = $asset;
+        }
+    }   
 }
 
-echo json_encode([
-    "assets" => $results->assets,
-], JSON_PRETTY_PRINT);
+if ($results->assets)
+{
+    echo json_encode([
+        "assets" => $results->assets,
+    ], JSON_PRETTY_PRINT);
+}
+else
+{
+    echo json_encode([
+        "error" => "Unable to find any assets",
+    ], JSON_PRETTY_PRINT);
+}
 
 ?>

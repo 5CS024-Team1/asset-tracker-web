@@ -3,7 +3,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect
+    Redirect,
+    useLocation
 } from 'react-router-dom';
 import { 
     Row,
@@ -44,7 +45,7 @@ function requireAuth(component) {
 
 function App() {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={process.env.PUBLIC_URL} forceRefresh={true}>
         <Row className="m-0 main-background">
             {/* Main sidebar of application */}
             <Sidebar />
