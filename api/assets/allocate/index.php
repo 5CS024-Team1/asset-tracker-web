@@ -27,117 +27,80 @@ if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
     exit();
 }
 
-/// Builds the full address string from each part
-
-function GetFullAddress($line_1, $city, $region, $postcode) {
-
-    // Check we have all info before proceeding
-
-    if (empty($line_1) || empty($city) || empty($region) || empty($postcode)) {
-
-        return NULL;
-       }
-    // Limits length of inputs, and returns NULL if excessive.
-    if ( (strlen($line)> 40) || (strlen($city)>35) || (strlen($region)>35) || (strlen($postcode)>9)){
-
-       return NULL;
-       }
-    // Sanitizes user input.
-    $line = filter_var($line, FILTER_SANITIZE_STRING);
-    $city = filter_var($city, FILTER_SANITIZE_STRING);
-    $region = filter_var($region, FILTER_SANITIZE_STRING);
-    $postcode = filter_var($postcode, FILTER_SANITIZE_STRING);
-
-    return $line_1 . ", " . $city . ", " . $region . ", " . $postcode;
-
+/// Creates an INSERT INTO query using the given data
+function BuildQuery($ID_TABLE, $patid)
+{
+    $query = "INSERT INTO $ID_TABLE (IDs_Patient)";
+    $query = "$query VALUES ('$patid')";
+    return $query;
 }
 
-/// Builds the full UPDATE query (UPDATE table SET values WHERE condition)
-function BuildQuery($post, $address) {
-    $query = "UPDATE assets SET owner_name=\"" . $post['owner_name'] . 
-        "\", owner_address=\"" . $address . "\"";
-    
-    // Format and append recieved date/time
-    // Use default time or get recieve time if it's set
-    $recieved_time = "12:00";
-    if ( !empty($post['recieved_time']) ) {
-        $recieved_time = $post['recieved_time'];
-    }
+function BuildQuery1($USER_TABLE, $surname, $forename, $address, $town, $county, $patid, $stfid)
+{
+    $query = "INSERT INTO $USER_TABLE (Pers_Surname, Pers_Forename, Pers_Address, Pers_Town, Pers_County, IDs_Patient, IDs_Staff)";
+    $query = "$query VALUES ('$surname', '$forename', '$address', '$town', '$county', '$patid', '$stfid')";
+    return $query;
+}
 
-    $recieve_datetime = $post['recieved_date'] . " " . $recieved_time;
-    $query = $query . ", owner_date_recieved=\"$recieve_datetime\"";
-
-    // Append retrieval date if exists
-    if ( !empty($post['retrieval_date']) )
-    {
-        // If time has been set, get it else use the default
-        $retrieval_time = "12:00";
-        if (!empty($post['retrieval_time'])) {
-            $retrieval_time = $post['retrieval_time'];
-        }
-
-        $retrieval_datetime = $post['retrieval_date'] . " $retrieval_time";
-        $query = $query . ", owner_date_return=\"" . $retrieval_datetime . "\"";
-    }
-    
-    // Add address to query if it was made correctly
-    if ($address != NULL) 
-    {
-        $query = $query .  ", owner_date_recieved=\"" . $post['recieved_date'] . "\"";
-    }
-
-    $query = $query . " WHERE id=" . $post['id'];
+function BuildQuery2($ASSET_TABLE, $patid, $assetid)
+{
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Assigned_Pats_IDs=$patid WHERE Equi_ID=$assetid";
+    $query = "$query VALUES ('$patid', '$assetid')";
     return $query;
 }
 
 $rest_json = file_get_contents("php://input");
-$_POST = json_decode($rest_json, true);
+$post_data = json_decode($rest_json, true);
 
-// Make sure we have required data to do request
-if ( empty($_POST['id']) 
-    || empty($_POST['owner_name']) 
-    || empty($_POST['address_line_1']) 
-    || empty($_POST['address_city'])
-    || empty($_POST['address_region'])
-    || empty($_POST['address_postcode'])
-    || empty($_POST['recieved_date'])) 
-{
-    echo json_encode([
-        "changes_set" => false,
-        "error" => "Missing required data to update database",
-    ]);
-    die();
+if ( empty($post_data) ) {
+    die("Require data to add user");
 }
 
-// Do any checks to make sure no malicious or unwanted data
-// To Do
-
-// Open a connection to the db
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
-
-$full_address = GetFullAddress($_POST['address_line_1'], $_POST['address_city'], $_POST['address_region'], $_POST['address_postcode']);
-if (!$full_address) {
-    die("Unable to get full address from properties");
-}
-
-// Use UPDATE command to set the new values
-$sql = BuildQuery($_POST, $full_address);
+$sql = BuildQuery($ID_TABLE, $post_data['patientId']);
 $result = $conn->query($sql);
 
-if ($result) 
+$sql1 = BuildQuery1($USER_TABLE, $post_data['surname'], $post_data['forname'], $post_data['address'], $post_data['town'], $post_data['county'], $post_data['patientId'], $post_data['userId']);
+$result1 = $conn->query($sql1);
+
+$sql2 = BuildQuery2($ASSETS_TABLE, $post_data['patientId'], $post_data['assetId']);
+$result2 = $conn->query($sql2);
+
+if($result)
+{
+    if($result1)
+    {
+        if($result2)
+        {
+            echo json_encode([
+                "user_set" => true,
+            ], JSON_PRETTY_PRINT);
+        }
+        else
+        {
+            echo json_encode([
+                "user_set" => false,
+                "error" => "Unable to successfully execute query '" . $sql . "'",
+            ]);
+        }
+    }
+    else
+    {
+        echo json_encode([
+            "user_set" => false,
+            "error" => "Unable to successfully execute query '" . $sql . "'",
+        ]);
+    }
+}
+else
 {
     echo json_encode([
-        "changes_set" => true,
-    ]);
-} 
-else 
-{
-    echo json_encode([
-        "changes_set" => false,
+        "user_set" => false,
+        "error" => "Unable to successfully execute query '" . $sql . "'",
     ]);
 }
 ?>
