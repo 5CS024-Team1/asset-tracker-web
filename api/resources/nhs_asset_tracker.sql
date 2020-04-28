@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2020 at 11:50 PM
+-- Generation Time: Apr 28, 2020 at 06:54 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -125,7 +125,8 @@ INSERT INTO `ids` (`IDs_Patient`, `IDs_Staff`, `IDs_Inpatient`) VALUES
 (1, NULL, NULL),
 (2, NULL, NULL),
 (3, NULL, NULL),
-(4, NULL, NULL);
+(4, NULL, NULL),
+(5, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -232,8 +233,8 @@ ALTER TABLE `maintenance`
 -- Indexes for table `person`
 --
 ALTER TABLE `person`
-  ADD UNIQUE KEY `IDs_Staff` (`IDs_Staff`),
-  ADD UNIQUE KEY `IDs_Patient` (`IDs_Patient`);
+  ADD UNIQUE KEY `IDs_Patient` (`IDs_Patient`),
+  ADD KEY `IDs_Staff` (`IDs_Staff`) USING BTREE;
 
 --
 -- Indexes for table `user`
