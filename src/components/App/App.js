@@ -39,7 +39,7 @@ function requireAuth(component) {
     if (Session.getUser())
         return component;
     else
-        return (<Redirect to="/"/>)
+        return (<Redirect to="/?auth=false"/>)
 }
 
 function App() {

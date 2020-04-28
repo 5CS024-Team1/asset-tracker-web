@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 
 import { id, display_name, category, last_ping_time, date_loaned, date_return } from '../../helperFile';
 import { convertDateFromDb } from '../../utils';
+import { MAPBOX_API_KEY, API_TIMEOUT } from '../../consts';
+import axios from 'axios';
 
 function IdFormatter (cell, row) {
     return  <Link to={"asset/" + cell}>
@@ -32,6 +34,7 @@ const isOverdueOptions = {
     1: "Overdue",
 };
 
+
 class ReturnTable extends Component {
     constructor(props) {
         super(props);
@@ -49,6 +52,41 @@ class ReturnTable extends Component {
             return isOverdue ? 1 : 0;  
         } else {
             return 0;
+        }
+    }
+
+    /// Converts a longitude/latitude to an address
+    locationFormatter = (cell, row, index) => {
+        if (row && row.latitude && row.longitude) {
+            axios({
+                method: 'get',
+                url: "https://api.mapbox.com" + `/geocoding/v5/mapbox.places/${row.longitude},${row.latitude}.json?access_token=${MAPBOX_API_KEY}`,
+                headers: { 'content-type': 'application/json', },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                //console.log(result.data);
+                // Set the row data "location" so column dataField is bound
+                row.location = result.data.features[0].place_name;
+                
+                // Manually set Location column since no way to do it through bootstrap-table-2
+                var table = document.getElementById("reportsTable");
+                if (table) {
+                    // index that the 0th row of data starts at
+                    var rowStartIndex = 2;
+                    var locationColIndex = 3;
+                    table.rows[rowStartIndex + index].cells[locationColIndex].innerText = result.data.features[0].place_name;
+                } else {
+                    console.error("Unable to find reportsTable to set the innerText location");
+                }
+            }).catch(error => {
+                console.error(error);
+                this.setState({
+                    error: error,
+                });
+            });
+        }
+        else {
+            return "Unknown location";
         }
     }
 
@@ -74,8 +112,13 @@ class ReturnTable extends Component {
             // filter: selectFilter({
             //     options: categoryOptions
             // })
-        }, 
-        {
+        }, {
+            dataField: "location",
+            text: "Location",
+            formatter: this.locationFormatter,
+            sort: true,
+            filter: textFilter(),
+        }, {
             dataField: last_ping_time,
             text: "Last Pinged Time",
             formatter: DateFormatter,
@@ -111,6 +154,7 @@ class ReturnTable extends Component {
         
         return (
             <BootstrapTable 
+                id="reportsTable"
                 bootstrap4 hover
                 keyField='id'
                 data={this.state.returnAssets}

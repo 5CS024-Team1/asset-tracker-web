@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { UncontrolledAlert } from 'reactstrap';
+import Session from '../Session/Session';
 
 class Home extends Component {
     constructor(props) {
         super(props);
         // Check if login info has expired
         var params = new URLSearchParams(this.props.location.search);
-        var expired = params.get('expired');
+        // Only show if getUser has actually expired, could navigate to page with login info
+        var expired = params.get('expired') && Session.getUser() == null;
+        var hasAuth = params.get('auth');
 
         this.state = {
             expired: expired,
+            hasAuth: hasAuth,
         };
     }
     
@@ -24,6 +28,11 @@ class Home extends Component {
                     {
                         this.state.expired &&   <UncontrolledAlert className="mx-5 mt-3" color="danger">
                                                     Sign in has expired. Please sign in again
+                                                </UncontrolledAlert>
+                    }
+                    {
+                        this.state.hasAuth &&   <UncontrolledAlert className="mx-5 mt-3" color="danger">
+                                                    Sorry, you don't have access to view that page. Try signing in
                                                 </UncontrolledAlert>
                     }
                     <div className="mx-auto my-5">

@@ -8,3 +8,6 @@ export const API_TIMEOUT = 30000;
 
 /// API key to use Google Maps
 export const GOOGLE_MAPS_API_KEY = "AIzaSyA7IfneIbihROWfeoLHitfbixU46jADAGc";
+
+/// API key to use Mapbox https://www.mapbox.com/
+export const MAPBOX_API_KEY = "";

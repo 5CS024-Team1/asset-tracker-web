@@ -92,7 +92,7 @@ class RegisterUser extends Component
             data: this.state
           }).then(result => {
               this.setState({
-                mailSent: result.data.sent
+                userSet: result.data.user_set
               })
           }).catch(error => this.setState({ error: error.message }));
     }
