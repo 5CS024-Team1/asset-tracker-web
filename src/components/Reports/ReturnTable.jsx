@@ -68,6 +68,7 @@ class ReturnTable extends Component {
         }
     }
 
+    /*
     /// Converts a longitude/latitude to an address
     locationFormatter = (cell, row, index) => {
         if (row && row.latitude && row.longitude) {
@@ -83,6 +84,47 @@ class ReturnTable extends Component {
                 
                 // Manually set Location column since no way to do it through bootstrap-table-2
                 manualSetTableData(index, 3, result.data.features[0].place_name);
+            }).catch(error => {
+                console.error(error);
+                this.setState({
+                    error: error,
+                });
+                
+                // If any errors occur when trying to use the Mapbox api, default to using the long/lat
+                manualSetTableData(index, 3, `${row.latitude}, ${row.longitude}`);
+            });
+        }
+        else {
+            return "Unknown location";
+        }
+    }
+    */
+
+    /// Converts a longitude/latitude to an address
+    locationFormatter = (cell, row, index) => {
+        if (row && row.latitude && row.longitude) {
+            axios({
+                method: 'get',
+                url: "https://api.mapbox.com" + `/geocoding/v5/mapbox.places/${row.longitude},${row.latitude}.json?access_token=${MAPBOX_API_KEY}`,
+                headers: { 'content-type': 'application/json', },
+                timeout: API_TIMEOUT
+            }).then(result => {
+                if (result.data.features[3].text == row.zone) {
+                    console.log(result.data);
+                    // Set the row data "location" so column dataField is bound
+                    row.location = result.data.features[0].place_name;
+                    
+                    // Manually set Location column since no way to do it through bootstrap-table-2
+                    manualSetTableData(index, 3, result.data.features[0].place_name);
+                }
+                else {
+                    console.log(result.data);
+                    // Set the row data "location" so column dataField is bound
+                    row.location = result.data.features[0].place_name;
+                    
+                    // Manually set Location column since no way to do it through bootstrap-table-2
+                    manualSetTableData(index, 3, result.data.features[0].place_name);
+                }
             }).catch(error => {
                 console.error(error);
                 this.setState({
@@ -120,13 +162,15 @@ class ReturnTable extends Component {
             // filter: selectFilter({
             //     options: categoryOptions
             // })
-        }, {
+        },
+        {
             dataField: "location",
             text: "Location",
             formatter: this.locationFormatter,
             sort: true,
             filter: textFilter(),
-        }, {
+        },
+        {
             dataField: last_ping_time,
             text: "Last Pinged Time",
             formatter: DateFormatter,
