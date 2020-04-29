@@ -47,19 +47,6 @@ function PageBreadcrumbs(props) {
     );
 }
 
-function AssetIndiControl(props) {
-    return (
-        <Row >
-            <Col md={2}>
-                <h5>{props.deviceName}</h5>
-            </Col>
-            <Col md={2}>
-                <h5>{props.deviceID}</h5>
-            </Col>
-        </Row>
-    );
-}
-
 //Will link to DB to collect data
 function AssetProperties(props) {
     return (
@@ -224,7 +211,6 @@ class SingleAsset extends Component
                 }
                 <PageBreadcrumbs assetId={this.state.asset ? this.state.asset.id : "?"}/>
                 <h1>Device</h1>
-                <AssetIndiControl deviceName={this.state.asset != null ? this.state.asset.display_name : "Unknown"} deviceID={this.state.id} />
                 <Row>
                     <Col md={6} className="h-100">
                         <Row>

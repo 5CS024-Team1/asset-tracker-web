@@ -34,6 +34,19 @@ const isOverdueOptions = {
     1: "Overdue",
 };
 
+/// Manually sets the table data using 
+function manualSetTableData (rowIndex, columnIndex, data) {
+    var table = document.getElementById("reportsTable");
+    if (table) {
+        // index that the 0th row of data starts at since table contains "Title" row and "Filters" row
+        var rowStartIndex = 2;
+        var row = table.rows[rowStartIndex + rowIndex];
+        var cell = row.cells[columnIndex];
+        cell.innerText = data;
+    } else {
+        console.error("Unable to find reportsTable to set the innerText location");
+    }
+}
 
 class ReturnTable extends Component {
     constructor(props) {
@@ -69,20 +82,15 @@ class ReturnTable extends Component {
                 row.location = result.data.features[0].place_name;
                 
                 // Manually set Location column since no way to do it through bootstrap-table-2
-                var table = document.getElementById("reportsTable");
-                if (table) {
-                    // index that the 0th row of data starts at
-                    var rowStartIndex = 2;
-                    var locationColIndex = 3;
-                    table.rows[rowStartIndex + index].cells[locationColIndex].innerText = result.data.features[0].place_name;
-                } else {
-                    console.error("Unable to find reportsTable to set the innerText location");
-                }
+                manualSetTableData(index, 3, result.data.features[0].place_name);
             }).catch(error => {
                 console.error(error);
                 this.setState({
                     error: error,
                 });
+                
+                // If any errors occur when trying to use the Mapbox api, default to using the long/lat
+                manualSetTableData(index, 3, `${row.latitude}, ${row.longitude}`);
             });
         }
         else {
