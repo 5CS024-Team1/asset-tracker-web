@@ -19,10 +19,10 @@ if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
 }
 
 /// Creates an INSERT INTO query using the given data
-function BuildQuery($ASSETS_TABLE, $idNum, $Barcode, $Name, $Category, $Latitude, $Longitude, $Eqdept)
+function BuildQuery($ASSETS_TABLE, $idNum, $Barcode, $Name, $Category, $Latitude, $Longitude, $Eqdept, $Eqzone)
 {
-    $query = "INSERT INTO $ASSETS_TABLE (Equi_ID, Equi_Barcode, Equi_Name, Equi_Category, Equi_Latittude, Equi_Longitude, Equi_Dept)";
-    $query = "$query VALUES ('$idNum', '$Barcode', '$Name', '$Category', '$Latitude', '$Longitude', '$Eqdept')";
+    $query = "INSERT INTO $ASSETS_TABLE (Equi_ID, Equi_Barcode, Equi_Name, Equi_Category, Equi_Latittude, Equi_Longitude, Equi_Dept, Equi_Zone)";
+    $query = "$query VALUES ('$idNum', '$Barcode', '$Name', '$Category', '$Latitude', '$Longitude', '$Eqdept', '$Eqzone')";
     return $query;
 }
 
@@ -39,7 +39,7 @@ if (!$conn) {
 }
 
 /// Query for registering asset into database (lat and long are temporary)
-$sql = BuildQuery($ASSETS_TABLE, $post_data['assetId'], $post_data['assetId'], $post_data['name'], $post_data['category'], $post_data['latitude'], $post_data['longitude'], $post_data['department']);
+$sql = BuildQuery($ASSETS_TABLE, $post_data['assetId'], $post_data['assetId'], $post_data['name'], $post_data['category'], $post_data['latitude'], $post_data['longitude'], $post_data['department'], $post_data['zone']);
 $result = $conn->query($sql);
 
 if($result)

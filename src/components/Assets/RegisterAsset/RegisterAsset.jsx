@@ -60,6 +60,7 @@ class RegisterAsset extends Component {
             longitude: "",
             longitude: "",
             department: "",
+            zone: "",
 
             error: "",
         };
@@ -198,6 +199,11 @@ class RegisterAsset extends Component {
                                 <Label for="deptInput">Department ID:</Label>
                                 <Input type="text" name="department" id="deptInput" placeholder="1" 
                                     onChange={ e => this.setState({ department: e.target.value }) } />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="zoneInput">County Zone:</Label>
+                                <Input type="text" name="zonet" id="zoneInput" placeholder="West Midlands" 
+                                    onChange={ e => this.setState({ zone: e.target.value }) } />
                             </FormGroup>
                         </Col>
                         <Col md={6} className="pl-3">
