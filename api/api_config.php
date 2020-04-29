@@ -45,6 +45,7 @@ $loaned = "Equi_Loaned";
 $owner_date_return = "Equi_Return_due";
 $eqdept = "Equi_Dept";
 $last_cleaned = "Equi_Main_Last_Cleaned";
+$eqzone = "Equi_Zone";
 
 //hospital Table
 $hospid = "Hosp_ID";

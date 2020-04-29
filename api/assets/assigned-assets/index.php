@@ -50,6 +50,7 @@ if ($result->num_rows > 0)
         $asset->date_return = $row[$owner_date_return];
         $asset->eqdept = $row[$eqdept];
         $asset->last_cleaned = $row[$last_cleaned];
+        $asset->zone = $row[$eqzone];
         $check = $row[$eqpatid];
 
         if (!empty($row[$eqpatid]))

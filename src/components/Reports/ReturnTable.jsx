@@ -7,7 +7,7 @@ import filterFactory, {
 } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 
-import { id, display_name, category, last_ping_time, date_loaned, date_return } from '../../helperFile';
+import { id, display_name, category, last_ping_time, date_loaned, date_return, zone } from '../../helperFile';
 import { convertDateFromDb } from '../../utils';
 import { MAPBOX_API_KEY, API_TIMEOUT } from '../../consts';
 import axios from 'axios';
@@ -147,6 +147,12 @@ class ReturnTable extends Component {
             sort: true,
             filter: dateFilter(),
         },
+        {
+            dataField: zone,
+            text: "Allowed Zone",
+            sort: true,
+            filter: textFilter()
+        }, 
         {
             //isDummyField: true,
             dataField: date_return,
