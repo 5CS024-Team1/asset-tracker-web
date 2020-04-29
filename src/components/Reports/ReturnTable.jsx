@@ -81,14 +81,10 @@ class ReturnTable extends Component {
                 //console.log(result.data);
 
                 var locationColumnIndex = 3;
-                if (row.location) {
-                    // Set the row data "location" so column dataField is bound
-                    row.location = result.data.features[0].place_name;
-                    // Manually set Location column since no way to do it through bootstrap-table-2
-                    manualSetTableHtml(index, locationColumnIndex, result.data.features[0].place_name);
-                } else {
-                    manualSetTableHtml(index, locationColumnIndex, "Unknown");
-                }
+                // Set the row data "location" so column dataField is bound
+                row.location = result.data.features[0].place_name;
+                // Manually set Location column since no way to do it through bootstrap-table-2
+                manualSetTableHtml(index, locationColumnIndex, result.data.features[0].place_name);
 
                 var zoneColumnIndex = 7;
                 if (row.zone) {
