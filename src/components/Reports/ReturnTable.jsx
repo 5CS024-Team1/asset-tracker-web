@@ -35,14 +35,14 @@ const isOverdueOptions = {
 };
 
 /// Manually sets the table data using 
-function manualSetTableData (rowIndex, columnIndex, data) {
+function manualSetTableHtml (rowIndex, columnIndex, html) {
     var table = document.getElementById("reportsTable");
     if (table) {
         // index that the 0th row of data starts at since table contains "Title" row and "Filters" row
         var rowStartIndex = 2;
         var row = table.rows[rowStartIndex + rowIndex];
         var cell = row.cells[columnIndex];
-        cell.innerText = data;
+        cell.innerHTML = html;
     } else {
         console.error("Unable to find reportsTable to set the innerText location");
     }
@@ -68,9 +68,9 @@ class ReturnTable extends Component {
         }
     }
 
-    /*
     /// Converts a longitude/latitude to an address
     locationFormatter = (cell, row, index) => {
+        console.log(row);
         if (row && row.latitude && row.longitude) {
             axios({
                 method: 'get',
@@ -78,52 +78,26 @@ class ReturnTable extends Component {
                 headers: { 'content-type': 'application/json', },
                 timeout: API_TIMEOUT
             }).then(result => {
-                console.log(result.data);
-                // Set the row data "location" so column dataField is bound
-                row.location = result.data.features[0].place_name;
-                
-                // Manually set Location column since no way to do it through bootstrap-table-2
-                manualSetTableData(index, 3, result.data.features[0].place_name);
-            }).catch(error => {
-                console.error(error);
-                this.setState({
-                    error: error,
-                });
-                
-                // If any errors occur when trying to use the Mapbox api, default to using the long/lat
-                manualSetTableData(index, 3, `${row.latitude}, ${row.longitude}`);
-            });
-        }
-        else {
-            return "Unknown location";
-        }
-    }
-    */
+                //console.log(result.data);
 
-    /// Converts a longitude/latitude to an address
-    locationFormatter = (cell, row, index) => {
-        if (row && row.latitude && row.longitude) {
-            axios({
-                method: 'get',
-                url: "https://api.mapbox.com" + `/geocoding/v5/mapbox.places/${row.longitude},${row.latitude}.json?access_token=${MAPBOX_API_KEY}`,
-                headers: { 'content-type': 'application/json', },
-                timeout: API_TIMEOUT
-            }).then(result => {
-                if (result.data.features[3].text == row.zone) {
-                    console.log(result.data);
+                var locationColumnIndex = 3;
+                if (row.location) {
                     // Set the row data "location" so column dataField is bound
                     row.location = result.data.features[0].place_name;
-                    
                     // Manually set Location column since no way to do it through bootstrap-table-2
-                    manualSetTableData(index, 3, result.data.features[0].place_name);
+                    manualSetTableHtml(index, locationColumnIndex, result.data.features[0].place_name);
+                } else {
+                    manualSetTableHtml(index, locationColumnIndex, "Unknown");
                 }
-                else {
-                    console.log(result.data);
-                    // Set the row data "location" so column dataField is bound
-                    row.location = result.data.features[0].place_name;
-                    
-                    // Manually set Location column since no way to do it through bootstrap-table-2
-                    manualSetTableData(index, 3, result.data.features[0].place_name);
+
+                var zoneColumnIndex = 7;
+                if (row.zone) {
+                    // Determine if the asset is in it's location by comparing it's zone to it's current lat/long
+                    // then set the html for the cell
+                    var isInZone = result.data.features[3].text.toLowerCase() == row.zone.toLowerCase();
+                    manualSetTableHtml(index, zoneColumnIndex, isInZone ? `<div style='color:green'>${row.zone}</div>` : `<div style='color:red'>${row.zone}</div>`);
+                } else {
+                    manualSetTableHtml(index, zoneColumnIndex, "Unknown");
                 }
             }).catch(error => {
                 console.error(error);
@@ -132,7 +106,7 @@ class ReturnTable extends Component {
                 });
                 
                 // If any errors occur when trying to use the Mapbox api, default to using the long/lat
-                manualSetTableData(index, 3, `${row.latitude}, ${row.longitude}`);
+                manualSetTableHtml(index, 3, `${row.latitude}, ${row.longitude}`);
             });
         }
         else {
