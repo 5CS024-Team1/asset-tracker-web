@@ -77,7 +77,7 @@ class ReturnTable extends Component {
                 headers: { 'content-type': 'application/json', },
                 timeout: API_TIMEOUT
             }).then(result => {
-                //console.log(result.data);
+                console.log(result.data);
                 // Set the row data "location" so column dataField is bound
                 row.location = result.data.features[0].place_name;
                 

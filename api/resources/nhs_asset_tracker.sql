@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2020 at 06:54 PM
+-- Generation Time: Apr 29, 2020 at 03:55 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -64,16 +64,17 @@ CREATE TABLE `equipment` (
   `Equi_Loaned` datetime DEFAULT NULL,
   `Equi_Return_due` datetime DEFAULT NULL,
   `Equi_Dept` int(3) DEFAULT NULL,
-  `Equi_Main_Last_Cleaned` datetime DEFAULT NULL
+  `Equi_Main_Last_Cleaned` datetime DEFAULT NULL,
+  `Equi_Zone` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `equipment`
 --
 
-INSERT INTO `equipment` (`Equi_ID`, `Equi_Barcode`, `Equi_Name`, `Equi_Category`, `Equi_Latittude`, `Equi_Longitude`, `Equi_Timestamp`, `Equi_Assigned_Pats_IDs`, `Equi_Loaned`, `Equi_Return_due`, `Equi_Dept`, `Equi_Main_Last_Cleaned`) VALUES
-('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-04-11 22:30:10', 1, '2020-04-01 00:29:05', '2020-04-22 00:29:05', 3, NULL),
-('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-11 22:37:43', NULL, NULL, NULL, 2, NULL);
+INSERT INTO `equipment` (`Equi_ID`, `Equi_Barcode`, `Equi_Name`, `Equi_Category`, `Equi_Latittude`, `Equi_Longitude`, `Equi_Timestamp`, `Equi_Assigned_Pats_IDs`, `Equi_Loaned`, `Equi_Return_due`, `Equi_Dept`, `Equi_Main_Last_Cleaned`, `Equi_Zone`) VALUES
+('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-04-29 13:53:52', 1, '2020-04-01 00:29:05', '2020-04-22 00:29:05', 3, NULL, 'West Midlands'),
+('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-29 13:54:26', NULL, NULL, NULL, 2, NULL, 'West Midlands');
 
 -- --------------------------------------------------------
 
@@ -166,7 +167,8 @@ INSERT INTO `person` (`Pers_Surname`, `Pers_Forename`, `Pers_Address`, `Pers_Tow
 ('Goodyear', 'Jane', '9 Snowshill', 'Dudley', 'West Midlands', 1, 'AD1'),
 ('Samson', 'Joe', '9 Brownhill', 'Dudley', 'West Midlands', 2, 'AD2'),
 ('Whitehouse', 'Sarah', '12 Bromsgrove', 'Stourbridge', 'West Midlands', 3, 'STF1'),
-('Blakesly', 'Luke', '342 Himley Road', 'Dudley', 'West Midlands', 4, 'STF2');
+('Blakesly', 'Luke', '342 Himley Road', 'Dudley', 'West Midlands', 4, 'STF2'),
+('Ward', 'Uric', '8 Testdrive', 'Dudley', 'West Midlands', 5, 'AD1');
 
 -- --------------------------------------------------------
 
@@ -241,8 +243,8 @@ ALTER TABLE `person`
 --
 ALTER TABLE `user`
   ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `User_Pass` (`User_Pass`),
-  ADD KEY `IDs_Staff` (`STAFF_ID`);
+  ADD UNIQUE KEY `IDs_Staff` (`STAFF_ID`) USING BTREE,
+  ADD KEY `User_Pass` (`User_Pass`) USING BTREE;
 
 --
 -- Constraints for dumped tables
