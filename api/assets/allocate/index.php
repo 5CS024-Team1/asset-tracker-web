@@ -53,7 +53,7 @@ $rest_json = file_get_contents("php://input");
 $post_data = json_decode($rest_json, true);
 
 if ( empty($post_data) ) {
-    die("Require data to add user");
+    die("Require data to allocate user");
 }
 
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);

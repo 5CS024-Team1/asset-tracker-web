@@ -71,6 +71,10 @@ export function adminUsers() {
 export function getUser(id) {
     return `${BASE_API_PATH}/user/get?id=${id}`
 }
+// Get user info from id
+export function removeUser() {
+    return `${BASE_API_PATH}/user/remove/`
+}
 /// Login API path
 export function login() {
     return `${BASE_API_PATH}/user/login/`;
