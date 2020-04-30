@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2020 at 03:55 PM
+-- Generation Time: Apr 30, 2020 at 05:11 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -74,7 +74,8 @@ CREATE TABLE `equipment` (
 
 INSERT INTO `equipment` (`Equi_ID`, `Equi_Barcode`, `Equi_Name`, `Equi_Category`, `Equi_Latittude`, `Equi_Longitude`, `Equi_Timestamp`, `Equi_Assigned_Pats_IDs`, `Equi_Loaned`, `Equi_Return_due`, `Equi_Dept`, `Equi_Main_Last_Cleaned`, `Equi_Zone`) VALUES
 ('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-04-29 13:53:52', 1, '2020-04-01 00:29:05', '2020-04-22 00:29:05', 3, NULL, 'West Midlands'),
-('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-29 13:54:26', NULL, NULL, NULL, 2, NULL, 'West Midlands');
+('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-29 13:54:26', NULL, NULL, NULL, 2, NULL, 'West Midlands'),
+('3', '3', 'test', 'Unknown', '52.5086710', '-2.0873400', '2020-04-30 11:38:32', NULL, NULL, NULL, 2, NULL, 'West Midlands');
 
 -- --------------------------------------------------------
 
@@ -127,7 +128,8 @@ INSERT INTO `ids` (`IDs_Patient`, `IDs_Staff`, `IDs_Inpatient`) VALUES
 (2, NULL, NULL),
 (3, NULL, NULL),
 (4, NULL, NULL),
-(5, NULL, NULL);
+(5, NULL, NULL),
+(NULL, 'STF3', NULL);
 
 -- --------------------------------------------------------
 
@@ -156,7 +158,7 @@ CREATE TABLE `person` (
   `Pers_Town` varchar(15) DEFAULT NULL,
   `Pers_County` varchar(30) NOT NULL,
   `IDs_Patient` int(10) NOT NULL,
-  `IDs_Staff` varchar(10) NOT NULL
+  `IDs_Staff` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
