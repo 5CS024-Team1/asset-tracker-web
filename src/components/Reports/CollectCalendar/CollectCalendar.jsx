@@ -21,6 +21,7 @@ import {
 } from "../../../utils";
 
 import { allAssets, date_return } from '../../../helperFile';
+import Session from '../../Session/Session';
 
 const localizer = momentLocalizer(moment);
 
@@ -57,7 +58,10 @@ class CollectCalendar extends Component {
         axios({
             method: 'GET',
             url: allAssets(),
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token,
+            },
             timeout: API_TIMEOUT
         }).then(result => {
             let results = [];
