@@ -46,7 +46,7 @@ class EditUser extends Component {
             error: "",
             user: null,
             id: params.userId,
-            user_newName: "",
+            user_Username: "",
             user_newEmail: "",
             user_newType: "",
         };
@@ -68,7 +68,7 @@ class EditUser extends Component {
                 this.setState({
                     loaded: true,
                     user: result.data.user,
-                    user_newName: result.data.user.admin_name,
+                    user_Username: result.data.user.Username,
                     user_newEmail: result.data.user.admin_email,
                     user_newType: result.data.user.admin_type,
                     pass_new: "",
@@ -140,20 +140,11 @@ class EditUser extends Component {
                             </Col>
                         </FormGroup>
                         <FormGroup row>
-                            <Label for="newName" md={2}>Full Name:</Label>
+                            <Label for="newName" md={2}>Username:</Label>
                             <Col>
-                                <Input type="text" name="text" id="newName" placeholder="First and Last Name" 
-                                    value={this.state.user_newName} 
-                                    onChange={e => this.setState({ user_newName: e.target.value })}
-                                    md={10}/>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="newEmail" md={2}>Email:</Label>
-                            <Col>
-                                <Input type="text" name="text" id="newEmail" placeholder="Email address" 
-                                    value={this.state.user_newEmail} 
-                                    onChange={e => this.setState({ user_newEmail: e.target.value })}
+                                <Input type="text" name="text" id="newName" placeholder="Username" 
+                                    value={this.state.user.user_Username} 
+                                    onChange={e => this.setState({ user_Username: e.target.value })}
                                     md={10}/>
                             </Col>
                         </FormGroup>
