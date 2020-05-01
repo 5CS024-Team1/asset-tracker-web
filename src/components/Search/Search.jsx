@@ -44,7 +44,6 @@ function Results(props) {
                     );
                 })
             }
-            
         </CardColumns>
     );
 }
@@ -59,6 +58,7 @@ class Search extends Component {
             query: parsed.query,
             loaded: false,
             results: null,
+            category_results: null,
             error: null,
         };
     }
@@ -79,6 +79,7 @@ class Search extends Component {
                 console.log(result.data);
                 this.setState({
                     results: result.data.assets,
+                    category_results: result.data.category,
                     loaded: true,
                     error: result.data.error,
                 });
@@ -110,6 +111,9 @@ class Search extends Component {
                     {/* Display UI for results if loaded was complete with results */}
                     {
                         this.state.loaded && this.state.results && <Results results={this.state.results}/>
+                    }
+                    {
+                        this.state.loaded && this.state.category_results && <Results results={this.state.category_results} />
                     }
                 </div>
                 

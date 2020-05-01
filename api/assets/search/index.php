@@ -34,13 +34,13 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
-// ToDo: Get relevent results to query
 class Results { }
 class Asset { }
 
 $results = new Results();
 // Store relevent assets in array that is initialized as null
 $results->assets = null;
+$results->category = null;
 
 if($query)
 {
@@ -105,12 +105,66 @@ if($query)
             $results->assets[] = $asset;
         }
     }   
+
+
+    /* Search for Category */
+    $sql = "SELECT * FROM `equipment` WHERE `$category` LIKE '%$query%'";
+    $res = mysqli_query($conn, $sql);
+    if(mysqli_num_rows($res) > 0)
+    {
+        $results->assets = array();
+        while($row = $res->fetch_assoc()) {
+            $asset = new Asset();
+            $asset->id = $row[$eqid];
+            $asset->barcode = $row[$barcode];
+            $asset->display_name = $row[$eqname];
+            $asset->category = $row[$category];
+            $asset->latitude = doubleval($row[$latitude]);
+            $asset->longitude = doubleval($row[$longitude]);
+            $asset->last_ping_time = $row[$last_ping_time];
+            $asset->eqpatid = $row[$eqpatid];
+            $asset->date_loaned = $row[$loaned];
+            $asset->date_return = $row[$owner_date_return];
+            $asset->eqdept = $row[$eqdept];
+            $asset->last_cleaned = $row[$last_cleaned];
+            $check = $row[$eqpatid];
+    
+            if (!empty($row[$eqpatid]))
+            {
+                $sqlquery = "SELECT $surname, $forename, $personaddress, $personidspatient FROM $USER_TABLE WHERE $personidspatient = $check";
+                $sqlresult = $conn->query($sqlquery);
+                if ($sqlresult->num_rows > 0)
+                    {
+                    while($rows = $sqlresult->fetch_assoc()) {
+                        $asset->surname = $rows[$surname];
+                        $asset->forename = $rows[$forename];
+                        $asset->personaddress = $rows[$personaddress];
+                        $asset->personidspatient = $rows[$personidspatient];
+                    }
+                }
+            }
+            else
+            {
+                $asset->surname = Null;
+                $asset->forename = Null;
+                $asset->personaddress = Null;
+                $asset->personidspatient = Null;
+            }
+            
+            //$asset->purchase_cost;
+            //$asset->origin = $row["origin"];
+    
+            // Add asset to array
+            $results->category[] = $asset;
+        }
+    }   
 }
 
-if ($results->assets)
+if ($results->assets || $results->category)
 {
     echo json_encode([
         "assets" => $results->assets,
+        "category" => $results->category,
     ], JSON_PRETTY_PRINT);
 }
 else
