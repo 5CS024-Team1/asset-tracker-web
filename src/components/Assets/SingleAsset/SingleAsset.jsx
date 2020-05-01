@@ -59,6 +59,14 @@ function AssetProperties(props) {
                     <div>{props.deviceName}</div>
                 </Col>
             </Row>
+            <Row>
+                <Col md={4}>
+                    <h6>Category:</h6>
+                </Col>
+                <Col md={8}>
+                    <div>{props.category}</div>
+                </Col>
+            </Row>
             <Row >
                 <Col md={4}>
                     <h6>ID:</h6>
@@ -85,18 +93,26 @@ function AssetProperties(props) {
             </Row>
             <Row >
                 <Col md={4}>
-                    <h6>Origin:</h6>
-                </Col>
-                <Col md={8}>
-                    <div>{props.deviceOrigin}</div>
-                </Col>
-            </Row>
-            <Row >
-                <Col md={4}>
                     <h6>County:</h6>
                 </Col>
                 <Col md={8}>
                     <div>{props.deviceCounty}</div>
+                </Col>
+            </Row>
+            <Row >
+                <Col md={4}>
+                    <h6>Loaned:</h6>
+                </Col>
+                <Col md={8}>
+                    <div>{props.loaned_date ? convertDateFromDb(props.loaned_date).toLocaleString('en-GB') : "?"}</div>
+                </Col>
+            </Row>
+            <Row >
+                <Col md={4}>
+                    <h6>Return:</h6>
+                </Col>
+                <Col md={8}>
+                    <div>{props.return_date ? convertDateFromDb(props.return_date).toLocaleString('en-GB') : "?"}</div>
                 </Col>
             </Row>
         </div>
@@ -158,6 +174,7 @@ class SingleAsset extends Component
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
                  },
             }).then(result => {
+                console.log(result);
                 this.setState({
                     asset: result.data.asset,
                     assetIdLoaded: true,
@@ -220,10 +237,12 @@ class SingleAsset extends Component
                                     <AssetProperties 
                                         deviceName={this.state.asset.display_name} 
                                         deviceID={this.state.asset.id}
-                                        deviceLocation={this.state.asset.location}
-                                        deviceOwner={this.state.asset.owner_name}
-                                        deviceOrigin={this.state.asset.origin}
-                                        deviceCounty="West Midlands" />
+                                        deviceLocation={this.state.asset.latitude && this.state.asset.longitude ? `${this.state.asset.latitude}, ${this.state.asset.longitude}` : "Unknown"}
+                                        deviceOwner={this.state.asset.eqpatid ? `${this.state.asset.surname}, ${this.state.asset.forename}` : "Unknown"}
+                                        deviceCounty={this.state.asset.zone}
+                                        category={this.state.asset.category}
+                                        loaned_date={this.state.asset.date_loaned}
+                                        return_date={this.state.asset.date_return} />
                                 }
                                 {/* Display loading when asset isn't set and hasn't been loaded */}
                                 { this.state.asset == null && !this.state.assetIdLoaded && <LoadingSpinner className="mx-auto" /> }
