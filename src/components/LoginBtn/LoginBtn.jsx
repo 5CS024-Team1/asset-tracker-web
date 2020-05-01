@@ -143,7 +143,7 @@ class LoginBtn extends Component
                     }
                 </Button>
                 {/* Login Modal */}
-                <Modal isOpen={this.state.modalToggle}>
+                <Modal isOpen={this.state.modalToggle} onKeyPress={((e) => {if(e.which == 13) { this.handleConfirmLogin(); }})}>
                     <ModalHeader>
                         { this.state.login_user ? "Sign Out" : "Sign In" }
                     </ModalHeader>
@@ -168,7 +168,7 @@ class LoginBtn extends Component
                                     </FormGroup>
                                     <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                         <Label for="examplePassword" className="mr-sm-2">Password</Label>
-                                        <Input type="password" name="password" id="examplePassword" placeholder="" required 
+                                        <Input type="password" name="password" id="examplePassword" placeholder="password" required 
                                             onChange={e => this.setState({ password: e.target.value })}/>
                                     </FormGroup>
                                 </Form>
@@ -183,16 +183,16 @@ class LoginBtn extends Component
                                                 </div>
                                                 :
                                                 <div className="d-flex w-100">
-                                                    <a href="/register" className="mr-auto">
+                                                    {/* <a href="/register" className="mr-auto">
                                                         <Button color="primary">
                                                             Register
                                                         </Button>
-                                                    </a>
+                                                    </a> */}
                                                     {
-                                                        !this.state.loaded && <LoadingSpinner small className="my-auto"/>
+                                                        !this.state.loaded && <LoadingSpinner small className="mr-auto"/>
                                                     }
-                                                    <Button className="mr-2" color="primary" onClick={this.handleConfirmLogin}>Confirm</Button>
-                                                    <Button color="secondary" onClick={this.handleToggleLoginModal}>Cancel</Button>
+                                                    <Button className="ml-auto" color="primary" onClick={this.handleConfirmLogin}>Confirm</Button>
+                                                    <Button className="ml-2" color="secondary" onClick={this.handleToggleLoginModal}>Cancel</Button>
                                                 </div>
                         }
                     </ModalFooter>
