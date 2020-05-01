@@ -26,9 +26,6 @@ if (!isset($_GET["id"])) {
 }
 
 $asset_id = htmlspecialchars($_GET["id"]);
-if (!$asset_id) {
-    die("Unable to parse asset id - No id specified");
-}
 
 /// Open a connection to the database
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
@@ -42,7 +39,7 @@ $result = $conn->query($sql);
 
 class Asset { }
 
-if ($result->num_rows > 0) 
+if ($result && $result->num_rows > 0) 
 {
     // Map individual asset onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
@@ -102,5 +99,7 @@ else
     );
     echo json_encode($arr, JSON_PRETTY_PRINT);
 }
+
+$conn->close();
 
 ?>

@@ -72,6 +72,7 @@ class User { }
 
 if ($result && $result->num_rows > 0) 
 {
+    $user = null;
     // Map individual user onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
         $user = new User();
