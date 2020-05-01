@@ -127,14 +127,17 @@ function DeallocateConfirm(props) {
                 Are you sure you want to deallocate{' '}
                 "{props.asset != null && props.asset.display_name}"{' '}
                 from{' '}
-                "{props.asset != null && props.asset.owner_name}"?
+                "{props.asset != null && props.asset.forename + " " + props.asset.surname}"?
 
                 {
-                    props.asset != null && props.asset.owner_date_return &&
+                    // Check now date is less than db date to display message
+                    props.asset != null && props.asset.date_return && 
+                    new Date() < convertDateFromDb(props.asset.date_return) && (
                         <div>
                             There is still time left to return this item. Asset is due to be given back on{' '}
-                            {props.asset.owner_date_return}
+                            {props.asset.date_return}
                         </div>
+                    )
                 }
             </ModalBody>
             <ModalFooter>
@@ -250,7 +253,7 @@ class SingleAsset extends Component
                                 { !this.state.asset && this.state.assetIdLoaded && <div>Unable to load any data</div> }
                             </Jumbotron>
                             {
-                                this.state.asset != null && this.state.asset.owner_name == null && (
+                                this.state.asset != null && this.state.asset.eqpatid == null && (
                                     <Link to={this.state.id+'/allocate'}>
                                         <Button color="primary">
                                             Allocate Asset
@@ -259,7 +262,7 @@ class SingleAsset extends Component
                                 )
                             }
                             {
-                                this.state.asset && this.state.asset.owner_name && (
+                                this.state.asset && this.state.asset.eqpatid && (
                                     <Button color="primary" onClick={this.toggleDeallocateModal}>
                                         Deallocate Asset
                                     </Button>
