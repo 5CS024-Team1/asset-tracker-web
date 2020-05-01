@@ -42,11 +42,31 @@ function BuildQuery1($USER_TABLE, $surname, $forename, $address, $town, $county,
     return $query;
 }
 
-function BuildQuery2($ASSET_TABLE, $patid, $assetid)
+function BuildQuery2($ASSETS_TABLE, $patid, $assetid)
 {
     $query = "UPDATE $ASSETS_TABLE SET Equi_Assigned_Pats_IDs=$patid WHERE Equi_ID=$assetid";
     $query = "$query VALUES ('$patid', '$assetid')";
     return $query;
+}
+
+function BuildQuery3($ASSETS_TABLE, $loanDate, $assetid)
+{
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned=$loanDate WHERE Equi_ID=$assetid";
+    $query = "$query VALUES ('$loanDate', '$assetid')";
+    return $query;
+}
+
+function BuildQuery4($ASSETS_TABLE, $returnDate, $assetid)
+{
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned=$returnDate WHERE Equi_ID=$assetid";
+    $query = "$query VALUES ('$returnDate', '$assetid')";
+    return $query;
+}
+
+function formatDate($date, $time)
+{
+    $newDate = $date.$time;
+    return $newDate;
 }
 
 $rest_json = file_get_contents("php://input");
@@ -61,14 +81,23 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
+$loanDate = formatDate($post_data['recieved_date'], $post_data['recieved_time']);
+$returnDate = formatDate($post_data['retrieval_date'], $post_data['retrieval_time']);
+
 $sql = BuildQuery($ID_TABLE, $post_data['patientId']);
 $result = $conn->query($sql);
 
-$sql1 = BuildQuery1($USER_TABLE, $post_data['surname'], $post_data['forname'], $post_data['address'], $post_data['town'], $post_data['county'], $post_data['patientId'], $post_data['userId']);
+$sql1 = BuildQuery1($USER_TABLE, $post_data['owner_surname'], $post_data['owner_forname'], $post_data['address_line_1'], $post_data['address_city'], $post_data['address_region'], $post_data['patientId'], $post_data['userId']);
 $result1 = $conn->query($sql1);
 
 $sql2 = BuildQuery2($ASSETS_TABLE, $post_data['patientId'], $post_data['assetId']);
 $result2 = $conn->query($sql2);
+
+$sql3 = BuildQuery3($ASSETS_TABLE, $loanDate, $post_data['assetId']);
+$result3 = $conn->query($sql3);
+
+$sql4 = BuildQuery4($ASSETS_TABLE, $returnDate, $post_data['assetId']);
+$result4 = $conn->query($sql4);
 
 if($result)
 {
@@ -76,9 +105,29 @@ if($result)
     {
         if($result2)
         {
-            echo json_encode([
-                "user_set" => true,
-            ], JSON_PRETTY_PRINT);
+            if($result3)
+            {
+                if($result4)
+                {
+                    echo json_encode([
+                        "user_set" => true,
+                    ], JSON_PRETTY_PRINT);
+                }
+                else
+                {
+                    echo json_encode([
+                        "user_set" => false,
+                        "error" => "Unable to successfully execute query '" . $sql . "'",
+                    ]);
+                }
+            }
+            else
+            {
+                echo json_encode([
+                    "user_set" => false,
+                    "error" => "Unable to successfully execute query '" . $sql . "'",
+                ]);
+            }
         }
         else
         {
