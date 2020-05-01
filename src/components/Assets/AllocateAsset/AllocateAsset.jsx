@@ -110,7 +110,10 @@ class AllocateAsset extends Component {
         axios({
             method: 'POST',
             url: url,
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token,
+             },
             timeout: API_TIMEOUT,
             data: this.state,
         }).then(result => {
