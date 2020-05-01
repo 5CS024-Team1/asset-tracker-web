@@ -44,21 +44,21 @@ function BuildQuery1($USER_TABLE, $surname, $forename, $address, $town, $county,
 
 function BuildQuery2($ASSETS_TABLE, $patid, $assetid)
 {
-    $query = "UPDATE $ASSETS_TABLE SET Equi_Assigned_Pats_IDs=$patid WHERE Equi_ID=$assetid";
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Assigned_Pats_IDs='$patid' WHERE Equi_ID='$assetid'";
     $query = "$query VALUES ('$patid', '$assetid')";
     return $query;
 }
 
 function BuildQuery3($ASSETS_TABLE, $loanDate, $assetid)
 {
-    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned=$loanDate WHERE Equi_ID=$assetid";
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned='$loanDate' WHERE Equi_ID='$assetid'";
     $query = "$query VALUES ('$loanDate', '$assetid')";
     return $query;
 }
 
 function BuildQuery4($ASSETS_TABLE, $returnDate, $assetid)
 {
-    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned=$returnDate WHERE Equi_ID=$assetid";
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned='$returnDate' WHERE Equi_ID='$assetid'";
     $query = "$query VALUES ('$returnDate', '$assetid')";
     return $query;
 }

@@ -90,4 +90,5 @@ var date_return = "date_return";
 var zone = "zone";
 
 var stfid = "idsstaff";
-export { id, display_name, category, last_ping_time, date_loaned, date_return, zone, stfid };
+var deleteId = "deleteId";
+export { id, display_name, category, last_ping_time, date_loaned, date_return, zone, stfid, deleteId };

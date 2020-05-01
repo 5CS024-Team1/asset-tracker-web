@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faUserTimes } from '@fortawesome/free-solid-svg-icons';
-import { stfid } from '../../helperFile';
+import { removeUser, stfid } from '../../helperFile';
 
 class ReturnUserTable extends Component {
     constructor(props) {
@@ -57,13 +57,13 @@ class ReturnUserTable extends Component {
             console.warn("Can't delete since delete id is not set");
             return;
         }
-
         console.error("DELETING USER " + this.state.deleteId);
         this.toggleDeleteUserModal(-1);
         /// Redirect user once complete
         setTimeout(() => {
             this.setState({ redirect: "/users" });
         }, 1000);
+        
     }
 
     render() {

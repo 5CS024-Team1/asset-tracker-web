@@ -11,21 +11,21 @@ header('Content-Type: application/json');
 /// Updates USER_TABLE IDs_Staff to null
 function BuildQuery($USER_TABLE, $stfid)
 {
-    $query = "UPDATE $USER_TABLE SET IDs_Staff=NULL WHERE IDs_Staff=$stfid";
+    $query = "UPDATE $USER_TABLE SET IDs_Staff=NULL WHERE IDs_Staff='$stfid'";
     $query = "$query VALUES ('$stfid')";
     return $query;
 }
 
 function BuildQuery1($LOGIN_TABLE, $stfid)
 {
-    $query = "DELETE FROM $LOGIN_TABLE WHERE STAFF_ID=$stfid";
+    $query = "DELETE FROM $LOGIN_TABLE WHERE STAFF_ID='$stfid'";
     $query = "$query VALUES ('$stfid')";
     return $query;
 }
 
 function BuildQuery2($ID_TABLE, $stfid)
 {
-    $query = "DELETE FROM $ID_TABLE WHERE IDs_Staff=$stfid";
+    $query = "DELETE FROM $ID_TABLE WHERE IDs_Staff='$stfid'";
     $query = "$query VALUES ('$stfid')";
     return $query;
 }
@@ -42,32 +42,22 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
-$sql = BuildQuery($USER_TABLE, $post_data['userId']);
+$sql = BuildQuery($USER_TABLE, $post_data['deleteId']);
 $result = $conn->query($sql);
 
-$sql1 = BuildQuery1($LOGIN_TABLE, $post_data['userId']);
+$sql1 = BuildQuery1($LOGIN_TABLE, $post_data['deleteId']);
 $result1 = $conn->query($sql1);
 
-$sql2 = BuildQuery2($ID_TABLE, $post_data['userId']);
+$sql2 = BuildQuery2($ID_TABLE, $post_data['deleteId']);
 $result2 = $conn->query($sql2);
 
-if($result)
+if($result1)
 {
-    if($result1)
+    if($result2)
     {
-        if($result2)
-        {
-            echo json_encode([
-                "user_set" => true,
-            ], JSON_PRETTY_PRINT);
-        }
-        else
-        {
-            echo json_encode([
-                "user_set" => false,
-                "error" => "Unable to successfully execute query '" . $sql . "'",
-            ]);
-        }
+        echo json_encode([
+            "user_set" => true,
+        ], JSON_PRETTY_PRINT);
     }
     else
     {
