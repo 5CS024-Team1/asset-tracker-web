@@ -157,7 +157,7 @@ class Profile extends Component {
                 }
                 {
                     this.state.successMessage &&
-                        <UncontrolledAlert color="danger" className="my-3">
+                        <UncontrolledAlert color="success" className="my-3">
                             {this.state.successMessage}
                         </UncontrolledAlert>
                 }

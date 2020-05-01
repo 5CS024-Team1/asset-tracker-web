@@ -66,8 +66,9 @@ if ($result && $result->num_rows > 0)
             } else {
                 echo json_encode([
                     "success" => false,
+                    "error" => "Error passing to database",
                 ], JSON_PRETTY_PRINT);
-                exit("Error passing to database");
+                exit();
             }
         }
         else
@@ -81,17 +82,20 @@ if ($result && $result->num_rows > 0)
     }
     else 
     {
-        exit("Current passwords don't match");
         echo json_encode([
             "success" => false,
+            "success" => "Current passwords don't match",
         ], JSON_PRETTY_PRINT);
+        exit();
     }
 }
 else
 {
     echo json_encode([
         "success" => false,
+        "error" => "Error fetching from database",
     ], JSON_PRETTY_PRINT);
+    exit();
 }
 
 ?>
