@@ -23,6 +23,18 @@ function BuildQuery1($LOGIN_TABLE, $username, $password, $stfid)
     return $query;
 }
 
+function checkPassword($password)
+{
+    if (strlen($password) >= 8) {
+        if (preg_match('/[A-Za-z]/', $password) && preg_match('/[0-9]/', $password) && preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $password)) {
+            return TRUE;
+        }
+    }
+    else {
+        return FALSE;
+    }
+}
+
 /*
 function BuildQuery2($USER_TABLE, $usid, $first_name, $last_name, $email, $password, $account)
 {
@@ -45,13 +57,22 @@ if (!$conn) {
 }
 
 /// Query for registering user into database
-$passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
+if (checkPassword($post_data['password'])) {
+    $passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
 
-$sql = BuildQuery($ID_TABLE, $post_data['userId']);
-$result = $conn->query($sql);
+    $sql = BuildQuery($ID_TABLE, $post_data['userId']);
+    $result = $conn->query($sql);
 
-$sql1 = BuildQuery1($LOGIN_TABLE, $post_data['userName'], $passwordHash, $post_data['userId']);
-$result1 = $conn->query($sql1);
+    $sql1 = BuildQuery1($LOGIN_TABLE, $post_data['userName'], $passwordHash, $post_data['userId']);
+    $result1 = $conn->query($sql1);
+}
+else
+{
+    echo json_encode([
+        "user_set" => false,
+        "error" => "Unable to successfully execute query '" . $sql . "'",
+    ]);
+}
 
 if($result)
 {
