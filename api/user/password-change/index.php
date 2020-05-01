@@ -21,6 +21,18 @@ if ( $post_data["pass_new"] != $post_data["pass_newCheck"] ) {
     exit();
 }
 
+function checkPassword($password)
+{
+    if (strlen($password) >= 8) {
+        if (preg_match('/[A-Za-z]/', $password) && preg_match('/[0-9]/', $password) && preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $password)) {
+            return TRUE;
+        }
+    }
+    else {
+        return FALSE;
+    }
+}
+
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
@@ -28,7 +40,7 @@ if (!$conn) {
 
 $user_id = $post_data["id"];
 /// Create SQL statement to get the user that matches the id
-$sql = "SELECT * FROM $USER_TABLE WHERE `admin_id` = ?";
+$sql = "SELECT * FROM $LOGIN_TABLE WHERE `STAFF_ID` = ?";
 $statement = $conn->prepare($sql);
 $statement->bind_param("s", $user_id);
 $statement->execute();
@@ -39,22 +51,32 @@ if ($result && $result->num_rows > 0)
     $row = $result->fetch_assoc();
 
     // Check current password matches one in database 
-    if ( password_verify($post_data["pass_current"], $row["admin_password"]) ) 
+    if ( password_verify($post_data["pass_current"], $row["User_Pass"]) ) 
     {
-        // Set new password in db
-        $updateSql = "UPDATE `user` SET `admin_password` = \"?\" WHERE `user`.`admin_id` = 1";
-        $pswdHashed = password_hash($post_data["pass_new"], PASSWORD_DEFAULT);
-        $updateSql->bind_param("s", $pswdHashed);
-        $result = $conn->query($updateSql);
+        if (checkPassword($post_data["pass_new"])) {
+            // Set new password in db
+            $passwordHash = password_hash($post_data["pass_new"], PASSWORD_DEFAULT);
+            $updateSql = "UPDATE user SET User_Pass='$passwordHash' WHERE STAFF_ID='$user_id'";
+            $result = $conn->query($updateSql);
 
-        if ($result) {
-            echo json_encode([
-                "success" => true,
-            ], JSON_PRETTY_PRINT);
-        } else {
+            if ($result) {
+                echo json_encode([
+                    "success" => true,
+                ], JSON_PRETTY_PRINT);
+            } else {
+                echo json_encode([
+                    "success" => false,
+                ], JSON_PRETTY_PRINT);
+                exit("Error passing to database");
+            }
+        }
+        else
+        {
             echo json_encode([
                 "success" => false,
+                "error" => "Password must be 8 character long and contain at least 1: special character, upper case, number",
             ], JSON_PRETTY_PRINT);
+            exit();
         }
     }
     else 
