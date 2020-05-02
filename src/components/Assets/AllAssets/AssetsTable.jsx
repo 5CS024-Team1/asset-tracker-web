@@ -3,6 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { 
     textFilter,
     selectFilter,
+    dateFilter,
 } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 import {
@@ -90,16 +91,19 @@ class AssetsTable extends Component {
             text: "Last Pinged Time",
             formatter: DateFormatter,
             sort: true,
+            filter: dateFilter(),
         }, {
             dataField: date_loaned,
             text: "Loaned",
             formatter: DateFormatter,
             sort: true,
+            filter: dateFilter(),
         }, {
             dataField: date_return,
             text: "Return Date",
             formatter: DateFormatter,
             sort: true,
+            filter: dateFilter(),
         }, {
             text: "",
             isDummyField: true,

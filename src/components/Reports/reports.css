@@ -1,4 +1,0 @@
-/* Lets reports table columns be their own width, prevents column overflow */
-.table {
-    width: inherit!important;
-}

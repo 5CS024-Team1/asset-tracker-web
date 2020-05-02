@@ -111,6 +111,7 @@ class ReturnTable extends Component {
     }
 
     render() {
+        var dateColumnWidth = "215px";
         const columns =[{
             dataField: id,
             text: "Id",
@@ -145,6 +146,7 @@ class ReturnTable extends Component {
             text: "Last Pinged Time",
             formatter: DateFormatter,
             sort: true,
+            headerStyle: { width: dateColumnWidth },
             filter: dateFilter(),
         },
         {
@@ -153,6 +155,7 @@ class ReturnTable extends Component {
             formatter: DateFormatter,
             sort: true,
             filter: dateFilter(),
+            headerStyle: { width: dateColumnWidth, },
         },
         {
             dataField: date_return,
@@ -160,6 +163,7 @@ class ReturnTable extends Component {
             formatter: DateFormatter,
             sort: true,
             filter: dateFilter(),
+            headerStyle: { width: dateColumnWidth, },
         },
         {
             dataField: zone,

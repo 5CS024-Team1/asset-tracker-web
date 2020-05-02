@@ -9,7 +9,6 @@ import {
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import "./reports.css";
 import ReturnTable from './ReturnTable';
 import { BASE_API_PATH, API_TIMEOUT } from '../../consts';
 import LoadingSpinner from '../LoadingSpinner';
