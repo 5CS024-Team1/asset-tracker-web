@@ -31,11 +31,11 @@ class Home extends Component {
         // Only show if getUser has actually expired, could navigate to page with login info
         var isSignedIn = Session.getUser() != null;
         var expiredAuth = params.get('expired') && !isSignedIn;
-        var hasAuth = params.get('auth');
+        var authError = params.get('auth');
 
         this.state = {
             expired: expiredAuth,
-            hasAuth: hasAuth,
+            authErrorStatus: authError,
             isSignedIn: isSignedIn,
         };
     }
@@ -54,9 +54,16 @@ class Home extends Component {
                                                 </UncontrolledAlert>
                     }
                     {
-                        this.state.hasAuth &&   <UncontrolledAlert className="mx-5 mt-3" color="danger">
-                                                    Sorry, you don't have access to view that page. Try signing in
-                                                </UncontrolledAlert>
+                        this.state.authErrorStatus &&   <UncontrolledAlert className="mx-5 mt-3" color="danger">
+                                                            { 
+                                                                this.state.authErrorStatus.toLowerCase() == "none" && 
+                                                                    "Sorry, you don't have access to view that page. Try signing in"
+                                                            }
+                                                            {
+                                                                this.state.authErrorStatus.toLowerCase() == "invalid" && 
+                                                                    "You don't have access to that page."
+                                                            }
+                                                        </UncontrolledAlert>
                     }
                     <div className="mx-auto my-5">
                         <h1 className="text-center" style={{ "fontSize": "3rem" }} >Asset Angels</h1>

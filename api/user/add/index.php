@@ -35,15 +35,6 @@ function checkPassword($password)
     }
 }
 
-/*
-function BuildQuery2($USER_TABLE, $usid, $first_name, $last_name, $email, $password, $account)
-{
-    $query = "INSERT INTO $USER_TABLE (admin_id, admin_name, admin_email, admin_password, admin_type)";
-    $query = "$query VALUES ('$usid', '$name', '$email', '$password', '$account')";
-    return $query;
-}
-*/
-
 $rest_json = file_get_contents("php://input");
 $post_data = json_decode($rest_json, true);
 
@@ -57,49 +48,27 @@ if (!$conn) {
 }
 
 /// Query for registering user into database
+$result = null;
+$result1 = null;
 if (checkPassword($post_data['password'])) {
     $passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
 
     $sql = BuildQuery($ID_TABLE, $post_data['userId']);
     $result = $conn->query($sql);
 
-    $sql1 = BuildQuery1($LOGIN_TABLE, $post_data['userName'], $passwordHash, $post_data['userId']);
+    $sql1 = BuildQuery1($LOGIN_TABLE, $post_data['userId'], $passwordHash, $post_data['userId']);
     $result1 = $conn->query($sql1);
 }
 else
 {
     echo json_encode([
         "user_set" => false,
-        "error" => "Unable to successfully execute query '" . $sql . "'",
+        "error" => "Password isn't string enough. Try again with a stronger password. Make sure it contains an uppercase, a lowercase and a symbol and is longer than 8 characters",
     ]);
+    exit();
 }
 
-if($result)
-{
-    if($result1)
-    {
-        echo json_encode([
-            "user_set" => true,
-        ], JSON_PRETTY_PRINT);
-    }
-    else
-    {
-        echo json_encode([
-            "user_set" => false,
-            "error" => "Unable to successfully execute query '" . $sql . "'",
-        ]);
-    }
-}
-else
-{
-    echo json_encode([
-        "user_set" => false,
-        "error" => "Unable to successfully execute query '" . $sql . "'",
-    ]);
-}
-
-/*
-if($result)
+if($result && $result1)
 {
     echo json_encode([
         "user_set" => true,
@@ -109,9 +78,8 @@ else
 {
     echo json_encode([
         "user_set" => false,
-        "error" => "Unable to successfully execute query '" . $sql . "'",
-    ]);
+        "error" => "Unable to create the new user",
+    ], JSON_PRETTY_PRINT);
 }
-*/
 
 ?>

@@ -40,7 +40,16 @@ function requireAuth(component) {
     if (Session.getUser())
         return component;
     else
-        return (<Redirect to="/?auth=false"/>)
+        return (<Redirect to="/?auth=none"/>)
+}
+
+function requireAuthLevel(component, usrType) {
+    var usr = Session.getUser();
+    if (usr && usr.user_type.toLowerCase() == usrType.toLowerCase()) {
+        return component;
+    } else {
+        return (<Redirect to="/?auth=invalid"/>)
+    }
 }
 
 function App() {
@@ -71,7 +80,7 @@ function App() {
 
                     <Route exact path="/users/edit/:userId?" render={(props) => requireAuth(<EditUser props={props} />) } />
                     <Route exact path="/users/register"  render={(props) => requireAuth(<RegisterUser props={props} />) } />
-                    <Route path="/users"  render={(props) => requireAuth(<User props={props}/>) }  />
+                    <Route path="/users"  render={(props) => requireAuthLevel(<User props={props}/>, "admin") }  />
                     <Route path="/profile"  render={(props) => requireAuth(<Profile props={props}/>) } />
 
                     <Route component={NotFound} />

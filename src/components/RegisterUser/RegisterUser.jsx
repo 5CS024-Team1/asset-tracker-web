@@ -13,7 +13,7 @@ import {
     BreadcrumbItem,
     UncontrolledAlert
 } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 
 import {
@@ -50,7 +50,7 @@ class RegisterUser extends Component
             first_name: "",
             last_name: "",
             password: "",
-            account: "",
+            account: "Normal",
 
             error: "",
         };
@@ -72,6 +72,7 @@ class RegisterUser extends Component
                 this.setState({
                     userId: result.data.userId,
                     userIdLoaded: true,
+                    error: result.data.error,
                 });
             }).catch(error => {
                 this.setState({
@@ -84,16 +85,23 @@ class RegisterUser extends Component
     }
 
     handleOnAdd(e) {
-        //console.log(`Register User - Email:'${this.state.email}' Pass:'${this.state.password}'`);
+        this.setState({
+            error: null,
+        });
         axios({
             method: 'post',
             url: addUser(),
             headers: { 'content-type': 'application/json' },
             data: this.state
           }).then(result => {
+              console.log(result);
               this.setState({
-                userSet: result.data.user_set
-              })
+                userSet: result.data.user_set,
+                error: result.data.error,
+              });
+              setTimeout(() => {
+                this.setState({ redirect: "/users" });
+            }, 1000);
           }).catch(error => this.setState({ error: error.message }));
     }
     
@@ -109,7 +117,9 @@ class RegisterUser extends Component
                         </div>
         return (
             <Container className="mt-3">
-                { this.state.loaded && this.state.error && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert>}
+                { this.state.error && <UncontrolledAlert color="danger">Error: {this.state.error}</UncontrolledAlert>}
+                { this.state.userSet && <UncontrolledAlert color="success">Sucessfully created user '{this.state.userId}'</UncontrolledAlert>}
+
                 <PageBreadcrumbs />
                 <h1>Register a New User</h1>
                 <p>Insert new information to add a new user of the site.</p>
@@ -155,6 +165,9 @@ class RegisterUser extends Component
                     </div>
             
                     { this.state.userSet && sentHtml }
+
+                    {/* Redirect using ReactRouterDom once register success */}
+                    { this.state.redirect && <Redirect push to={this.state.redirect}/>}
                 </Form>
             </Container>
         );
