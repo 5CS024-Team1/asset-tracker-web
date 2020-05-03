@@ -77,6 +77,21 @@ class Authentication
 
         return $isValidAuth;
     }
+
+    // Gets the user object from the current request's auth header
+    public static function getUser() {
+        $allHeaders = getallheaders();
+        if (isset($allHeaders["authorization"])) {
+            $auth = $allHeaders["authorization"];
+            // Split Bearer {token} into parts
+            $split = explode(' ', $auth);
+            // Split the original api token into parts
+            $apiTokenSplit = explode('.', $split[1]);
+            // Return decrypted user
+            return Authentication::decryptPayload($apiTokenSplit[1]);
+        }
+        return null;
+    }
 }
 
 

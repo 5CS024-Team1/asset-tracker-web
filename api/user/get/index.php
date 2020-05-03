@@ -22,14 +22,6 @@ if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
 }
 
 /// Check we have required data to do the request
-if (!isset($_GET["id"])) {
-    echo json_encode([
-        "user" => null,
-        "error" => "Unable to get asset id - Id parameter is missing",
-    ], JSON_PRETTY_PRINT);
-    die();
-}
-
 $usid = htmlspecialchars($_GET["id"]);
 if (!$usid) {
     echo json_encode([
@@ -37,6 +29,16 @@ if (!$usid) {
         "error" => "Unable to parse user id - No id specified",
     ], JSON_PRETTY_PRINT);
     die();
+}
+
+// Check the auth header matches the requested user
+$authUser = Authentication::getUser();
+if ($authUser && $authUser->user_id != $usid) {
+    echo json_encode([
+        "error" => "User is trying to get a different user. Not allowed!",
+        "user" => null,
+    ], JSON_PRETTY_PRINT);
+    exit();
 }
 
 /// Open a connection to the database

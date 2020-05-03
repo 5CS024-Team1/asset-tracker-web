@@ -125,7 +125,10 @@ class Profile extends Component {
         axios({
             method: 'POST',
             url: `${BASE_API_PATH}/user/password-change`,
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token, 
+            },
             timeout: API_TIMEOUT,
             data: this.state
         }).then(result => {
@@ -136,6 +139,12 @@ class Profile extends Component {
                 successMessage: "Sucessfully changed password!",
                 error: result.data.error,
             });
+            // Refresh page if password change is success
+            if (this.state.passSuccess) {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
         }).catch(error => {
             console.log(error);
             this.setState({ 
@@ -156,7 +165,7 @@ class Profile extends Component {
                         </UncontrolledAlert>
                 }
                 {
-                    this.state.successMessage &&
+                    this.state.passSuccess && this.state.successMessage &&
                         <UncontrolledAlert color="success" className="my-3">
                             {this.state.successMessage}
                         </UncontrolledAlert>

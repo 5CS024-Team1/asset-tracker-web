@@ -1,9 +1,10 @@
 <?php
 include_once("../../api_config.php");
+include_once("../authentication.php");
 
 // Include cross origin headers
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
 header('Content-Type: application/json');
 
 $rest_json = file_get_contents("php://input");
@@ -33,12 +34,32 @@ function checkPassword($password)
     }
 }
 
+// Check if authorization header is set, exit if not
+if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
+    echo json_encode([
+        "user" => null, 
+        "error" => "No Authorization found in request"
+    ], JSON_PRETTY_PRINT);
+    exit();
+}
+
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
 if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
 $user_id = $post_data["id"];
+
+/// Check for if the current auth token is editing the current user id
+$authUser = Authentication::getUser();
+if ($authUser && $authUser->user_id != $user_id) {
+    echo json_encode([
+        "error" => "User is trying to change the password of a different user. Naughty naughty!",
+        "user" => null,
+    ], JSON_PRETTY_PRINT);
+    exit();
+}
+
 /// Create SQL statement to get the user that matches the id
 $sql = "SELECT * FROM $LOGIN_TABLE WHERE `STAFF_ID` = ?";
 $statement = $conn->prepare($sql);
