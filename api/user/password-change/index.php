@@ -52,12 +52,14 @@ $user_id = $post_data["id"];
 
 /// Check for if the current auth token is editing the current user id
 $authUser = Authentication::getUser();
-if ($authUser && $authUser->user_id != $user_id) {
-    echo json_encode([
-        "error" => "User is trying to change the password of a different user. Naughty naughty!",
-        "user" => null,
-    ], JSON_PRETTY_PRINT);
-    exit();
+if ($authUser) {
+    if ($authUser->user_type != "admin" && $authUser->user_id != $user_id) {
+        echo json_encode([
+            "error" => "User is trying to change the password of a different user. Naughty naughty!",
+            "user" => null,
+        ], JSON_PRETTY_PRINT);
+        exit();
+    }    
 }
 
 /// Create SQL statement to get the user that matches the id

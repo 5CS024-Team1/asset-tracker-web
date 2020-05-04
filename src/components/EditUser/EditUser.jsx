@@ -67,10 +67,11 @@ class EditUser extends Component {
             }).then(result => {
                 this.setState({
                     loaded: true,
+                    error: result.data.error,
                     user: result.data.user,
-                    user_Username: result.data.user.Username,
-                    user_newEmail: result.data.user.admin_email,
-                    user_newType: result.data.user.admin_type,
+                    user_Username: result.data.user ? result.data.user.Username : "",
+                    user_newEmail: result.data.user ? result.data.user.admin_email : "",
+                    user_newType:  result.data.user ? result.data.user.admin_type : "",
                     pass_new: "",
                     pass_newCheck: "",
                 });

@@ -33,12 +33,15 @@ if (!$usid) {
 
 // Check the auth header matches the requested user
 $authUser = Authentication::getUser();
-if ($authUser && $authUser->user_id != $usid) {
-    echo json_encode([
-        "error" => "User is trying to get a different user. Not allowed!",
-        "user" => null,
-    ], JSON_PRETTY_PRINT);
-    exit();
+if ($authUser) 
+{
+    if ($authUser->user_type != "admin" && $authUser->user_id != $usid) {
+        echo json_encode([
+            "error" => "User is trying to get a different user. Not allowed!",
+            "user" => null,
+        ], JSON_PRETTY_PRINT);
+        exit();
+    }
 }
 
 /// Open a connection to the database
