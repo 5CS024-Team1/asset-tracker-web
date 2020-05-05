@@ -47,8 +47,7 @@ class RegisterUser extends Component
             userIdLoaded: false,
             userSet: false,
 
-            first_name: "",
-            last_name: "",
+            username: "",
             password: "",
             account: "Normal",
 
@@ -101,7 +100,7 @@ class RegisterUser extends Component
               });
               setTimeout(() => {
                 this.setState({ redirect: "/users" });
-            }, 1000);
+            }, 2000);
           }).catch(error => this.setState({ error: error.message }));
     }
     
@@ -142,17 +141,12 @@ class RegisterUser extends Component
                                 </Input>
                             </FormGroup>
                             <FormGroup>
-                                <Label for="firstNameInput">First Name</Label>
-                                <Input type="text" name="name" id="firstNameInput" placeholder="Alan" 
-                                    onChange={ e => this.setState({ first_name: e.target.value }) } />
+                                <Label for="userNameInput">Username:</Label>
+                                <Input type="text" name="name" id="userNameInput" placeholder="Create a username" 
+                                    onChange={ e => this.setState({ username: e.target.value }) } />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="lastNameInput">Last Name</Label>
-                                <Input type="text" name="name" id="lastNameInput" placeholder="Smith"
-                                    onChange={ e=> this.setState({ last_name: e.target.value })} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="examplePassword">Password</Label>
+                                <Label for="examplePassword">Password:</Label>
                                 <Input type="password" name="password" id="examplePassword" placeholder="A super secure password" 
                                     onChange={ e => this.setState({ password: e.target.value }) } />
                             </FormGroup>

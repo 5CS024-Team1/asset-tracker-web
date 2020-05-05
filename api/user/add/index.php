@@ -35,6 +35,16 @@ function checkPassword($password)
     }
 }
 
+function checkUsername($username)
+{
+    if ($username != null) {
+        return TRUE;
+    }
+    else {
+        return FALSE;
+    }
+}
+
 $rest_json = file_get_contents("php://input");
 $post_data = json_decode($rest_json, true);
 
@@ -51,13 +61,36 @@ if (!$conn) {
 $result = null;
 $result1 = null;
 if (checkPassword($post_data['password'])) {
-    $passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
+    if (checkUsername($post_data['username'])) {
+        $check = $post_data['username'];
+        $sql2 = "SELECT * FROM user WHERE Username='$check'";
+        $result2 = $conn->query($sql2);
+            if ($result2->num_rows > 0) {
+                echo json_encode([
+                    "user_set" => false,
+                    "error" => "Username must be unique/not empty",
+                ]);
+                exit();
+            }
+            else
+            {
+                $passwordHash = password_hash($post_data['password'], PASSWORD_DEFAULT);
 
-    $sql = BuildQuery($ID_TABLE, $post_data['userId']);
-    $result = $conn->query($sql);
-
-    $sql1 = BuildQuery1($LOGIN_TABLE, $post_data['userId'], $passwordHash, $post_data['userId']);
-    $result1 = $conn->query($sql1);
+                $sql = BuildQuery($ID_TABLE, $post_data['userId']);
+                $result = $conn->query($sql);
+        
+                $sql1 = BuildQuery1($LOGIN_TABLE, $post_data['username'], $passwordHash, $post_data['userId']);
+                $result1 = $conn->query($sql1);
+            }
+    }
+    else
+    {
+        echo json_encode([
+            "user_set" => false,
+            "error" => "Username must be unique/not empty",
+        ]);
+        exit();
+    }
 }
 else
 {
