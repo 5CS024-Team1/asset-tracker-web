@@ -39,21 +39,45 @@ if (!$conn) {
 }
 
 /// Query for registering asset into database (lat and long are temporary)
-$sql = BuildQuery($ASSETS_TABLE, $post_data['assetId'], $post_data['assetId'], $post_data['name'], $post_data['category'], $post_data['latitude'], $post_data['longitude'], $post_data['department'], $post_data['zone']);
-$result = $conn->query($sql);
+$assedId = filter_var($post_data['assetId']);
+$EqName = filter_var($post_data['name']);
+$Category = filter_var($post_data['category']);
+$Latitude = filter_var($post_data['latitude']);
+$Longitude = filter_var($post_data['longitude']);
+$Dept = filter_var($post_data['department']);
+$EqZone = filter_var($post_data['zone']);
 
-if($result)
-{
-    echo json_encode([
-        "asset_set" => true,
-    ], JSON_PRETTY_PRINT);
-}
-else
-{
+if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $assedId) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $EqName ) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Category) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_¬]/', $Latitude) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_¬]/', $Longitude) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Dept) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $EqZone)) {
     echo json_encode([
         "asset_set" => false,
         "error" => "Unable to successfully execute query '" . $sql . "'",
     ]);
+}
+else {
+    if (empty($assedId) || empty($EqName) || empty($Category) || empty($Latitude) || empty($Longitude) || empty($Dept) || empty($EqZone)) {
+        echo json_encode([
+            "asset_set" => false,
+            "error" => "Unable to successfully execute query '" . $sql . "'",
+        ]);
+    }
+    else {
+        $sql = BuildQuery($ASSETS_TABLE, $assedId, $assedId, $EqName, $Category, $Latitude, $Longitude, $Dept, $EqZone);
+        $result = $conn->query($sql);
+    
+        if($result)
+        {
+            echo json_encode([
+                "asset_set" => true,
+            ], JSON_PRETTY_PRINT);
+        }
+        else
+        {
+            echo json_encode([
+                "asset_set" => false,
+                "error" => "Unable to successfully execute query '" . $sql . "'",
+            ]);
+        }
+    }
 }
 
 ?>
