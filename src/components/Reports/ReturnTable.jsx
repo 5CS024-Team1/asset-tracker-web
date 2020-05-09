@@ -4,6 +4,7 @@ import filterFactory, {
     textFilter,
     selectFilter,
     dateFilter,
+    numberFilter,
 } from 'react-bootstrap-table2-filter';
 import { Link } from 'react-router-dom';
 
@@ -117,7 +118,7 @@ class ReturnTable extends Component {
             text: "Id",
             sort: true,
             formatter: IdFormatter,
-            filter: textFilter()
+            filter: numberFilter()
         },
         {
             dataField: display_name,

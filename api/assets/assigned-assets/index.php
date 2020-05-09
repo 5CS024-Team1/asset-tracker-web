@@ -38,7 +38,7 @@ if ($result->num_rows > 0)
     $db_array = array();
     while($row = $result->fetch_assoc()) {
         $asset = new Asset();
-        $asset->id = $row[$eqid];
+        $asset->id = (int)($row[$eqid]);
         $asset->barcode = $row[$barcode];
         $asset->display_name = $row[$eqname];
         $asset->category = $row[$category];
