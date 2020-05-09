@@ -47,37 +47,56 @@ $Longitude = filter_var($post_data['longitude']);
 $Dept = filter_var($post_data['department']);
 $EqZone = filter_var($post_data['zone']);
 
-if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $assedId) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $EqName ) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Category) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_¬]/', $Latitude) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_¬]/', $Longitude) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Dept) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $EqZone)) {
-    echo json_encode([
-        "asset_set" => false,
-        "error" => "Unable to successfully execute query '" . $sql . "'",
-    ]);
-}
-else {
-    if (empty($assedId) || empty($EqName) || empty($Category) || empty($Latitude) || empty($Longitude) || empty($Dept) || empty($EqZone)) {
+$sql1 = "SELECT $eqid FROM $ASSETS_TABLE ORDER BY $eqid DESC LIMIT 1";
+$result1 = $conn->query($sql1);
+
+// Return determined free index
+if ($result1 && $result1->num_rows > 0)
+{
+    $row = $result1->fetch_assoc();
+    
+    // Get the last index and increment by one
+    $assedId = $row[$eqid] + 1;
+
+    if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $assedId) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $EqName ) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Category) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_¬]/', $Latitude) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_¬]/', $Longitude) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Dept) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $EqZone)) {
         echo json_encode([
             "asset_set" => false,
             "error" => "Unable to successfully execute query '" . $sql . "'",
         ]);
     }
     else {
-        $sql = BuildQuery($ASSETS_TABLE, $assedId, $assedId, $EqName, $Category, $Latitude, $Longitude, $Dept, $EqZone);
-        $result = $conn->query($sql);
-    
-        if($result)
-        {
-            echo json_encode([
-                "asset_set" => true,
-            ], JSON_PRETTY_PRINT);
-        }
-        else
-        {
+        if (empty($assedId) || empty($EqName) || empty($Category) || empty($Latitude) || empty($Longitude) || empty($Dept) || empty($EqZone)) {
             echo json_encode([
                 "asset_set" => false,
                 "error" => "Unable to successfully execute query '" . $sql . "'",
             ]);
         }
+        else {
+            $sql = BuildQuery($ASSETS_TABLE, $assedId, $assedId, $EqName, $Category, $Latitude, $Longitude, $Dept, $EqZone);
+            $result = $conn->query($sql);
+        
+            if($result)
+            {
+                echo json_encode([
+                    "asset_set" => true,
+                ], JSON_PRETTY_PRINT);
+            }
+            else
+            {
+                echo json_encode([
+                    "asset_set" => false,
+                    "error" => "Unable to successfully execute query '" . $sql . "'",
+                ]);
+            }
+        }
     }
+}
+else
+{
+    echo json_encode([
+        "asset_set" => false,
+        "error" => "Unable to successfully execute query '" . $sql . "'",
+    ], JSON_PRETTY_PRINT);
 }
 
 ?>
