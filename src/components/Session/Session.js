@@ -13,12 +13,6 @@ var Session = (function() {
             return null;
         var parsedToken = JSON.parse(token);
 
-        // Temp login code
-        // var parsedToken = {
-        //     api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzdGFydF9kYXRlIjoxNTgzOTUxMjUzfQ.nwGTGoPSgDk2Inl7b09DUZl2crB8hkjwo_1fBIM2f4U",
-        //     expiry_time: new Date().getTime() / 1000,
-        // };
-        
         if (parsedToken && parsedToken.api_token) {
             // Decode the token
             _info = jwt_decode(parsedToken.api_token);
@@ -36,6 +30,7 @@ var Session = (function() {
         
     };
 
+    /// Gets the current signed in user credentials. Can be null if not signed in
     var getUser = function() {
         if (_info) {
             return _info;
@@ -52,10 +47,6 @@ var Session = (function() {
         }));
         _info = null;
     };
-
-    var insertAfter = function (referenceNode, newNode) {
-        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-    }
 
     /// Checks if user auth hasn't expired, resets if it has
     var validate = function (expiryDate) {

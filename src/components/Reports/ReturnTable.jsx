@@ -30,7 +30,7 @@ function DateFormatter (cell, row) {
 }
 
 const isOverdueOptions = {
-    0 : "Not Overdue",
+    0 : "",
     1: "Overdue",
 };
 
