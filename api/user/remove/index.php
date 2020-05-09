@@ -12,21 +12,18 @@ header('Content-Type: application/json');
 function BuildQuery($USER_TABLE, $stfid)
 {
     $query = "UPDATE $USER_TABLE SET IDs_Staff=NULL WHERE IDs_Staff='$stfid'";
-    $query = "$query VALUES ('$stfid')";
     return $query;
 }
 
 function BuildQuery1($LOGIN_TABLE, $stfid)
 {
     $query = "DELETE FROM $LOGIN_TABLE WHERE STAFF_ID='$stfid'";
-    $query = "$query VALUES ('$stfid')";
     return $query;
 }
 
 function BuildQuery2($ID_TABLE, $stfid)
 {
     $query = "DELETE FROM $ID_TABLE WHERE IDs_Staff='$stfid'";
-    $query = "$query VALUES ('$stfid')";
     return $query;
 }
 
