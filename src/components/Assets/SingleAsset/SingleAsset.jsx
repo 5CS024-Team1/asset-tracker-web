@@ -18,7 +18,7 @@ import {
 } from 'react-router-dom';
 
 import {
-    BASE_API_PATH,
+    BASE_API_PATH, API_TIMEOUT
 } from "../../../consts";
 import IndiAssetMap from '../AllAssets/IndiAssetMap';
 import LoadingSpinner from "../../LoadingSpinner";
@@ -201,10 +201,16 @@ class SingleAsset extends Component
 
     confirmDeallocate() {
         axios({
-            method: 'GET',
+            method: 'post',
             url: `${BASE_API_PATH}/assets/deallocate?id=${this.state.id}`,
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token,
+            },
+            data: this.state,
+            timeout: API_TIMEOUT,
         }).then(result => {
+            console.log(result);
             this.setState({
                 deallocateConfirm: result.data.changes_set,
             });

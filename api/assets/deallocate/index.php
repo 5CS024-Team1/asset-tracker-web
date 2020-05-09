@@ -24,9 +24,25 @@ if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
 }
 
 // Parse deallocate id from url
-$asset_id = htmlspecialchars($_GET["id"]);
-if (!$asset_id) {
+$assetid = htmlspecialchars($_GET["id"]);
+if (!$assetid) {
     die("Unable to parse asset id - No id specified");
+}
+
+$rest_json = file_get_contents("php://input");
+
+function BuildQuery($ASSETS_TABLE, $assetid)
+{
+    //The Query is retured in paramaters.
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Assigned_Pats_IDs = NULL, Equi_Loaned = NULL, Equi_Return_due = NULL WHERE Equi_ID=$assetid";
+    return $query;
+}
+
+function DeletePatient($USER_TABLE, $ID_TABLE, $patID)
+{
+    //The Query is retured in paramaters.
+    $query = "DELETE $USER_TABLE, $ID_TABLE FROM $USER_TABLE INNER JOIN $ID_TABLE ON $USER_TABLE.IDs_Patient = $ID_TABLE.IDs_Patient WHERE $USER_TABLE.IDs_Patient=$patID";
+    return $query;
 }
 
 // Open connected to database
@@ -35,17 +51,18 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
-function BuildQuery($id)
-{
-    //The Query is retured in paramaters.
-    $query = ("UPDATE assets SET owner_name = NULL, owner_address = NULL, owner_date_recieved = NULL, owner_date_return = NULL WHERE assets.id = ?");
-    $query->bind_param("s", $id);
-    return $query;
-}
-
 // Perform SQL command to deallocate asset from person
-$sql = BuildQuery($asset_id);
+$sql1 = "SELECT $eqpatid FROM $ASSETS_TABLE WHERE $eqid = $assetid";
+$result1 = $conn->query($sql1);
+
+$row = $result1->fetch_assoc();
+$patID = $row[$eqpatid];
+
+$sql = BuildQuery($ASSETS_TABLE, $assetid);
 $result = $conn->query($sql);
+
+$sql2 = DeletePatient($USER_TABLE, $ID_TABLE, $patID);
+$result2 = $conn->query($sql2);
 
 if ($result)  //&& $conn->affected_rows > 0 
 {
@@ -57,6 +74,8 @@ else
 {
     echo json_encode([
         "changes_set" => false,
+        "VAR_VARIABLE" => $assetid,
+        "error" => "Unable to successfully execute query '" . $sql . "'",
     ], JSON_PRETTY_PRINT);
 }
 
