@@ -11,3 +11,7 @@ Prefix of "AD" with an unique number after. For example, "AD64"
 #### Staff
 
 Prefix of "STF" with a unique number after. For example, "STF22"
+
+#### Management
+
+Prefix of "MGMT" with a unique number after

@@ -64,6 +64,21 @@ var Session = (function() {
         return _info && _info.user_type == "admin";
     }
 
+    /// Checks if the current user is that user type or higher
+    var isUserTypeOrAbove = function(userType) {
+        var usr = this.getUser();
+        if (usr)
+        {
+            var accountTypeEnum = {
+                "staff": 0,
+                "management": 1,
+                "admin": 2,
+            };
+            return accountTypeEnum[usr.user_type] >= accountTypeEnum[userType];
+        }
+        return false;
+    }
+
     /// Checks if a user is signed into the system
     var isSignedIn = function () {
         return _info != null;
@@ -76,6 +91,7 @@ var Session = (function() {
         validate: validate,
         isAdminUser: isAdminUser,
         isSignedIn : isSignedIn,
+        isUserTypeOrAbove: isUserTypeOrAbove,
     }
   
   })();

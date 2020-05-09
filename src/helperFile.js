@@ -59,10 +59,19 @@ export function addUser() {
 export function allUsers() {
     return `${BASE_API_PATH}/user/all/`
 }
-//Get New User ID
+//Get New User ID for normal user (staff)
 export function userNewId() {
     return `${BASE_API_PATH}/user/get/new-id`
 }
+/// Gets the next new ID for admin account type
+export function adminNewId() {
+    return `${BASE_API_PATH}/user/get/admin-new-id`;
+}
+/// Gets the next new ID for management account type
+export function managementNewId() {
+    return `${BASE_API_PATH}/user/get/mgmt-new-id`
+}
+
 //Get admin users
 export function adminUsers() {
     return `${BASE_API_PATH}/user/admin-users/`

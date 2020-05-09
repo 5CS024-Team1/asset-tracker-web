@@ -63,6 +63,10 @@ function getUserType($id)
     {
         return "staff";
     }
+    else if (strpos($id, "MGMT") !== false) 
+    {
+        return "management";
+    }
     return "user";
 }
 
@@ -75,7 +79,7 @@ if ($result && $result->num_rows > 0)
         $user->id = $row["STAFF_ID"];
         $user->password = $row["User_Pass"];
     }
-
+    
     if(!$user) {
         echo json_encode([
             "success" => false,
@@ -83,7 +87,7 @@ if ($result && $result->num_rows > 0)
         ]);
         die();
     }
-
+    
     if (strtolower($user_id) == strtolower($user->id) && password_verify($postData['password'], $user->password)) 
     {
         $encodedToken = Authentication::encryptPayload([

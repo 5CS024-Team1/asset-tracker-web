@@ -50,7 +50,9 @@ class Sidebar extends Component {
                 <ListGroup>
                     <SidebarListElement text="Dashboard"  href={process.env.PUBLIC_URL + '/dashboard'} />
                     <SidebarListElement text="Assets" href={process.env.PUBLIC_URL + '/assets'} />
-                    <SidebarListElement text="Register" href={process.env.PUBLIC_URL + '/assets/register'} />
+                    {
+                        Session.isUserTypeOrAbove("management") && <SidebarListElement text="Register" href={process.env.PUBLIC_URL + '/assets/register'} />
+                    }
                     <SidebarListElement text="Reports" href={process.env.PUBLIC_URL + '/reports'} />
                     {
                         Session.isAdminUser() && <SidebarListElement className="bg-secondary" text="Users" href={process.env.PUBLIC_URL + '/users'} />

@@ -36,6 +36,7 @@ import AllAssets from "../Assets/AllAssets";
 import RegisterAsset from "../Assets/RegisterAsset";
 import AllocateAsset from "../Assets/AllocateAsset";
 
+
 function requireAuth(component) {
     if (Session.getUser())
         return component;
@@ -45,7 +46,8 @@ function requireAuth(component) {
 
 function requireAuthLevel(component, usrType) {
     var usr = Session.getUser();
-    if (usr && usr.user_type.toLowerCase() == usrType.toLowerCase()) {
+    // Use enum number to check if current user type is same or above what is required to view the page
+    if (usr && Session.isUserTypeOrAbove(usrType)) {
         return component;
     } else {
         return (<Redirect to="/?auth=invalid"/>)
@@ -67,7 +69,7 @@ function App() {
                     <Route exact path="/" component={Home} />
                     
                     <Route exact path="/assets" render={(props) => requireAuth(<AllAssets props={props} />) } />
-                    <Route path="/assets/register" render={(props) => requireAuth(<RegisterAsset props={props} />) } />
+                    <Route path="/assets/register" render={(props) => requireAuth(<RegisterAsset props={props} />, "management") } />
                     <Route exact path="/asset/:assetId?" render={(props) => requireAuth(<SingleAsset props={props} />) } />
                     <Route exact path="/asset/:assetId?/allocate" render={(props) => requireAuth(<AllocateAsset props={props} />) } />
 

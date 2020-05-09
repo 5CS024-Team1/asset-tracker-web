@@ -16,11 +16,7 @@ import {
 import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 
-import {
-    BASE_API_PATH
-} from "../../consts";
-
-import {userNewId, addUser} from '../../helperFile';
+import { userNewId, addUser, managementNewId, adminNewId } from '../../helperFile';
 import Session from "../Session/Session.js";
 
 function PageBreadcrumbs() {
@@ -37,6 +33,21 @@ function PageBreadcrumbs() {
     );
 }
 
+/// Converts an account type to it's relative API path to get a new id
+function getNewIdApiPathFromAccountType(accountType) {
+    switch(accountType.toLowerCase())
+    {
+        case "staff":
+            return userNewId();
+        case "management":
+            return managementNewId();
+        case "admin":
+            return adminNewId();
+        default:
+            return userNewId();
+    }
+}
+
 class RegisterUser extends Component
 {
     constructor(props) {
@@ -49,11 +60,12 @@ class RegisterUser extends Component
 
             username: "",
             password: "",
-            account: "Normal",
+            account: "staff",
 
             error: "",
         };
         this.handleOnAdd = this.handleOnAdd.bind(this);
+        this.handleAccountTypeChange = this.handleAccountTypeChange.bind(this);
     }
 
     componentDidMount() {
@@ -61,7 +73,7 @@ class RegisterUser extends Component
             /// Get new user id from db
             axios({
                 method: 'GET',
-                url: userNewId(),
+                url: getNewIdApiPathFromAccountType(this.state.account),
                 headers: { 
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + Session.getUser().api_token, 
@@ -104,6 +116,37 @@ class RegisterUser extends Component
           }).catch(error => this.setState({ error: error.message }));
     }
     
+    handleAccountTypeChange(e) {
+        this.setState({ 
+            account: e.target.value,
+            userId: -1,
+            userIdLoaded: false,
+        });
+
+        // Get new id for account type
+        axios({
+            method: 'GET',
+            url: getNewIdApiPathFromAccountType(e.target.value),
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token, 
+             },
+        }).then(result => {
+            console.log(result.data);
+            this.setState({
+                userId: result.data.userId,
+                userIdLoaded: true,
+                error: result.data.error,
+            });
+        }).catch(error => {
+            this.setState({
+                userIdLoaded: true,
+                userId: "?",
+                error: error.message,
+            })
+        });
+    }
+
     render() {
         let idNumHtml = <div>
                             <Label>Id:</Label>
@@ -134,9 +177,9 @@ class RegisterUser extends Component
                             </FormGroup>
                             <FormGroup>
                                 <Label>Account Type:</Label>
-                                <Input type="select" name="account" id="accountType" onChange={ e => this.setState({ account: e.target.value }) }>
-                                    <option value="normal">Normal</option>
+                                <Input type="select" name="account" id="accountType" onChange={ this.handleAccountTypeChange }>
                                     <option value="staff">Staff</option>
+                                    <option value="management">Management</option>
                                     <option value="admin">Admin</option>
                                 </Input>
                             </FormGroup>

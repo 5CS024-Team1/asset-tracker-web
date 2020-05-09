@@ -79,13 +79,14 @@ class AllAssets extends Component {
                 <PageBreadcrumbs />
                 <h1 className="mt-0">Assets List</h1>
                 <div className="d-flex float-right my-3">
-                    <Link to="/assets/register" >
-                        <Button color="primary">
-                            Register an Asset
-                        </Button>
-                    </Link>
+                    {
+                        Session.isUserTypeOrAbove("management") &&  <Link to="/assets/register" >
+                                                                        <Button color="primary">
+                                                                            Register an Asset
+                                                                        </Button>
+                                                                    </Link>
+                    }
                 </div>
-                
                 { this.state.assets && <AssetsTable data={this.state.assets} /> }
 
                 <div className="d-flex">

@@ -30,7 +30,7 @@ if ($result && $result->num_rows > 0)
     // Get the last index and increment by one(does this by getting the number after the string and adding 1 to it the re-adding the string to it)
     $newId = "STF";
     $tempId = $row[$idsstaff];
-    $tempId1 = substr($tempId,3);
+    $tempId1 = substr($tempId, 3);
     $intvar = (int)$tempId1 + 1;
     $newId .= strval($intvar);
     echo json_encode([

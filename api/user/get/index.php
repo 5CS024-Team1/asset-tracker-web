@@ -57,14 +57,10 @@ if (!$conn) {
 // Depending on Id, check the relevant column
 // Check id_readme for more info
 $sql = "SELECT * FROM $ID_TABLE WHERE ";
-if (strpos($usid, 'AD') !== false) 
+if (strpos($usid, 'AD') !== false || strpos( $usid, 'STF') !== false || strpos( $usid, 'MGMT') !== false) 
 {
     $sql = $sql . $idsstaff . "=\"" . $usid . "\"";
 } 
-else if (strpos( $usid, 'STF') !== false) 
-{
-    $sql = $sql . $idsstaff . "=\"" . $usid . "\"";
-}
 else
 {
     $sql = $sql . $idspatient . "=\"" . $usid . "\"";
@@ -77,10 +73,9 @@ class User { }
 
 if ($result && $result->num_rows > 0) 
 {
-    $user = null;
+    $user = new User();
     // Map individual user onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
-        $user = new User();
         $user->admin_id = $row[$idsstaff];
     }
 

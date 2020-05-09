@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2020 at 05:11 PM
+-- Generation Time: May 09, 2020 at 01:30 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- PHP Version: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -129,7 +129,8 @@ INSERT INTO `ids` (`IDs_Patient`, `IDs_Staff`, `IDs_Inpatient`) VALUES
 (3, NULL, NULL),
 (4, NULL, NULL),
 (5, NULL, NULL),
-(NULL, 'STF3', NULL);
+(NULL, 'STF3', NULL),
+(NULL, 'MGMT1', NULL);
 
 -- --------------------------------------------------------
 
@@ -190,7 +191,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`Username`, `User_Pass`, `STAFF_ID`) VALUES
 ('admin', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'AD1'),
-('Bob1', '$2y$10$d2NxOAeRONPCcJkbQx5My.uaLSgqNHciSsxoaJeCNkO\\/1Jo9EMSzq', 'STF1');
+('Bob1', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'STF1'),
+('MGMT1', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'MGMT1');
 
 --
 -- Indexes for dumped tables
