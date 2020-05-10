@@ -26,7 +26,7 @@ if (!$conn) {
 // echo "Successfully connected <br/>";
 
 /// SQL Query command to select assets that have been assigned from the 'assets' table
-$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return IS NOT NULL";
+$sql = "SELECT * FROM $ASSETS_TABLE WHERE $loaned IS NOT NULL";
 //$sql = "SELECT * FROM $ASSETS_TABLE WHERE $owner_date_return IS NOT NULL AND owner_name IS NOT NULL";
 $result = $conn->query($sql);
 

@@ -55,7 +55,7 @@ function BuildQuery3($ASSETS_TABLE, $loanDate, $assetid)
 
 function BuildQuery4($ASSETS_TABLE, $returnDate, $assetid)
 {
-    $query = "UPDATE $ASSETS_TABLE SET Equi_Loaned='$returnDate' WHERE Equi_ID='$assetid'";
+    $query = "UPDATE $ASSETS_TABLE SET Equi_Return_due='$returnDate' WHERE Equi_ID='$assetid'";
     return $query;
 }
 
