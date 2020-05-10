@@ -12,9 +12,15 @@ import {
     ModalFooter,
     ModalHeader,
 } from 'reactstrap';
+import axios from 'axios';
+import {
+    BASE_API_PATH, API_TIMEOUT
+} from "../../consts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faUserTimes } from '@fortawesome/free-solid-svg-icons';
 import { removeUser, stfid } from '../../helperFile';
+import Session from "../Session/Session.js";
+
 
 class ReturnUserTable extends Component {
     constructor(props) {
@@ -58,6 +64,26 @@ class ReturnUserTable extends Component {
             return;
         }
         console.error("DELETING USER " + this.state.deleteId);
+        axios({
+            method: 'post',
+            url: `${BASE_API_PATH}/user/remove/`,
+            headers: { 
+                'content-type': 'application/json',
+                'authorization': 'Bearer ' + Session.getUser().api_token,
+            },
+            data: this.state,
+            timeout: API_TIMEOUT,
+        }).then(result => {
+            console.log(result);
+            // Reload page once deallocate has succeeded
+            window.location.reload();
+        }).catch(error => {
+            this.setState({
+                deallocateConfirm: true,
+                error: error.message,
+                deallocateModalOpen: true,
+            })
+        });
         this.toggleDeleteUserModal(-1);
         /// Redirect user once complete
         setTimeout(() => {
