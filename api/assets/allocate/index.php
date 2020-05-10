@@ -23,7 +23,6 @@ if (!Authentication::requestContainsAuth($API_SECRET_KEY)) {
         "changes_set" => false,
         "error" => "Authorization token is required",
     ], JSON_PRETTY_PRINT);
-    http_response_code(401);
     exit();
 }
 
@@ -38,7 +37,7 @@ function BuildQuery($ID_TABLE, $patid)
 function BuildQuery1($USER_TABLE, $surname, $forename, $address, $town, $county, $patid, $stfid)
 {
     $query = "INSERT INTO $USER_TABLE (Pers_Surname, Pers_Forename, Pers_Address, Pers_Town, Pers_County, IDs_Patient, IDs_Staff)";
-    $query = "$query VALUES ('$surname', '$forename', '$address', '$town', '$county', '$patid', '$stfid')";
+    $query = "$query VALUES ('$surname', '$forename', '$address', '$town', '$county', '$patid', NULL)";
     return $query;
 }
 
@@ -66,6 +65,20 @@ function formatDate($date, $time)
     return $newDate;
 }
 
+// Executes an sql query and dies if an error occured
+function sqlExecuteValidate($connection, $sqlStatement) {
+    $sqlResult = $connection->query($sqlStatement);
+    if (!$sqlResult)
+    {
+        echo json_encode([
+            "user_set" => false,
+            "error" => "Unable to successfully execute query '" . mysqli_error($connection) . "'",
+        ]);
+        die();
+    }
+    return $sqlResult;
+}
+
 $rest_json = file_get_contents("php://input");
 $post_data = json_decode($rest_json, true);
 
@@ -78,75 +91,50 @@ if (!$conn) {
     die("Unable to open connection - " . mysqli_connect_error());
 }
 
+$isCreatingNewPatient = $post_data['newPatientId'] >= 0 ? true : false;
+// Get new patient id from create new patient
+$patientId = (int)$post_data['newPatientId'];
+// If empty, user chose to select an existing patient
+if (!$isCreatingNewPatient)
+    $patientId = $post_data['selectedPatientId'];
+
+$assetId = $post_data['id'];
+
 $loanDate = formatDate($post_data['recieved_date'], $post_data['recieved_time']);
 $returnDate = formatDate($post_data['retrieval_date'], $post_data['retrieval_time']);
 
-$sql = BuildQuery($ID_TABLE, $post_data['patientId']);
-$result = $conn->query($sql);
+$currentSql = null;
+$sqlResult = null;
 
-$sql1 = BuildQuery1($USER_TABLE, $post_data['owner_surname'], $post_data['owner_forname'], $post_data['address_line_1'], $post_data['address_city'], $post_data['address_region'], $post_data['patientId'], $post_data['userId']);
-$result1 = $conn->query($sql1);
-
-$sql2 = BuildQuery2($ASSETS_TABLE, $post_data['patientId'], $post_data['assetId']);
-$result2 = $conn->query($sql2);
-
-$sql3 = BuildQuery3($ASSETS_TABLE, $loanDate, $post_data['assetId']);
-$result3 = $conn->query($sql3);
-
-$sql4 = BuildQuery4($ASSETS_TABLE, $returnDate, $post_data['assetId']);
-$result4 = $conn->query($sql4);
-
-if($result)
+if ($isCreatingNewPatient)
 {
-    if($result1)
-    {
-        if($result2)
-        {
-            if($result3)
-            {
-                if($result4)
-                {
-                    echo json_encode([
-                        "user_set" => true,
-                    ], JSON_PRETTY_PRINT);
-                }
-                else
-                {
-                    echo json_encode([
-                        "user_set" => false,
-                        "error" => "Unable to successfully execute query '" . $sql . "'",
-                    ]);
-                }
-            }
-            else
-            {
-                echo json_encode([
-                    "user_set" => false,
-                    "error" => "Unable to successfully execute query '" . $sql . "'",
-                ]);
-            }
-        }
-        else
-        {
-            echo json_encode([
-                "user_set" => false,
-                "error" => "Unable to successfully execute query '" . $sql . "'",
-            ]);
-        }
-    }
-    else
-    {
-        echo json_encode([
-            "user_set" => false,
-            "error" => "Unable to successfully execute query '" . $sql . "'",
-        ]);
-    }
+    $currentSql = BuildQuery($ID_TABLE, $patientId);
+    $sqlResult = sqlExecuteValidate($conn, $currentSql);
+    
+    $currentSql = BuildQuery1($USER_TABLE, $post_data['owner_surname'], $post_data['owner_forename'], $post_data['address_line_1'], $post_data['address_city'], $post_data['address_region'], $patientId, NULL);
+    $sqlResult = sqlExecuteValidate($conn, $currentSql);
+}
+
+$currentSql = BuildQuery2($ASSETS_TABLE, $patientId, $assetId);
+$sqlResult = sqlExecuteValidate($conn, $currentSql);
+
+$currentSql = BuildQuery3($ASSETS_TABLE, $loanDate, $assetId);
+$sqlResult = sqlExecuteValidate($conn, $currentSql);
+
+$currentSql = BuildQuery4($ASSETS_TABLE, $returnDate, $assetId);
+$sqlResult = sqlExecuteValidate($conn, $currentSql);
+
+if($sqlResult)
+{
+    echo json_encode([
+        "allocated_asset" => true,
+    ], JSON_PRETTY_PRINT);
 }
 else
 {
     echo json_encode([
-        "user_set" => false,
-        "error" => "Unable to successfully execute query '" . $sql . "'",
+        "allocated_asset" => false,
+        "error" => "Unable to successfully execute query '" . mysqli_error($conn) . "'",
     ]);
 }
 ?>

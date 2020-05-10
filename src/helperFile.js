@@ -71,6 +71,18 @@ export function adminNewId() {
 export function managementNewId() {
     return `${BASE_API_PATH}/user/get/mgmt-new-id`
 }
+/// Gets the next available patient id
+export function patientNewId() {
+    return `${BASE_API_PATH}/patient/get/new-id`;
+}
+/// Gets a patient from their patient id
+export function getPatient(id) {
+    return `${BASE_API_PATH}/user/get?id=${id}`;
+}
+/// Gets all patients
+export function getAllPatients() {
+    return `${BASE_API_PATH}/patient/all`;
+}
 
 //Get admin users
 export function adminUsers() {
