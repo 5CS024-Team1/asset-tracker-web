@@ -38,12 +38,14 @@ function BuildQuery($ASSETS_TABLE, $assetid)
     return $query;
 }
 
+/*
 function DeletePatient($USER_TABLE, $ID_TABLE, $patID)
 {
     //The Query is retured in paramaters.
     $query = "DELETE $USER_TABLE, $ID_TABLE FROM $USER_TABLE INNER JOIN $ID_TABLE ON $USER_TABLE.IDs_Patient = $ID_TABLE.IDs_Patient WHERE $USER_TABLE.IDs_Patient=$patID";
     return $query;
 }
+*/
 
 // Open connected to database
 $conn = mysqli_connect($SERVER_LOCATION, $SERVER_USERNAME, $SERVER_PASSWORD, $DB_NAME);
@@ -61,8 +63,10 @@ $patID = $row[$eqpatid];
 $sql = BuildQuery($ASSETS_TABLE, $assetid);
 $result = $conn->query($sql);
 
+/*
 $sql2 = DeletePatient($USER_TABLE, $ID_TABLE, $patID);
 $result2 = $conn->query($sql2);
+*/
 
 if ($result)  //&& $conn->affected_rows > 0 
 {
