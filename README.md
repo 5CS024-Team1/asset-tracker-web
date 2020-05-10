@@ -1,12 +1,15 @@
-# Asset Tracker Web
+# NHS Asset Tracker
 
-A web app for viewing and tracking the whereabouts of assets within the NHS. Contains a front-end web app UI, build using ReactJS and backend API, using PHP
+A web app for viewing and tracking the whereabouts of assets, originally designed for use by the NHS. Contains a front-end web app UI, build using ReactJS and backend API, using PHP.
 
-## Available Scripts
+![](https://i.imgur.com/LYNwR93.png)
+
+# Development 
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -14,25 +17,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `start_php.bat`
+#### `start_php.bat`
 
 Starts the PHP development server to enable the `/api` section of the project
 
-## Creating a Build
+### Creating a Build
 
 Read the [Deploy_ReadMe](deploy_readme.md) file for more help
