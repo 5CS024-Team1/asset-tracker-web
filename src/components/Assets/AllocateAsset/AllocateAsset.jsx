@@ -80,11 +80,11 @@ class AllocateAsset extends Component {
             error: "",
             submitted: false,
 
-            owner_name: "",
+            owner_forename: "",
+            owner_surname: "",
             address_line_1: "",
             address_city: "",
             address_region: "",
-            address_postcode: "",
             recieved_date: "",
             recieved_time: "",
             retrieval_date: "",
@@ -106,10 +106,9 @@ class AllocateAsset extends Component {
             this.onDismissError();
         }
 
-        var url = allocateAsset()
         axios({
             method: 'POST',
-            url: url,
+            url: allocateAsset(),
             headers: { 
                 'content-type': 'application/json',
                 'authorization': 'Bearer ' + Session.getUser().api_token,
@@ -154,31 +153,33 @@ class AllocateAsset extends Component {
                 <h1 className="mt-3">Allocate Asset (#{this.state.id})</h1>
                 <p>Allocate this asset to be given out</p>
                 <div>
-                    <FormGroup>
-                        <Label for="ownerNameInput">Name:</Label>
-                        <Input type="text" name="" id="ownerNameInput" placeholder="Name of Owner" 
-                            onChange={ e => this.setState({ owner_name: e.target.value }) } />
-                    </FormGroup>
+                    <Row className="pb-1">
+                        <Col md={6}>
+                            <Label for="ownerNameInput">First Name:</Label>
+                            <Input type="text" name="" id="ownerNameInput" placeholder="David" 
+                                onChange={ e => this.setState({ owner_forename: e.target.value }) } />
+                            </Col>
+                        <Col md={6}>
+                            <Label for="ownerLastNameInput">Last Name:</Label>
+                            <Input type="text" name="ownerLastName" id="ownerLastNameInput" placeholder="Smith"
+                                onChange={ e => this.setState({ owner_surname: e.target.value }) } />
+                        </Col>
+                    </Row>
                     <FormGroup>
                         <Label for="ownerAddressInput">Address:</Label>
                         <Input type="text" name="ownerAddress" id="ownerAddressInput" placeholder="1234 Example Street" 
                             onChange={ e => this.setState({ address_line_1: e.target.value }) }/>
                     </FormGroup>
-                    <Row>
+                    <Row className="pb-1">
                         <Col md={6}>
                             <Label for="ownerCityInput">City:</Label>
                             <Input type="text" name="ownerCity" id="ownerCityInput" placeholder="London" 
                                 onChange={ e => this.setState({ address_city: e.target.value }) }/>
                         </Col>
-                        <Col md={3} className="px-0">
+                        <Col md={6} className="px-0">
                             <Label for="ownerRegionInput">Region:</Label>
                             <Input type="text" name="ownerRegion" id="ownerRegionInput" placeholder="Greater London"
                                 onChange={ e => this.setState({ address_region: e.target.value }) }/>
-                        </Col>
-                        <Col md={3}>
-                            <Label for="ownerPostcodeInput">Postcode:</Label>
-                            <Input type="text" name="ownerPostcode" id="ownerPostcodeInput" placeholder="SE1 9SG"
-                             onChange={ e => this.setState({ address_postcode: e.target.value }) }/>
                         </Col>
                     </Row>
                     <FormGroup className="my-2">
