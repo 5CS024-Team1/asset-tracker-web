@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2020 at 01:30 PM
+-- Generation Time: May 10, 2020 at 02:35 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.3.10
+-- PHP Version: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -73,9 +73,11 @@ CREATE TABLE `equipment` (
 --
 
 INSERT INTO `equipment` (`Equi_ID`, `Equi_Barcode`, `Equi_Name`, `Equi_Category`, `Equi_Latittude`, `Equi_Longitude`, `Equi_Timestamp`, `Equi_Assigned_Pats_IDs`, `Equi_Loaned`, `Equi_Return_due`, `Equi_Dept`, `Equi_Main_Last_Cleaned`, `Equi_Zone`) VALUES
-('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-04-29 13:53:52', 1, '2020-04-01 00:29:05', '2020-04-22 00:29:05', 3, NULL, 'West Midlands'),
-('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-04-29 13:54:26', NULL, NULL, NULL, 2, NULL, 'West Midlands'),
-('3', '3', 'test', 'Unknown', '52.5086710', '-2.0873400', '2020-04-30 11:38:32', NULL, NULL, NULL, 2, NULL, 'West Midlands');
+('1', '1', 'Respirator', 'Emergency', '52.5086710', '-2.0873400', '2020-05-10 12:27:23', 1, '2020-04-01 00:29:05', '2020-05-31 00:29:05', 3, NULL, 'West Midlands'),
+('2', '2', 'Walking Stick', 'Non Emergency', '52.5024000', '-2.1191000', '2020-05-10 12:06:45', NULL, NULL, NULL, 2, NULL, 'West Midlands'),
+('3', '3', 'ECG Machine', 'Non Emergency', '52.4086710', '-2.0873400', '2020-05-10 12:05:15', 3, '2020-05-09 00:00:00', '2020-05-28 00:00:00', 2, NULL, 'West Midlands'),
+('4', '4', 'Syringe Driver', 'Emergency', '52.5186710', '-2.0873400', '2020-05-10 12:11:45', 4, '2020-05-11 00:00:00', '2020-05-10 00:00:00', 2, NULL, 'West Midlands'),
+('5', '5', 'Varian TrueBeam', 'Non Emergency', '52.5024000', '-2.1179001', '2020-05-10 12:19:56', NULL, NULL, NULL, 4, NULL, 'West Midlands');
 
 -- --------------------------------------------------------
 
@@ -101,7 +103,8 @@ INSERT INTO `hospital` (`Hosp_ID`, `Hosp_Name`, `Hosp_Address`, `Hosp_Town`, `Ho
 ('1', 'Russells Hall', 'DY1 2HQ', 'Dudley', 'West Midlands', '2', '2B'),
 ('2', 'Russells Hall', 'DY1 2HQ', 'Dudley', 'West Midlands', '3', '3A'),
 ('3', 'Birmingham Child', 'B4 6NH', 'Birmingham', 'West Midlands', '1', '1A'),
-('4', 'New Cross', 'WV10 0QP', 'Wolverhampton', 'West Midlands', '2', '2A');
+('4', 'New Cross', 'WV10 0QP', 'Wolverhampton', 'West Midlands', '2', '2A'),
+('5', 'Sandwell General', 'B71 4HJ', 'West Bromwich', 'West Midlands', '2', '2B');
 
 -- --------------------------------------------------------
 
@@ -121,16 +124,16 @@ CREATE TABLE `ids` (
 
 INSERT INTO `ids` (`IDs_Patient`, `IDs_Staff`, `IDs_Inpatient`) VALUES
 (NULL, 'AD1', NULL),
-(NULL, 'AD2', NULL),
 (NULL, 'STF1', NULL),
-(NULL, 'STF2', NULL),
 (1, NULL, NULL),
 (2, NULL, NULL),
 (3, NULL, NULL),
 (4, NULL, NULL),
 (5, NULL, NULL),
-(NULL, 'STF3', NULL),
-(NULL, 'MGMT1', NULL);
+(NULL, 'MGMT1', NULL),
+(NULL, 'STF2', NULL),
+(NULL, 'MGMT2', NULL),
+(NULL, 'AD2', NULL);
 
 -- --------------------------------------------------------
 
@@ -168,9 +171,9 @@ CREATE TABLE `person` (
 
 INSERT INTO `person` (`Pers_Surname`, `Pers_Forename`, `Pers_Address`, `Pers_Town`, `Pers_County`, `IDs_Patient`, `IDs_Staff`) VALUES
 ('Goodyear', 'Jane', '9 Snowshill', 'Dudley', 'West Midlands', 1, 'AD1'),
-('Samson', 'Joe', '9 Brownhill', 'Dudley', 'West Midlands', 2, 'AD2'),
+('Samson', 'Joe', '9 Brownhill', 'Dudley', 'West Midlands', 2, 'AD1'),
 ('Whitehouse', 'Sarah', '12 Bromsgrove', 'Stourbridge', 'West Midlands', 3, 'STF1'),
-('Blakesly', 'Luke', '342 Himley Road', 'Dudley', 'West Midlands', 4, 'STF2'),
+('Blakesly', 'Luke', '342 Himley Road', 'Dudley', 'West Midlands', 4, 'STF1'),
 ('Ward', 'Uric', '8 Testdrive', 'Dudley', 'West Midlands', 5, 'AD1');
 
 -- --------------------------------------------------------
@@ -190,9 +193,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`Username`, `User_Pass`, `STAFF_ID`) VALUES
-('admin', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'AD1'),
-('Bob1', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'STF1'),
-('MGMT1', '$2y$10$kalHRwf7eIEaBM2FeOfds.s49LTas.WE6gAHpQTEBbrvkgR02yY6m', 'MGMT1');
+('admin', '$2y$10$lYGv2.KwHD0SOApxBSXuc./jEw0rZ9Pde3w1OR7yvJSM3lSl77Jca', 'AD1'),
+('admin123', '$2y$10$yESELTCOPSSXWrO2tg1bwOY1psrJctYTc7nlDjDksHUBizTy3Ftci', 'AD2'),
+('Bob1', '$2y$10$ndfzIgJnabohAoNkBMaLuuM.ZVY7AgciimPagjePpt1CAMO.zqRQq', 'STF1'),
+('MGMT1', '$2y$10$.v92JzS8qPlndqUewcQV4OrIDa0oWub435FkedG018uujnTeNdJsy', 'MGMT1'),
+('newuser1', '$2y$10$DseX6x.P0RM5cmIFOaHJye4xrBR0BeTTMazgSKgZFs3NWfFWwh6oq', 'MGMT2'),
+('user2', '$2y$10$YFtGSzbboy3MXmrfqJw9h.L9x.iMosIk2o7p.dO4lzCPz1X3aXAGy', 'STF2');
 
 --
 -- Indexes for dumped tables
