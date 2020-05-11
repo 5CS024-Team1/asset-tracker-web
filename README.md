@@ -5,6 +5,8 @@ A web app for viewing and tracking the whereabouts of assets, originally designe
 ![](https://i.imgur.com/LYNwR93.png)
 
 # Development 
+
+## React Front End UI
 ### Available Scripts
 
 In the project directory, you can run:
@@ -17,10 +19,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
+### Creating a Build
+
+Read the [Deploy_ReadMe](deploy_readme.md) file for more help
+
+## API
 #### `start_php.bat`
 
 Starts the PHP development server to enable the `/api` section of the project
 
-### Creating a Build
+#### `api/resources/nhs_asset_tracker.sql`
 
-Read the [Deploy_ReadMe](deploy_readme.md) file for more help
+Initialization script for the backend MySQL database, which contains already configured data
