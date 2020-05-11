@@ -54,9 +54,28 @@ if (!$conn) {
     die();
 }
 
+function getUserType($userId) {
+    if (strpos($userId, 'AD') !== false)
+    {
+        return "admin";
+    }
+    else if (strpos( $usid, 'MGMT') !== false)
+    {
+        return "management";
+    }
+    else if (strpos( $usid, 'STF') !== false)
+    {
+        return "staff";
+    }
+    else
+    {
+        return "patient";
+    }
+}
+
 // Depending on Id, check the relevant column
 // Check id_readme for more info
-$sql = "SELECT * FROM $ID_TABLE WHERE ";
+$sql = "SELECT * FROM $USER_TABLE WHERE ";
 if (strpos($usid, 'AD') !== false || strpos( $usid, 'STF') !== false || strpos( $usid, 'MGMT') !== false) 
 {
     $sql = $sql . $idsstaff . "=\"" . $usid . "\"";
@@ -76,7 +95,14 @@ if ($result && $result->num_rows > 0)
     $user = new User();
     // Map individual user onto single object and cast to correct data types
     while($row = $result->fetch_assoc()) {
-        $user->admin_id = $row[$idsstaff];
+        $user->id = $row[$idsstaff];
+        $user->patient_id = $row[$idspatient];
+        $user->user_type = getUserType($row[$idsstaff]);
+        $user->forename = $row[$forename];
+        $user->surname = $row[$surname];
+        $user->county = $row[$personcounty];
+        $user->town = $row[$persontown];
+        $user->address = $row[$personaddress];
     }
 
     // Return the array of assets

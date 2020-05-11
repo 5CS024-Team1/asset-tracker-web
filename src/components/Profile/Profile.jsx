@@ -43,7 +43,15 @@ function ProfileInfo(props) {
                     <h6>Id:</h6>
                 </Col>
                 <Col md={10}>
-                    <div>{props.user ? props.user.admin_id : "-1"}</div>
+                    <div>{props.user ? props.user.id : "None"}</div>
+                </Col>
+            </Row>
+            <Row className="mx-0">
+                <Col md={2}>
+                    <h6>Patient Id:</h6>
+                </Col>
+                <Col md={10}>
+                    <div>{props.user ? props.user.patient_id : "None"}</div>
                 </Col>
             </Row>
             <Row className="mx-0">
@@ -51,15 +59,15 @@ function ProfileInfo(props) {
                     <h6>Name:</h6>
                 </Col>
                 <Col md={10}>
-                    <div>{props.user ? props.user.admin_name : "Unknown Name"}</div>
+                    <div>{props.user ? `${props.user.forename} ${props.user.surname}` : "Unknown Name"}</div>
                 </Col>
             </Row>
             <Row className="mx-0">
                 <Col md={2}>
-                    <h6>Email:</h6>
+                    <h6>Address:</h6>
                 </Col>
                 <Col md={10}>
-                    <div>{props.user ? props.user.admin_email : "?"}</div>
+                    <div>{props.user ? `${props.user.address}, ${props.user.town}, ${props.user.county}` : "?"}</div>
                 </Col>
             </Row>
             <Row className="mx-0">
@@ -67,7 +75,7 @@ function ProfileInfo(props) {
                     <h6>Permission Level:</h6>
                 </Col>
                 <Col md={10}>
-                    <div>{props.user ? props.user.admin_type : "Unknown"}</div>
+                    <div>{props.user ? props.user.user_type : "Unknown"}</div>
                 </Col>
             </Row>
         </div>
